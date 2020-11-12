@@ -1,0 +1,22 @@
+@import '../../scss/colors/colors.scss';
+
+.delegators  {
+    padding-top: 55px;
+    position: relative;
+    .screen-section{
+        margin-top: 60px;
+       
+        &-container {
+            height: 100%;
+            height: calc(100vh - 280px);
+        }   
+    }
+  
+    .delegator-not-found {
+        position: absolute;
+        top: 160px;
+    }
+    .search-input-box{
+        width: 500px;
+    }
+}

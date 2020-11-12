@@ -1,0 +1,17 @@
+.delegators-actions {
+    height: 100%;
+
+    .loader-list {
+        &-element {
+            div {
+                max-width: 230px;
+                width: calc(100% / 5);
+                padding-right: 40px;
+                .loader {
+                    height: 20px;
+                    width: 100px;
+                }
+            }
+        }
+    }
+}

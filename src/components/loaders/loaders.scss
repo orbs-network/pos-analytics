@@ -1,0 +1,33 @@
+@import '../../scss/colors/colors.scss';
+
+.loader{
+    background: $loader-color;
+    border-radius: 10px;
+    position: relative;
+    figure{
+        width: 100%;
+        height: 100%;
+        background: white;
+        opacity: 0;
+        animation: glow 0.5s ease-in-out infinite alternate;
+        position: absolute;
+    }
+    @keyframes glow {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 0.3;
+        }
+    }
+
+    &-list{
+        &-element{
+            margin-bottom: 20px;
+        }
+    }
+    &-big{
+        width: 100%;
+        height: 100%;
+    }
+}

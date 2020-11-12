@@ -1,0 +1,28 @@
+.rewards-titles{
+  
+        .loader-one-line-list{
+            width: 100%;
+            li{
+                width:calc(100% / 4);
+              
+                .loader{
+                    width: 140px;
+                     height: 30px;
+                }
+                &:nth-child(1){
+                  opacity: 0;
+                }
+            }
+        }
+      
+        h4{
+            width:calc(100% / 4);
+            font-size: 17px;
+            font-weight: 600;
+            &:nth-child(1){
+                min-width: 300px;
+            }
+        }
+       margin-bottom: 30px;
+    
+}

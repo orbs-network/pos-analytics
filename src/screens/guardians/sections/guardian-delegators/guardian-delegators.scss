@@ -1,0 +1,27 @@
+@import 'scss/theme/foundation.scss';
+.guardian-delegators {
+
+    &-list {
+        height: 100%;
+        a{
+            max-width: 440px;
+            img{
+           margin-left: auto;
+               
+            }
+        }
+        .loader-list {
+            &-element {
+                div {
+                    width: 200px;
+                    padding-right: 40px;
+                    .loader {
+                        height: 20px;
+                        width: 100px;
+                    }
+                }
+            }
+        }
+
+    }
+}

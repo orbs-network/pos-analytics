@@ -1,0 +1,19 @@
+.bar-chart-tootlip{
+    .chart-tootlip{
+        &-total{
+            text-transform: capitalize;
+            margin-bottom: 5px;
+            margin-top: 5px;
+        }
+        &-data{
+            p{
+                &:nth-child(1){
+                    margin-bottom: 3px;
+                    font-weight: 500;
+                }
+            }
+            margin-bottom: 5px;
+        }
+    }
+  
+}

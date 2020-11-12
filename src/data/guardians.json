@@ -1,0 +1,128 @@
+[
+  {
+    "name": "test-guardian1-orbs-beta",
+    "address": "0x460d922239030a83f419f2fb090bf901b628ec31",
+    "website": "www.orbs.com",
+    "effective_stake": 10
+  },
+  {
+    "name": "test_guardian2-orbs-beta",
+    "address": "0xf64443d47bfe0305e4cafaba4635a19da730ef51",
+    "website": "www.orbs.com",
+    "effective_stake": 10
+  },
+  {
+    "name": "test-guardian3-orbs-beta",
+    "address": "0x77f20b33b2bc5637f8abc6a87aeea43b1b520591",
+    "website": "www.orbs.com",
+    "effective_stake": 9
+  },
+  {
+    "name": "test-guardian4-orbs-beta",
+    "address": "0xb844166d6c29f277b825265b5e1d8855901c1d7b",
+    "website": "www.orbs.com",
+    "effective_stake": 100
+  },
+  {
+    "name": "DELIGHT",
+    "address": "0x6dda3d258e21abc37668e82ae543e8c77567f220",
+    "website": "https://delightlabs.io",
+    "effective_stake": 2604460
+  },
+  {
+    "name": "WhaleCoreStake - ORBS KOREA - 오뽀",
+    "address": "0xc5e624d6824e626a6f14457810e794e4603cfee2",
+    "website": "https://blog.naver.com/fishcorestake",
+    "effective_stake": 174218259
+  },
+  {
+    "name": "Guardians-of-Orbs",
+    "address": "0xf7ae622c77d0580f02bcb2f92380d61e3f6e466c",
+    "website": "https://www.guardians-of-orbs.com/",
+    "effective_stake": 50212306
+  },
+  {
+    "name": "Wings Stiftung",
+    "address": "0x0874bc1383958e2475df73dc68c4f09658e23777",
+    "website": "https://wingsfoundation.ch",
+    "effective_stake": 21431229
+  },
+  {
+    "name": "Guardians of Blockchain (가.오.블)",
+    "address": "0x7f0e5488a651c08f84df8e4088303c94c58a728b",
+    "website": "https://www.guardians-of-blockchain.com",
+    "effective_stake": 31076611
+  },
+  {
+    "name": "AngelSong-of-Orbs",
+    "address": "0x0c56b39184e22249e35efcb9394872f0d025256b",
+    "website": "https://blog.naver.com/jinan0119",
+    "effective_stake": 46077585
+  },
+  {
+    "name": "Freeman-by-ORBS",
+    "address": "0x17fe98a222c41217c51c823352537dc542ad06ef",
+    "website": "https://blog.naver.com/freeman-k",
+    "effective_stake": 14552048
+  },
+  {
+    "name": "Good relation-Guardian(굿가)",
+    "address": "0xf0db4646e4be8e2094cd6d7c6d253a87eec7af58",
+    "website": "https://blog.naver.com/emfla2272",
+    "effective_stake": 43289823
+  },
+  {
+    "name": "chainvalid8",
+    "address": "0xcca877408c68878ea02afd1c441cdaaa05d061f1",
+    "website": "https://chainvalid8.com",
+    "effective_stake": 3025922
+  },
+  {
+    "name": "Jjang Orbs(짱)",
+    "address": "0x8ddb908c77ccc9cfde28ddf84311cb6fdf3f3125",
+    "website": "https://blog.naver.com/jjang-orbs",
+    "effective_stake": 99772829
+  },
+  {
+    "name": "ORBS 1++흑우",
+    "address": "0x3d726623456e34e8a7f5567f6249ec4d72cc3595",
+    "website": "https://blog.naver.com/orbs_guardian",
+    "effective_stake": 39117068
+  },
+  {
+    "name": "Bitgosu",
+    "address": "0xf058ccfb2324310c33e8fd9a1dda8e99c8beda59",
+    "website": "https://bitgosu.info",
+    "effective_stake": 22860261
+  },
+  {
+    "name": "Paradigm",
+    "address": "0x69c57da3914693dbc5e96ff6c37216e70c6fbbc9",
+    "website": "https://paradigmfund.io",
+    "effective_stake": 1435960
+  },
+  {
+    "name": "ORBS-POS",
+    "address": "0xc82ec0f3c834d337c51c9375a1c0a65ce7aadaec",
+    "website": "http://orbs-pos.info/",
+    "effective_stake": 663473
+  },
+  {
+    "name": "japan-guardian-altive-orbs-v2",
+    "address": "0x63aef7616882f488bca97361d1c24f05b4657ae5",
+    "website": "https://guardian-japan-orbs.com",
+    "effective_stake": 102439028
+  },
+  {
+    "name": "Citadel.one",
+    "address": "0x5aefc9c2960635b2b1209d4330c84c15d9983ff5",
+    "website": "https://citadel.one/",
+    "effective_stake": 11781
+  },
+  {
+    "name": "MollBBang",
+    "address": "0x9b3853cc5734f18ab95e99e6fa4e7fb5da1e1186",
+    "website": "https://blog.naver.com/mollbbang",
+    "effective_stake": 13344
+  }
+]

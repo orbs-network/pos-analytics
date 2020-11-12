@@ -1,0 +1,118 @@
+{
+    "name": "orbs",
+    "version": "0.1.0",
+    "private": true,
+    "homepage": "https://mixin-software.github.io/orbs-golda",
+    "dependencies": {
+        "@babel/polyfill": "^7.10.4",
+        "@material-ui/core": "^4.11.0",
+        "@material-ui/icons": "^4.9.1",
+        "@orbs-network/pos-analytics-lib": "^0.6.3",
+        "@testing-library/jest-dom": "^4.2.4",
+        "@testing-library/react": "^9.3.2",
+        "@testing-library/user-event": "^7.1.2",
+        "@types/jest": "^24.9.1",
+        "@types/jquery": "^3.5.0",
+        "@types/node": "^12.12.50",
+        "@types/react": "^16.9.43",
+        "@types/react-click-outside-hook": "^1.0.0",
+        "@types/react-dom": "^16.9.8",
+        "@types/react-redux": "^7.1.9",
+        "@types/react-router-dom": "^5.1.5",
+        "@types/react-virtualized": "^9.21.10",
+        "@types/react-window": "^1.8.2",
+        "apisauce": "^1.1.1",
+        "axios": "^0.20.0",
+        "bootstrap": "^4.5.0",
+        "chart.js": "^2.9.4",
+        "connected-react-router": "^6.8.0",
+        "i18next": "^19.6.0",
+        "i18next-browser-languagedetector": "^5.0.0",
+        "i18next-locize-backend": "^4.1.8",
+        "localforage": "^1.7.4",
+        "moment": "^2.27.0",
+        "node-sass": "^4.14.1",
+        "numeral": "^2.0.6",
+        "pouchdb-adapter-indexeddb": "^7.2.2",
+        "react": "^16.13.1",
+        "react-bootstrap": "^1.2.2",
+        "react-chartjs-2": "^2.10.0",
+        "react-click-outside-hook": "^1.1.1",
+        "react-country-flag": "^2.3.0",
+        "react-dom": "^16.13.1",
+        "react-flag-kit": "^0.3.1",
+        "react-i18next": "^11.7.0",
+        "react-redux": "^7.2.0",
+        "react-router-dom": "^5.2.0",
+        "react-scripts": "3.4.1",
+        "react-virtualized": "^9.22.2",
+        "react-window": "^1.8.5",
+        "react-world-flags": "^1.4.0",
+        "redux": "^4.0.5",
+        "redux-thunk": "^2.3.0",
+        "typescript": "^3.7.5"
+    },
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "eject": "react-scripts eject",
+        "format": "prettier --write '**/*.{js,jsx,ts,tsx,md}'",
+        "lint": "eslint --fix '**/*.{js,jsx,ts,tsx}'",
+        "predeploy": "npm run build",
+        "deploy": "gh-pages -d build"
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "devDependencies": {
+        "eslint": "^6.6.0",
+        "eslint-config-airbnb-typescript-prettier": "^3.1.0",
+        "gh-pages": "^3.1.0",
+        "npm-run-all": "4.1.5",
+        "prettier": "^2.0.5"
+    },
+    "peerDependencies": {
+        "jquery": "^3.5.1",
+        "popper.js": "^1.16.0"
+    },
+    "prettier": {
+        "singleQuote": true,
+        "printWidth": 120,
+        "semi": true,
+        "trailingComma": "none",
+        "bracketSpacing": true,
+        "jsxBracketSameLine": true,
+        "tabWidth": 4,
+        "endOfLine": "auto"
+    },
+    "eslintConfig": {
+        "extends": [
+            "airbnb-typescript-prettier"
+        ],
+        "plugins": [
+            "react"
+        ],
+        "rules": {
+            "no-param-reassign": 0,
+            "@typescript-eslint/no-use-before-define": 0,
+            "no-console": 0,
+            "@typescript-eslint/no-var-requires": 0,
+            "import/prefer-default-export": 0,
+            "@typescript-eslint/explicit-function-return-type": 0,
+            "@typescript-eslint/no-unused-vars": 1,
+            "class-methods-use-this": 0,
+            "eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions": 0,
+            "eslint-disable-next-line jsx-a11y/click-events-have-key-events": 0,
+            "react-hooks/exhaustive-deps": 0
+        }
+    }
+}

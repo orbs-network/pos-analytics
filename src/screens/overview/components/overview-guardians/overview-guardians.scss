@@ -1,0 +1,81 @@
+@import 'scss/colors/colors.scss';
+
+.overview {
+    height: 100%;
+ 
+
+    &-guardians {
+        position: relative;
+        width: 300px;
+        margin-left: auto;
+        header{
+            color:$light-gray; 
+            font-size:17px;
+            font-weight: 500;
+            height: 30px;
+            padding-left: 5px;
+        }
+        height: 100%;
+        &-list {
+          
+            height: calc(100% - 30px);
+            overflow-y: auto;
+            li {
+                height: 30px;
+                margin-bottom: 5px;
+                padding-left: 5px;
+                padding-right: 5px;
+               a{
+                   align-items: center;
+                   height: 100%;
+               }
+                figure {
+                    width: 14px;
+                    height: 14px;
+                    border-radius: 50%;
+                    margin-right: 10px;
+                   
+                }
+                img{
+                    margin-left: auto;
+                }
+                p{
+                    color:$light-gray;
+                    font-size: 15px;
+                    max-width: 80%;
+                    line-height: normal;
+                    &:hover{
+                        text-decoration: underline;
+                    }
+                }
+               
+               &:hover{
+                   background: $list-hover-color;
+               }
+            }
+           
+            
+        }
+     
+    }
+    .loader-list {
+        width: 100%;
+        &-element {
+            width: 100%;
+            margin-bottom: 15px;
+            div {
+                width: 100%;
+                padding-right: 40px;
+                display: none;
+                &:nth-child(1){
+                    display: block;
+                }
+                .loader {
+                    height: 25px;
+                    width: 100%;
+                }
+            }
+        }
+    }
+
+}

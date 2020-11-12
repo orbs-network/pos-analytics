@@ -1,0 +1,31 @@
+
+
+.guardian-rewards-actions{
+    height: calc(100% - 290px);    
+        .list{
+            margin-top: 30px;
+            height: calc(100% - 30px);
+            &-item{
+                min-width: 200px;
+                max-width: 350px;
+                width: calc(100% / 4);
+            }   
+            ul{
+                height: calc(100% - 50px);
+            }
+        }
+    
+        .loader-list {
+            margin-top: 50px;
+            &-element {
+                div {
+                    width: calc(100% / 4);
+                    padding-right: 40px;
+                    .loader {
+                        height: 20px;
+                        width: 130px;
+                    }
+                }
+            }
+        }
+    }

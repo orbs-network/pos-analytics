@@ -1,0 +1,17 @@
+.guardian-actions {
+    height: 100%;
+
+    .loader-list {
+        &-element {
+            div {
+                max-width: 280px;
+                width: calc(100% / 4);
+                .loader {
+                    height: 20px;
+                    width: 100px;
+                }
+                
+            }
+        }
+    }
+}
