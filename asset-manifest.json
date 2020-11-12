@@ -1,0 +1,43 @@
+{
+  "files": {
+    "main.css": "/pos-analytics/static/css/main.7491d4ca.chunk.css",
+    "main.js": "/pos-analytics/static/js/main.35e8bf82.chunk.js",
+    "main.js.map": "/pos-analytics/static/js/main.35e8bf82.chunk.js.map",
+    "runtime-main.js": "/pos-analytics/static/js/runtime-main.d545899c.js",
+    "runtime-main.js.map": "/pos-analytics/static/js/runtime-main.d545899c.js.map",
+    "static/js/2.e88e079f.chunk.js": "/pos-analytics/static/js/2.e88e079f.chunk.js",
+    "static/js/2.e88e079f.chunk.js.map": "/pos-analytics/static/js/2.e88e079f.chunk.js.map",
+    "index.html": "/pos-analytics/index.html",
+    "precache-manifest.d371b0e42ee03dfda42dcaae2007d6df.js": "/pos-analytics/precache-manifest.d371b0e42ee03dfda42dcaae2007d6df.js",
+    "service-worker.js": "/pos-analytics/service-worker.js",
+    "static/css/main.7491d4ca.chunk.css.map": "/pos-analytics/static/css/main.7491d4ca.chunk.css.map",
+    "static/js/2.e88e079f.chunk.js.LICENSE.txt": "/pos-analytics/static/js/2.e88e079f.chunk.js.LICENSE.txt",
+    "static/media/coins.svg": "/pos-analytics/static/media/coins.c698f8c2.svg",
+    "static/media/copy.svg": "/pos-analytics/static/media/copy.5ae6ccfe.svg",
+    "static/media/cpu.svg": "/pos-analytics/static/media/cpu.3ee6411f.svg",
+    "static/media/delegators-selected.svg": "/pos-analytics/static/media/delegators-selected.fe49925e.svg",
+    "static/media/delegators.svg": "/pos-analytics/static/media/delegators.091557cd.svg",
+    "static/media/encrypted.svg": "/pos-analytics/static/media/encrypted.fc6fbf16.svg",
+    "static/media/getFetch.cjs": "/pos-analytics/static/media/getFetch.013f0b90.cjs",
+    "static/media/guardians-selected.svg": "/pos-analytics/static/media/guardians-selected.e200a932.svg",
+    "static/media/guardians.svg": "/pos-analytics/static/media/guardians.95190aa2.svg",
+    "static/media/japan.svg": "/pos-analytics/static/media/japan.180bed75.svg",
+    "static/media/logo orbs.svg": "/pos-analytics/static/media/logo orbs.bf799dad.svg",
+    "static/media/loupe.svg": "/pos-analytics/static/media/loupe.ecef733a.svg",
+    "static/media/navbar-logo.svg": "/pos-analytics/static/media/navbar-logo.863932b6.svg",
+    "static/media/overview-selected.svg": "/pos-analytics/static/media/overview-selected.57aad41c.svg",
+    "static/media/overview.svg": "/pos-analytics/static/media/overview.416db91d.svg",
+    "static/media/south-korea.svg": "/pos-analytics/static/media/south-korea.ad512fa5.svg",
+    "static/media/stellar.svg": "/pos-analytics/static/media/stellar.7cf558ab.svg",
+    "static/media/token.png": "/pos-analytics/static/media/token.51d4bc2c.png",
+    "static/media/trophy.svg": "/pos-analytics/static/media/trophy.4cda8b81.svg",
+    "static/media/usa.svg": "/pos-analytics/static/media/usa.a035edad.svg",
+    "static/media/voting-booth.svg": "/pos-analytics/static/media/voting-booth.bac02ede.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.d545899c.js",
+    "static/js/2.e88e079f.chunk.js",
+    "static/css/main.7491d4ca.chunk.css",
+    "static/js/main.35e8bf82.chunk.js"
+  ]
+}
