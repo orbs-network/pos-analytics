@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useClickOutside } from 'react-click-outside-hook';
 import CloseRoundedIcon from '@material-ui/icons/CloseRounded';
 import SearchRoundedIcon from '@material-ui/icons/SearchRounded';
@@ -11,6 +11,7 @@ import { AppState } from 'redux/types/types';
 import { routes } from 'routes/routes';
 import { getGuardianName, checkIfLoadDelegator, getGuardianByAddress } from 'utils/guardians';
 import './guardian-search.scss';
+import { Console } from 'console';
 
 interface StateProps {
     address?: string;
@@ -64,6 +65,7 @@ export const GuardianSearch = ({ address, section }: StateProps) => {
     const setGuardianNameAsValue = (address?: string) => {
         if (!address) return;
         const guardian = getGuardianByAddress(guardians, address);
+      
         if (!guardian) return;
         const string = `${guardian.name} (${guardian.address})`;
         setInputValue(string);

@@ -61,20 +61,11 @@ const generateDatasets = (dates: Date[]): GuardiansChartDatasets => {
     };
 };
 
-export const getGuardianChartData = (
-    minDate: Date,
-    dates: Date[],
-    unit: ChartUnit,
-    { stake_slices }: GuardianInfo
-): ChartData => {
-    const moMinDate = moment(minDate);
+export const getGuardianChartData = (dates: Date[], unit: ChartUnit, { stake_slices }: GuardianInfo): ChartData => {
     let datasets = generateDatasets(dates);
-    stake_slices
-        .filter((s) => moment.unix(s.block_time) >= moMinDate)
-        .sort((s1, s2) => s1.block_time - s2.block_time)
-        .forEach((m) => {
-            insertChartDataByType(datasets, m, moment.unix(m.block_time).valueOf());
-        });
+    stake_slices.forEach((m) => {
+        insertChartDataByType(datasets, m, moment.unix(m.block_time).valueOf());
+    });
 
     return {
         datasets: [datasets.total_stake, datasets.n_delegates, datasets.self_stake],
@@ -113,28 +104,24 @@ const fillGuardiansChartData = (dates: Date[]) => {
 
 export const generateGuardiansChartData = (unit: ChartUnit, selectedGuardian?: GuardianInfo): ChartData | undefined => {
     if (!selectedGuardian) return;
-    let dates, minDate;
+    let dates;
     let now = moment();
     switch (unit) {
         case ChartUnit.MONTH:
-            minDate = now.subtract(STACK_GRAPH_MONTHS_LIMIT, 'month');
             dates = generateMonths(STACK_GRAPH_MONTHS_LIMIT);
             break;
         case ChartUnit.WEEK:
-            minDate = now.subtract(STACK_GRAPH_MONTHS_LIMIT, 'weeks');
             dates = generateWeeks(STACK_GRAPH_MONTHS_LIMIT);
             break;
         case ChartUnit.DAY:
-            minDate = now.subtract(STACK_GRAPH_MONTHS_LIMIT, 'days');
             dates = generateDays(STACK_GRAPH_MONTHS_LIMIT);
             break;
         default:
-            minDate = now.subtract(STACK_GRAPH_MONTHS_LIMIT, 'week');
             dates = generateWeeks(STACK_GRAPH_MONTHS_LIMIT);
             break;
     }
     if (!dates) return;
-    return getGuardianChartData(minDate.toDate(), dates, unit, selectedGuardian);
+    return getGuardianChartData(dates, unit, selectedGuardian);
 };
 
 export const getGuardianByAddress = (guardians?: Guardian[], address?: string): Guardian | undefined => {

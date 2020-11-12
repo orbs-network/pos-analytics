@@ -42,16 +42,8 @@ const fillDelegatorsChartData = (dates: Date[]) => {
         };
     });
 };
-export const getDelegatorChartData = (
-    minDate: Date,
-    dates: Date[],
-    unit: ChartUnit,
-    { stake_slices }: Delegator
-): ChartData => {
-    const moMinDate = moment(minDate);
-    let emptydataPoints = fillDelegatorsChartData(dates);
+export const getDelegatorChartData = (unit: ChartUnit, { stake_slices }: Delegator): ChartData => {
     const points = stake_slices
-        .filter((s) => moment.unix(s.block_time) >= moMinDate)
         .map((m) => {
             return {
                 x: moment.unix(m.block_time).valueOf(),
@@ -61,7 +53,7 @@ export const getDelegatorChartData = (
         .sort(chartDatasetObjectComparer);
 
     const dataset = {
-        data: [...emptydataPoints, ...points],
+        data: points,
         color: ChartColors.TOTAL_STAKE,
         yAxis: ChartYaxis.Y1
     };
@@ -100,28 +92,37 @@ export const generateDelegatorsCurrentStake = (event: DelegatorActionsTypes, cur
 
 export const generateDelegatorChartData = (unit: ChartUnit, selectedDelegator?: Delegator): ChartData | undefined => {
     if (!selectedDelegator) return;
-    let dates, minDate;
-    let now = moment();
+    let dates;
     switch (unit) {
         case ChartUnit.MONTH:
-            minDate = now.subtract(STACK_GRAPH_MONTHS_LIMIT, 'month');
             dates = generateMonths(STACK_GRAPH_MONTHS_LIMIT);
             break;
         case ChartUnit.WEEK:
-            minDate = now.subtract(STACK_GRAPH_MONTHS_LIMIT, 'weeks');
             dates = generateWeeks(STACK_GRAPH_MONTHS_LIMIT);
             break;
         case ChartUnit.DAY:
-            minDate = now.subtract(STACK_GRAPH_MONTHS_LIMIT, 'days');
             dates = generateDays(STACK_GRAPH_MONTHS_LIMIT);
             break;
         default:
-            minDate = now.subtract(STACK_GRAPH_MONTHS_LIMIT, 'week');
             dates = generateWeeks(STACK_GRAPH_MONTHS_LIMIT);
             break;
     }
     if (!dates) return;
-    return getDelegatorChartData(minDate.toDate(), dates, unit, selectedDelegator);
+
+    return getDelegatorChartData(unit, selectedDelegator);
+};
+
+export const getMinDateByUnit = (unit: ChartUnit): Date => {
+    switch (unit) {
+        case ChartUnit.MONTH:
+            return moment().subtract(STACK_GRAPH_MONTHS_LIMIT, 'month').toDate();
+        case ChartUnit.WEEK:
+            return moment().subtract(STACK_GRAPH_MONTHS_LIMIT, 'weeks').toDate();
+        case ChartUnit.DAY:
+            return moment().subtract(STACK_GRAPH_MONTHS_LIMIT, 'days').toDate();
+        default:
+            return moment().subtract(STACK_GRAPH_MONTHS_LIMIT, 'weeks').toDate();
+    }
 };
 
 export const getDelegatorRewardActions = (actions?: DelegatorAction[]) => {

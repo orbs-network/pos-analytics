@@ -3,6 +3,8 @@ import { ChartUnit, OverviewChartType } from '../global/enums';
 import { formatNumber } from './number';
 import moment from 'moment';
 import { DATE_FORMAT } from 'global/variables';
+import { getMinDateByUnit } from './delegators';
+import { getMinDateByUnitOverview } from './overview/overview';
 export const barChartCustomTooltip = function (
     chartType: OverviewChartType,
     tooltip: any,
@@ -90,7 +92,7 @@ export const getBarChartConfigOptions = (
     goToGuardianPage: (e: any) => void,
     ref: any,
     t: TFunction,
-    unit?: ChartUnit,
+    unit: ChartUnit,
     total?: number
 ) => {
     return {
@@ -139,6 +141,7 @@ export const getBarChartConfigOptions = (
                     type: 'time',
                     time: {
                         unit,
+                        min: getMinDateByUnitOverview(unit),
                         format: DATE_FORMAT
                     },
                     stacked: true,

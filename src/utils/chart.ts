@@ -4,6 +4,7 @@ import { ChartData, ChartDataset, ChartDatasetObject } from '../global/types';
 import { formatNumber } from './number';
 import moment from 'moment';
 import { TIME_UNIT_FORMAT } from '../global/variables';
+import { getMinDateByUnit } from './delegators';
 
 export const getGuardiansLineChartSettings = (unit: ChartUnit, ref: any, t: TFunction) => {
     const settings = getLineChartBaseSettings(unit, ref, t);
@@ -82,6 +83,7 @@ export const getLineChartBaseSettings = (unit: ChartUnit, ref: any, t: TFunction
                     type: 'time',
                     time: {
                         unit,
+                        min: getMinDateByUnit(unit),
                         displayFormats: {
                             millisecond: TIME_UNIT_FORMAT,
                             second: TIME_UNIT_FORMAT,
@@ -94,7 +96,6 @@ export const getLineChartBaseSettings = (unit: ChartUnit, ref: any, t: TFunction
                             year: TIME_UNIT_FORMAT
                         }
                     },
-
                     scaleLabel: {
                         display: false
                     },
@@ -109,7 +110,7 @@ export const getLineChartBaseSettings = (unit: ChartUnit, ref: any, t: TFunction
                             const date = values[index].value;
                             return ['|', '', value, moment(date).format('YYYY')];
                         },
-                        autoskip: true,
+                        autoSkip: true,
                         padding: -10,
                         fontSize: 12,
                         fontFamily: 'Montserrat',
@@ -136,7 +137,6 @@ export const getLineChartBaseSettings = (unit: ChartUnit, ref: any, t: TFunction
                         zeroLineColor: 'rgba(255,99,132,0.2)',
                         drawBorder: false
                     },
-
                     ticks: {
                         autoskip: true,
                         maxTicksLimit: 7,

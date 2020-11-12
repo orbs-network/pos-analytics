@@ -43,19 +43,16 @@ const insertGuardiansByDate = (
 };
 
 export const getOverviewChartData = (
-    minDate: Date,
     dates: any,
     unit: ChartUnit,
     { slices }: PosOverview,
     guardiansColors?: { [id: string]: string }
 ) => {
-    const moMinDate = moment(minDate);
-    const filteredSlices = slices.filter((s) => moment.unix(s.block_time) >= moMinDate);
-    const lastSlice = getLastSlice(filteredSlices);
+    const lastSlice = getLastSlice(slices);
     if (!lastSlice) return;
     const sortedGuardians = lastSlice.data.sort((s1, s2) => s2.effective_stake - s1.effective_stake);
     let guardianDatasets = createGuardianDatasets(sortedGuardians, dates, unit, guardiansColors);
-    insertGuardiansByDate(filteredSlices, unit, dates, guardianDatasets);
+    insertGuardiansByDate(slices, unit, dates, guardianDatasets);
     const obj = {
         data: generateDataset(guardianDatasets),
         unit,
@@ -70,21 +67,18 @@ export const getStakeChartData = (
     guardiansColors?: { [id: string]: string }
 ): any => {
     if (!overviewData) return;
-    let dates, minDate;
+    let dates;
     switch (unit) {
         case ChartUnit.WEEK:
-            minDate = moment().subtract(OVERVIEW_CHART_LIMIT, 'weeks');
             dates = generateWeeks(OVERVIEW_CHART_LIMIT);
             break;
         case ChartUnit.DAY:
-            minDate = moment().subtract(OVERVIEW_CHART_LIMIT, 'days');
             dates = generateDays(OVERVIEW_CHART_LIMIT);
             break;
         default:
-            minDate = moment().subtract(OVERVIEW_CHART_LIMIT, 'week');
             dates = generateWeeks(OVERVIEW_CHART_LIMIT);
             break;
     }
     if (!dates) return;
-    return getOverviewChartData(minDate.toDate(), dates, unit, overviewData, guardiansColors);
+    return getOverviewChartData(dates, unit, overviewData, guardiansColors);
 };
