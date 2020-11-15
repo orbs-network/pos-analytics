@@ -24,37 +24,28 @@ const calculateTotalWeight = (data: PosOverviewData[]) => {
 const insertGuardiansByDate = (
     slices: PosOverviewSlice[],
     unit: ChartUnit,
-    dates: Date[],
-    guardianDatasets: { [id: string]: OverviewGuardianDataset }
+    guardianDatasets: { [id: string]: OverviewGuardianDataset },
+    dates: Date[]
 ) => {
-    const latestSlices = dates
-        .map((d) => {
-            let mDate = moment(d);
-            let slicesForDate = slices.filter(({ block_time }: PosOverviewSlice) => {
-                const blockTimeDate = moment.unix(block_time);
-                return mDate.format(DATE_FORMAT) === blockTimeDate.format(DATE_FORMAT);
-            });
-
-            return slicesForDate[slicesForDate.length - 1];
-        })
-        .filter((s) => s && s.block_time);
-
-    latestSlices.forEach(({ block_time, data }: PosOverviewSlice) => {
+    slices.forEach(({ block_time, data }: PosOverviewSlice) => {
         const blockTimeDate = moment.unix(block_time);
         const blockTimeByUnit = getDateFormatByUnit(blockTimeDate, unit);
         const totalWeight = calculateTotalWeight(data);
 
-        data.forEach(({ address, weight }: PosOverviewData) => {
+        data.forEach(({ address, weight, name }: PosOverviewData) => {
             const percent = (weight / totalWeight) * 100;
             const currDataset = guardianDatasets[address];
+            let date;
             const index = currDataset.data.findIndex((i) => {
+                date = i.x;
                 return blockTimeDate.format(DATE_FORMAT) === i.x;
             });
 
-            if (index < 0) return;
+            if (index < 0 || !date) return;
+
             const point: GuardiansChartDatasetObject = {
                 group: blockTimeByUnit,
-                x: blockTimeDate.format(DATE_FORMAT),
+                x: date,
                 y: percent
             };
             currDataset.data.splice(index, 1, point);
@@ -75,7 +66,7 @@ export const getOverviewChartData = (
     if (!lastSlice) return;
     const sortedGuardians = lastSlice.data.sort((s1, s2) => s2.weight - s1.weight);
     let guardianDatasets = createGuardianDatasets(sortedGuardians, dates, unit, guardiansColors);
-    insertGuardiansByDate(slices, unit, dates, guardianDatasets);
+    insertGuardiansByDate(slices, unit, guardianDatasets, dates);
     const obj = {
         data: generateDataset(guardianDatasets),
         unit,

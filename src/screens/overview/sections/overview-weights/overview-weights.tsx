@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { OverviewStakeGuadians } from 'screens/overview/components/overview-guardians/overview-guardians';
 import { BarChartComponent } from 'components/bar-chart/bar-chart';
 import { TimeRangeSelector } from 'components/date-format-picker/time-range-selector';
 import { LoadingComponent } from 'components/loading-component/loading-component';
@@ -21,8 +20,9 @@ export const OverviewWeights = () => {
     const { t } = useTranslation();
 
     useEffect(() => {
-        if (overviewWeightsChartData) return;
-        selectChartData(ChartUnit.WEEK);
+        if (!overviewWeightsChartData) {
+            selectChartData(ChartUnit.WEEK);
+        }
     }, []);
 
     const selectChartData = (unit: ChartUnit) => {
@@ -33,36 +33,33 @@ export const OverviewWeights = () => {
     const noData = !overviewData && !overviewDataLoding;
 
     return (
-        <div className="overview-chart-wrapper flex-between">
-            <div className="overview-chart">
-                {noData ? (
-                    <NoData />
-                ) : (
-                    <LoadingComponent isLoading={overviewDataLoding} loaderType={LoaderType.BIG}>
-                        {overviewWeightsChartData && (
-                            <header className="flex-between">
-                                <h4 className="capitalize">{t('overview.graphText')}</h4>
-                                <TimeRangeSelector
-                                    selected={overviewWeightsChartData.unit}
-                                    selectCallBack={selectChartData}
-                                    unitsToHide={[ChartUnit.MONTH]}
-                                />
-                            </header>
-                        )}
-                        {overviewWeightsChartData && (
-                            <div className="bar-chart">
-                                <BarChartComponent
-                                    chartData={overviewWeightsChartData}
-                                    guardians={guardians}
-                                    total={overviewData?.total_stake}
-                                    chartType={OverviewChartType.WEIGHTS}
-                                />
-                            </div>
-                        )}
-                    </LoadingComponent>
-                )}
-            </div>
-            <OverviewStakeGuadians />
+        <div className="overview-chart">
+            {noData ? (
+                <NoData />
+            ) : (
+                <LoadingComponent isLoading={!overviewWeightsChartData} loaderType={LoaderType.BIG}>
+                    {overviewWeightsChartData && (
+                        <header className="flex-between">
+                            <h4 className="capitalize">{t('overview.graphText')}</h4>
+                            <TimeRangeSelector
+                                selected={overviewWeightsChartData.unit}
+                                selectCallBack={selectChartData}
+                                unitsToHide={[ChartUnit.MONTH]}
+                            />
+                        </header>
+                    )}
+                    {overviewWeightsChartData && (
+                        <div className="bar-chart">
+                            <BarChartComponent
+                                chartData={overviewWeightsChartData}
+                                guardians={guardians}
+                                total={overviewData?.total_stake}
+                                chartType={OverviewChartType.WEIGHTS}
+                            />
+                        </div>
+                    )}
+                </LoadingComponent>
+            )}
         </div>
     );
 };

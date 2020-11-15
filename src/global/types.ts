@@ -105,6 +105,6 @@ export interface OverviewGuardianDataset {
 
 export interface GuardiansChartDatasetObject {
     group: string;
-    x: string;
+    x: string | number;
     y: number | null;
 }

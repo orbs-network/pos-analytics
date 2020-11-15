@@ -140,7 +140,7 @@ export const getBarChartConfigOptions = (
                     offset: true,
                     type: 'time',
                     time: {
-                        unit,
+                        unit: 'day',
                         min: getMinDateByUnitOverview(unit),
                         format: DATE_FORMAT
                     },
@@ -153,7 +153,9 @@ export const getBarChartConfigOptions = (
                         callback: function (value: any, index: any, values: any) {
                             const date = values[index].value;
                             return [moment(date).format('DD MMM'), moment(date).format('YYYY')];
+                            // return ['|', '', value, moment(date).format('YYYY')];
                         },
+                        autoSkip: true,
                         padding: 10,
                         fontSize: 12,
                         fontFamily: 'Montserrat',

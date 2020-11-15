@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { OverviewStakeGuadians } from 'screens/overview/components/overview-guardians/overview-guardians';
 import { BarChartComponent } from 'components/bar-chart/bar-chart';
 import { TimeRangeSelector } from 'components/date-format-picker/time-range-selector';
 import { LoadingComponent } from 'components/loading-component/loading-component';
@@ -27,43 +26,38 @@ export const OverviewStake = () => {
     }, []);
 
     const selectChartData = (unit: ChartUnit) => {
-        const data = getStakeChartData( unit, overviewData, guardiansColors);
+        const data = getStakeChartData(unit, overviewData, guardiansColors);
         dispatch(setOverviewStakeChartData(data));
     };
     const noData = !overviewData && !overviewDataLoding;
     return (
-        <div className="overview-chart-wrapper flex-between">
-            <div className="overview-chart">
-                {noData ? (
-                    <NoData />
-                ) : (
-                    <LoadingComponent isLoading={overviewDataLoding} loaderType={LoaderType.BIG}>
-                        {overviewStakeChartData && (
-                            <header className="flex-between">
-                                <h4 className="capitalize">{t('overview.graphText')}</h4>
-                                <TimeRangeSelector
-                                    selected={overviewStakeChartData.unit}
-                                    selectCallBack={selectChartData}
-                                    unitsToHide={[ChartUnit.MONTH]}
-                                />
-                            </header>
-                        )}
-                        {overviewStakeChartData && (
-                            <div className="bar-chart">
-                                <BarChartComponent
-                                    chartData={overviewStakeChartData}
-                                    guardians={guardians}
-                                    total={overviewData?.total_stake}
-                                    chartType={OverviewChartType.STAKE}
-                                />
-                            </div>
-                        )}
-                    </LoadingComponent>
-                )}
-            </div>
-            <OverviewStakeGuadians
-                  
-                />
+        <div className="overview-chart">
+            {noData ? (
+                <NoData />
+            ) : (
+                <LoadingComponent isLoading={!overviewStakeChartData} loaderType={LoaderType.BIG}>
+                    {overviewStakeChartData && (
+                        <header className="flex-between">
+                            <h4 className="capitalize">{t('overview.graphText')}</h4>
+                            <TimeRangeSelector
+                                selected={overviewStakeChartData.unit}
+                                selectCallBack={selectChartData}
+                                unitsToHide={[ChartUnit.MONTH]}
+                            />
+                        </header>
+                    )}
+                    {overviewStakeChartData && (
+                        <div className="bar-chart">
+                            <BarChartComponent
+                                chartData={overviewStakeChartData}
+                                guardians={guardians}
+                                total={overviewData?.total_stake}
+                                chartType={OverviewChartType.STAKE}
+                            />
+                        </div>
+                    )}
+                </LoadingComponent>
+            )}
         </div>
     );
 };

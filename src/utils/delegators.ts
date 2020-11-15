@@ -34,14 +34,7 @@ export const checkIfLoadDeligator = (address?: string, delegator?: Delegator): b
     if (delegator.address.toLowerCase() === address.toLowerCase()) return false;
     return true;
 };
-const fillDelegatorsChartData = (dates: Date[]) => {
-    return dates.map((date) => {
-        return {
-            x: moment(date).valueOf(),
-            y: null
-        };
-    });
-};
+
 export const getDelegatorChartData = (unit: ChartUnit, { stake_slices }: Delegator): ChartData => {
     const points = stake_slices
         .map((m) => {

@@ -5,6 +5,7 @@ import { generateDays, generateWeeks, getDateFormatByUnit } from '../dates';
 import { createGuardianDatasets, filledEmptyData, getLastSlice } from './overview';
 import moment from 'moment';
 import { GuardiansChartDatasetObject, OverviewGuardianDataset } from 'global/types';
+
 export const generateDataset = (arr: any) => {
     const result = Object.keys(arr).map((key) => {
         return arr[key];
@@ -15,7 +16,6 @@ export const generateDataset = (arr: any) => {
 const insertGuardiansByDate = (
     slices: PosOverviewSlice[],
     unit: ChartUnit,
-    dates: Date[],
     guardianDatasets: { [id: string]: OverviewGuardianDataset }
 ) => {
     slices.forEach(({ block_time, data }: PosOverviewSlice) => {
@@ -24,16 +24,19 @@ const insertGuardiansByDate = (
 
         data.forEach(({ effective_stake, address }: PosOverviewData, i: number) => {
             const currDataset = guardianDatasets[address];
+            let date;
             const index = currDataset.data.findIndex((i) => {
-                return blockTimeDate.format(DATE_FORMAT) === i.x;
+                date = i.x;
+                return blockTimeByUnit === getDateFormatByUnit(moment(i.x, DATE_FORMAT), unit);
             });
+            if (index < 0 || !date) return;
 
-            if (index < 0) return;
             const point: GuardiansChartDatasetObject = {
                 group: blockTimeByUnit,
-                x: blockTimeDate.format(DATE_FORMAT),
+                x: date,
                 y: effective_stake
             };
+            if (!point.y) return;
             currDataset.data.splice(index, 1, point);
             currDataset.data = filledEmptyData(currDataset.data);
         });
@@ -52,7 +55,7 @@ export const getOverviewChartData = (
     if (!lastSlice) return;
     const sortedGuardians = lastSlice.data.sort((s1, s2) => s2.effective_stake - s1.effective_stake);
     let guardianDatasets = createGuardianDatasets(sortedGuardians, dates, unit, guardiansColors);
-    insertGuardiansByDate(slices, unit, dates, guardianDatasets);
+    insertGuardiansByDate(slices, unit, guardianDatasets);
     const obj = {
         data: generateDataset(guardianDatasets),
         unit,

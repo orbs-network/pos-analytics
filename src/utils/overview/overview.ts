@@ -48,7 +48,6 @@ const fillChartData = (dates: Date[], unit: ChartUnit): GuardiansChartDatasetObj
     return dates.map((date) => {
         const blockTimeDate = moment(date);
         const blockTimeByUnit = getDateFormatByUnit(blockTimeDate, unit);
-
         return {
             group: blockTimeByUnit,
             x: moment(date).format(DATE_FORMAT),
