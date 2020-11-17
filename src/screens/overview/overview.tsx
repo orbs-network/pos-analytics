@@ -35,6 +35,7 @@ export const Overview = () => {
                             <Route exact path={routes.overview.default}>
                                 <Redirect to={routes.overview.stake} />
                             </Route>
+                            <OverviewStakeGuadians />
                         </div>
                     </LoadingComponent>
                 </div>

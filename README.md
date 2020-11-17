@@ -1,8 +1,3 @@
-## Getting started
-
-`$ yarn install` <br />
-`$ yarn start`
-
 ## The stack
 
 Routing - https://reactrouter.com/ <br />
@@ -11,7 +6,9 @@ Style - https://react-bootstrap.netlify.app/ <br />
 https://getbootstrap.com/docs/4.0/utilities/spacing/ <br /><br />
 State - redux, redux-thunk <br />
 
-## Available Scripts
+## Development
+
+The Project works in tandem with [github.com/orbs-network/pos-analytics-lib](orbs-network/pos-analytics-lib). 
 
 In the project directory, you can run:
 
@@ -36,3 +33,32 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 ### `yarn format`
 
 Formats the entire code of the app by prettier rules
+
+## Deploy GitHub Pages
+
+* clone git
+```
+git clone https://github.com/orbs-network/pos-analytics
+```
+
+* Install
+```
+npm install
+```
+
+* Build only
+Please note that the root domain needs to match the `Homepage` field in package.json.
+```
+npm run build
+```
+
+* Publish a version to branch gh-pages
+```
+npm run deploy
+```
+
+* Setting up github pages
+Under setting of repository go to the github pages section and choose the branch `gh-pages` and the root directory and press `Save`. If you also published with a specific domain you can setup the Custom Domain name.
+
+
+

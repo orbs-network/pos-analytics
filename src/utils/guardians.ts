@@ -1,5 +1,5 @@
 import { TFunction } from 'i18next';
-import { ChartData, GuardiansChartDatasets, MenuOption } from '../global/types';
+import { ChartData, GuardiansChartDataset, GuardiansChartDatasets, MenuOption } from '../global/types';
 import { routes } from '../routes/routes';
 import { ChartColors, ChartUnit, ChartYaxis, GuardianActionsTypes, GuardiansSections } from '../global/enums';
 import { Guardian, GuardianAction, GuardianInfo, GuardianStake } from '@orbs-network/pos-analytics-lib';
@@ -8,6 +8,7 @@ import { STACK_GRAPH_MONTHS_LIMIT } from '../global/variables';
 import moment from 'moment';
 import DAItoken from '../assets/images/bootstrap-token.png';
 import { convertToString } from './number';
+import { chartDatasetObjectComparer } from './chart';
 
 export const generateGuardiansRoutes = (t: TFunction, address: string): MenuOption[] => {
     return [
@@ -40,11 +41,10 @@ export const checkIfLoadDelegator = (address?: string, selectedGuardianAddress?:
     return true;
 };
 
-const generateDatasets = (dates: Date[]): GuardiansChartDatasets => {
-    const data = fillGuardiansChartData(dates);
+const generateDatasets = (): GuardiansChartDatasets => {
     return {
         self_stake: {
-            data,
+            data: [],
             color: ChartColors.SELF_STAKE,
             yAxis: ChartYaxis.Y2
         },
@@ -61,23 +61,18 @@ const generateDatasets = (dates: Date[]): GuardiansChartDatasets => {
     };
 };
 
-export const getGuardianChartData = (
-    minDate: Date,
-    dates: Date[],
-    unit: ChartUnit,
-    { stake_slices }: GuardianInfo
-): ChartData => {
-    const moMinDate = moment(minDate);
-    let datasets = generateDatasets(dates);
-    stake_slices
-        .filter((s) => moment.unix(s.block_time) >= moMinDate)
-        .sort((s1, s2) => s1.block_time - s2.block_time)
-        .forEach((m) => {
-            insertChartDataByType(datasets, m, moment.unix(m.block_time).valueOf());
-        });
+export const getGuardianChartData = (unit: ChartUnit, { stake_slices }: GuardianInfo): ChartData => {
+    let datasets = generateDatasets();
 
+    stake_slices.forEach((m) => {
+        insertChartDataByType(datasets, m, moment.unix(m.block_time).valueOf());
+    });
+    const sortedDatasets = [datasets.total_stake, datasets.n_delegates, datasets.self_stake];
+    sortedDatasets.map((dataset: GuardiansChartDataset) => {
+        dataset.data.sort(chartDatasetObjectComparer);
+    });
     return {
-        datasets: [datasets.total_stake, datasets.n_delegates, datasets.self_stake],
+        datasets: sortedDatasets,
         unit
     };
 };
@@ -102,39 +97,24 @@ const insertChartDataByType = (chartData: GuardiansChartDatasets, stake: Guardia
     chartData.total_stake.data.push(delegatedStake);
 };
 
-const fillGuardiansChartData = (dates: Date[]) => {
-    return dates.map((date) => {
-        return {
-            x: moment(date).valueOf(),
-            y: null
-        };
-    });
-};
-
 export const generateGuardiansChartData = (unit: ChartUnit, selectedGuardian?: GuardianInfo): ChartData | undefined => {
     if (!selectedGuardian) return;
-    let dates, minDate;
-    let now = moment();
+    let dates;
     switch (unit) {
         case ChartUnit.MONTH:
-            minDate = now.subtract(STACK_GRAPH_MONTHS_LIMIT, 'month');
             dates = generateMonths(STACK_GRAPH_MONTHS_LIMIT);
             break;
         case ChartUnit.WEEK:
-            minDate = now.subtract(STACK_GRAPH_MONTHS_LIMIT, 'weeks');
             dates = generateWeeks(STACK_GRAPH_MONTHS_LIMIT);
             break;
         case ChartUnit.DAY:
-            minDate = now.subtract(STACK_GRAPH_MONTHS_LIMIT, 'days');
             dates = generateDays(STACK_GRAPH_MONTHS_LIMIT);
             break;
         default:
-            minDate = now.subtract(STACK_GRAPH_MONTHS_LIMIT, 'week');
             dates = generateWeeks(STACK_GRAPH_MONTHS_LIMIT);
             break;
     }
-    if (!dates) return;
-    return getGuardianChartData(minDate.toDate(), dates, unit, selectedGuardian);
+    return getGuardianChartData(unit, selectedGuardian);
 };
 
 export const getGuardianByAddress = (guardians?: Guardian[], address?: string): Guardian | undefined => {
