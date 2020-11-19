@@ -2,8 +2,8 @@
 .balance-section {
     height: 100%;
     position: relative;
-    padding-left: 50px;
-    padding-right: 50px;
+    padding-left: 40px;
+    padding-right: 40px;
     &:nth-child(1) {
         padding-left: 0px;
         &::after {
@@ -28,7 +28,7 @@
         margin-left: 5px;
     }
     &-bold{
-        font-size: 25px;
+        font-size: 23px;
         font-weight: 600;
         font-family: 'Nunito Sans';
     }

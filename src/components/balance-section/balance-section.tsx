@@ -9,16 +9,17 @@ import './balance-section.scss';
         isLoading: boolean,
         text: string;
         data: string | number;
+        hideImg?: boolean;
     }
 
-export const  BalanceSection = ({ isLoading, text, data }: StateProps) => {
+export const  BalanceSection = ({ isLoading, text, data, hideImg }: StateProps) => {
     return (
         <div className="balance-section flex-column">
             <h4 className="one-line capitalize">{text}</h4>
             <LoadingComponent loaderType={LoaderType.TEXT} isLoading={isLoading}>
                 <div className="flex-start-center">
                     <p className="balance-section-bold">{data}</p>
-                    <img src={TokenImg} alt="orbs img" className="balance-img" />
+                    {!hideImg && <img src={TokenImg} alt="orbs img" className="balance-img" />}
                 </div>
             </LoadingComponent>
         </div>

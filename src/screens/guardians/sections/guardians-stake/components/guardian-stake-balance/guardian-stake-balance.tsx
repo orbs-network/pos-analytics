@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { AppState } from 'redux/types/types';
-import { convertToString } from 'utils/number';
+import { convertToString, toPercent } from 'utils/number';
 import { useTranslation } from 'react-i18next';
 import './guardian-stake-balance.scss';
 import { BalanceSection } from 'components/balance-section/balance-section';
@@ -37,6 +37,12 @@ export const GuardianStakeBalance = () => {
                 data={convertToString(selectedGuardian?.stake_status.non_stake)}
                 isLoading={guardianIsLoading}
                 text={t('guardians.nonStakedBalance')}
+            />
+             <BalanceSection
+                data={toPercent(selectedGuardian?.reward_status.delegator_reward_share)}
+                isLoading={guardianIsLoading}
+                text={t('guardians.delegatorRewardShare')}
+                hideImg = {true}
             />
         </section>
     );
