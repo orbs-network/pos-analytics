@@ -14,7 +14,6 @@ export const GuardianStakeBalance = () => {
     const { t } = useTranslation();
     const stake =( selectedGuardian?.stake_status.delegated_stake || 0) + (selectedGuardian?.stake_status.self_stake ||0 )
     const noData = !guardianIsLoading && !selectedGuardian
-    console.log((selectedGuardian?.stake_status.non_stake))
     return (
         noData ? 
         <NoData />
