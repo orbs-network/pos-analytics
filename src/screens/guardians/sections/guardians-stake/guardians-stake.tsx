@@ -5,14 +5,13 @@ import { GuardianStakeLegend } from './components/guardian-stake-legend/guardian
 import './guardians-stake.scss';
 
 export const GuardiansStake = () => {
-
     return (
         <div className="guardian-stake flex-column">
             <GuardianStakeBalance />
-           <div className='guardian-stake-flex flex-start'>
-           <GuardianStakeChart />
-            <GuardianStakeLegend />
-           </div>
+            <div className="guardian-stake-flex flex-start">
+                <GuardianStakeChart />
+                <GuardianStakeLegend />
+            </div>
         </div>
     );
 };

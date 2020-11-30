@@ -7,23 +7,20 @@ import './guardian-stake-balance.scss';
 import { BalanceSection } from 'components/balance-section/balance-section';
 import { NoData } from 'components/no-data/no-data';
 
-
-
 export const GuardianStakeBalance = () => {
     const { selectedGuardian, guardianIsLoading } = useSelector((state: AppState) => state.guardians);
     const { t } = useTranslation();
-    const stake =( selectedGuardian?.stake_status.delegated_stake || 0) + (selectedGuardian?.stake_status.self_stake ||0 )
-    const noData = !guardianIsLoading && !selectedGuardian
-    return (
-        noData ? 
+    const noData = !guardianIsLoading && !selectedGuardian;
+    return noData ? (
         <NoData />
-        :<section className="guardian-stake-balance flex-start">
+    ) : (
+        <section className="guardian-stake-balance flex-start">
             <BalanceSection
-                data={convertToString(stake)}
+                data={convertToString(selectedGuardian?.stake_status.delegated_stake)}
                 isLoading={guardianIsLoading}
                 text={t('main.stake')}
             />
-               <BalanceSection
+            <BalanceSection
                 data={convertToString(selectedGuardian?.stake_status.self_stake)}
                 isLoading={guardianIsLoading}
                 text={t('guardians.selfStake')}
@@ -38,11 +35,11 @@ export const GuardianStakeBalance = () => {
                 isLoading={guardianIsLoading}
                 text={t('guardians.nonStakedBalance')}
             />
-             <BalanceSection
+            <BalanceSection
                 data={toPercent(selectedGuardian?.reward_status.delegator_reward_share)}
                 isLoading={guardianIsLoading}
                 text={t('guardians.delegatorRewardShare')}
-                hideImg = {true}
+                hideImg={true}
             />
         </section>
     );

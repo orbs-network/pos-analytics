@@ -15,19 +15,19 @@ import { CheckGuardianAddress } from './sections/guardians-stake/components/chec
 
 const GuardiansComponent = () => {
     const params: RouteParams = useParams();
-    const {t} = useTranslation()
+    const { t } = useTranslation();
     const { address } = params;
     return (
         <div className="guardians screen">
-            <GuardianTop params = {params}/>
+            <GuardianTop params={params} />
             <div className="screen-section">
-            <SectionMenu options={generateGuardiansRoutes(t, address || '')} />
+                <SectionMenu options={generateGuardiansRoutes(t, address || '')} />
                 <div className="screen-section-container">
                     <Route path={routes.guardians.stake} render={() => <GuardiansStake />} />
                     <Route path={routes.guardians.rewards} render={() => <GuardianRewards />} />
                     <Route path={routes.guardians.delegators} render={() => <GuardianDelegators />} />
                     <Route path={routes.guardians.actions} render={() => <GuardianActions />} />
-                    <CheckGuardianAddress addressParam  = {address} />
+                    <CheckGuardianAddress addressParam={address} />
                 </div>
             </div>
         </div>
