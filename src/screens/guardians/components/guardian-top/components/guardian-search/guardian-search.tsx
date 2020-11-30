@@ -46,14 +46,14 @@ export const GuardianSearch = ({ address, section }: StateProps) => {
         }
     }, [hasClickedOutside]);
 
-    const searchGuardianByAddress = (address?: string) => {
-        if (!address) {
+    const searchGuardianByAddress = (addressParam?: string) => {
+        if (!addressParam) {
             return dispatch(setGuardianLoading(false));
         }
-        const loadGuardian = checkIfLoadDelegator(address, selectedGuardian?.address);
-        if (!loadGuardian) return;
-        history.push(routes.guardians.main.replace(':section?', section).replace(':address', address));
-        dispatch(getGuardianAction(address));
+        const loadGuardian = checkIfLoadDelegator(addressParam, selectedGuardian?.address);
+        if (!loadGuardian) return null;
+        history.push(routes.guardians.main.replace(':section?', section).replace(':address', addressParam));
+        dispatch(getGuardianAction(addressParam));
     };
 
     const selectGuardian = (guardianAddress: string) => {
@@ -62,10 +62,10 @@ export const GuardianSearch = ({ address, section }: StateProps) => {
         searchGuardianByAddress(guardianAddress);
     };
 
-    const setGuardianNameAsValue = (address?: string) => {
-        if (!address) return;
-        const guardian = getGuardianByAddress(guardians, address);
-      
+    const setGuardianNameAsValue = (addressParam?: string) => {
+        if (!addressParam) return;
+        const guardian = getGuardianByAddress(guardians, addressParam);
+
         if (!guardian) return;
         const string = `${guardian.name} (${guardian.address})`;
         setInputValue(string);
@@ -100,7 +100,7 @@ export const GuardianSearch = ({ address, section }: StateProps) => {
             <button
                 type="button"
                 className="search-input-box-btn flex-center"
-                onClick={() => searchGuardianByAddress(inputValue)}>
+                onClick={() => (inputValue ? searchGuardianByAddress(inputValue) : setShowResults(true))}>
                 <SearchRoundedIcon />
             </button>
         );
