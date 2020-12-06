@@ -27,7 +27,6 @@ export const GuardianStakeChart = () => {
         dispatch(setGuardianChartData(data));
     };
     const noData = !guardianIsLoading && !selectedGuardian;
-    console.log('selected', selectedGuardian)
     return noData ? null : (
         <div className="guardian-stake-chart">
             <LoadingComponent loaderType={LoaderType.BIG} isLoading={!selectedGuardian}>
