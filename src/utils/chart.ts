@@ -83,7 +83,7 @@ export const getLineChartBaseSettings = (unit: ChartUnit, ref: any, t: TFunction
                     type: 'time',
                     time: {
                         unit,
-                        min: getMinDateByUnit(unit),
+                      
                         displayFormats: {
                             millisecond: TIME_UNIT_FORMAT,
                             second: TIME_UNIT_FORMAT,
@@ -110,6 +110,7 @@ export const getLineChartBaseSettings = (unit: ChartUnit, ref: any, t: TFunction
                             const date = values[index].value;
                             return ['|', '', value, moment(date).format('YYYY')];
                         },
+                        min: getMinDateByUnit(unit),
                         autoSkip: true,
                         padding: -10,
                         fontSize: 12,

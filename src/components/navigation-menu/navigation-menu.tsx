@@ -19,15 +19,12 @@ export const NavigationMenu: Component<any> = () => {
         setSelectedSection(section);
     }, [params.section]);
 
-
     useEffect(() => {
-       
         navigationImagesSrcArr.forEach((src: string) => {
-            const image = new Image()
-            image.src = src
-        })
-      
-    }, [])
+            const image = new Image();
+            image.src = src;
+        });
+    }, []);
 
     return (
         <nav className="navigation flex-column">
@@ -35,23 +32,21 @@ export const NavigationMenu: Component<any> = () => {
             <h4 className="navigation-title">{t('navigation.orbsUniverse')}</h4>
             <h5 className="navigation-sub-title">{t('navigation.analytics')}</h5>
             <ul className="navigation-list flex-column">
-                {generateNavigationLinks(t).map(
-                    (link: NavigationLink, index: number) => {
-                        const { name, image, route, selectedImage } = link;
-                        const isSelected = selectedSection === name;
-                        const className = isSelected
-                            ? 'navigation-list-item navigation-list-item-selected'
-                            : 'navigation-list-item';
-                        return (
-                            <li className={className} key={index}>
-                                <Link to={route} className="navigation-list-item-link flex-column">
-                                    <img src={ isSelected ?  selectedImage : image} alt={name} />
-                                    <p className="capitalize">{name}</p>
-                                </Link>
-                            </li>
-                        );
-                    }
-                )}
+                {generateNavigationLinks(t).map((link: NavigationLink) => {
+                    const { name, image, route, selectedImage } = link;
+                    const isSelected = selectedSection === name;
+                    const className = isSelected
+                        ? 'navigation-list-item navigation-list-item-selected'
+                        : 'navigation-list-item';
+                    return (
+                        <li className={className} key={name}>
+                            <Link to={route} className="navigation-list-item-link flex-column">
+                                <img src={isSelected ? selectedImage : image} alt={name} />
+                                <p className="capitalize">{name}</p>
+                            </Link>
+                        </li>
+                    );
+                })}
             </ul>
             <Languages />
         </nav>

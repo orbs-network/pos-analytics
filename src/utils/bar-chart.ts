@@ -1,9 +1,8 @@
 import { TFunction } from 'i18next';
-import { ChartUnit, OverviewChartType } from '../global/enums';
-import { formatNumber } from './number';
 import moment from 'moment';
 import { DATE_FORMAT } from 'global/variables';
-import { getMinDateByUnit } from './delegators';
+import { ChartUnit, OverviewChartType } from '../global/enums';
+import { formatNumber } from './number';
 import { getMinDateByUnitOverview } from './overview/overview';
 export const barChartCustomTooltip = function (
     chartType: OverviewChartType,
@@ -141,8 +140,8 @@ export const getBarChartConfigOptions = (
                     type: 'time',
                     time: {
                         unit: 'day',
-                        min: getMinDateByUnitOverview(unit),
-                        format: DATE_FORMAT
+                       
+                        parser: DATE_FORMAT
                     },
                     stacked: true,
                     gridLines: {
@@ -150,11 +149,11 @@ export const getBarChartConfigOptions = (
                         drawBorder: false
                     },
                     ticks: {
-                        callback: function (value: any, index: any, values: any) {
+                        callback: function (_value: any, index: any, values: any) {
                             const date = values[index].value;
                             return [moment(date).format('DD MMM'), moment(date).format('YYYY')];
-                            // return ['|', '', value, moment(date).format('YYYY')];
                         },
+                        min: getMinDateByUnitOverview(unit),
                         autoSkip: true,
                         padding: 10,
                         fontSize: 12,

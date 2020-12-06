@@ -1,4 +1,3 @@
-import { AuthState } from '../types/auth-types';
 import { DelegatorState } from '../types/delegator-types';
 import { types } from '../types/types';
 

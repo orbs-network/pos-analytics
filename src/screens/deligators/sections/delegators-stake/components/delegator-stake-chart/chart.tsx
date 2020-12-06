@@ -15,5 +15,5 @@ export const Chart = ({ chartData }: StateProps) => {
         datasets: generateDatasets(chartData)
     };
     const options = getLineChartBaseSettings(chartData.unit, ref, t);
-    return <Line data={data} options={options} ref={ref}/>;
+    return <Line data={data} options={options} ref={ref} />;
 };

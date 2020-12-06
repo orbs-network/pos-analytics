@@ -11,7 +11,6 @@ import { AppState } from 'redux/types/types';
 import { routes } from 'routes/routes';
 import { getGuardianName, checkIfLoadDelegator, getGuardianByAddress } from 'utils/guardians';
 import './guardian-search.scss';
-import { Console } from 'console';
 
 interface StateProps {
     address?: string;

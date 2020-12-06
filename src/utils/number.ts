@@ -13,7 +13,6 @@ export const convertToString = (num?: number, defaultString?: string): number | 
 };
 
 export const toPercent = (number?: number): string => {
-    console.log(number);
     if (!number) return '0';
     const percent = number * 100;
     if (percent > 100) return '100%';

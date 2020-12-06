@@ -1,28 +1,18 @@
-import { Guardian, PosOverview, PosOverviewData, PosOverviewSlice } from '@orbs-network/pos-analytics-lib';
+import { PosOverviewData, PosOverviewSlice } from '@orbs-network/pos-analytics-lib';
 import { TFunction } from 'i18next';
+import moment from 'moment';
 import { ChartUnit, OverviewSections } from '../../global/enums';
 import {
-    BarChartDataset,
     GuardiansChartDatasetObject,
     MenuOption,
-    OverviewChartData,
     OverviewChartObject,
     OverviewGuardianDataset
 } from '../../global/types';
+
 import { routes } from '../../routes/routes';
-import {
-    converFromNumberToDate,
-    generateDays,
-    generateMonths,
-    generateWeeks,
-    getDateFormatByUnit,
-    returnDateNumber
-} from '../dates';
-import { sortByNumber } from '../array';
+import { converFromNumberToDate, getDateFormatByUnit } from '../dates';
 import { overviewguardiansColors } from '../../ui/colors';
 import { DATE_FORMAT, OVERVIEW_CHART_LIMIT } from '../../global/variables';
-import moment from 'moment';
-import { yellow } from '@material-ui/core/colors';
 
 export const generateOverviewRoutes = (t: TFunction): MenuOption[] => {
     return [
