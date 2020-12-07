@@ -16,7 +16,7 @@ import { Overview } from '../screens/overview/overview';
 export const RootRouter: Component = () => {
   return (
     <Router basename={process.env.PUBLIC_URL}>
-      <Route path={routes.navigation} render={() => <NavigationMenu />} />
+      <NavigationMenu />
       <Switch>
         <Route exact path="/">
           <Redirect to={routes.overview.stake} />

@@ -24,6 +24,7 @@ const insertGuardiansByDate = (
 
         data.forEach(({ effective_stake, address }: PosOverviewData, i: number) => {
             const currDataset = guardianDatasets[address];
+            if (!currDataset) return
             let date;
             const index = currDataset.data.findIndex((i) => {
                 date = i.x;

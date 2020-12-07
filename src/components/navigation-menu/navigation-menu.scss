@@ -99,57 +99,83 @@
 }
 
 @media (max-width: 576px) {
-  .nav-header {
-    // width: 100%;
-    // background: #1c1c1c;
-    // height: 77px;
-    // display: flex;
-    // align-items: center;
-    // .my-name {
-    //   width: 30%;
-    //   height: 100%;
-    // }
-    // img {
-    //   width: 36px;
-    //   height: 36px;
-    //   margin: 0;
-    // }
+  .navigation-mobile {
+    width: 100%;
+    background: #1c1c1c;
+    height: 77px;
+    display: flex;
+    align-items: center;
+    .nav-header-mobile {
+      padding: 0 25px;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      .nav-header-navigation-logo {
+        width: 36px;
+        height: 36px;
+        margin-bottom: 0;
+        margin-left: 55px;
+        margin-right: 5px;
+        &.back-left {
+          margin-left: 0;
+        }
+      }
+      .titles {
+        color: #fff;
+        font-size: 10px;
+        .title {
+          font-weight: 600;
+        }
+      }
+      .x-btn {
+        color: #3d3d3d;
+        margin-left: 85px;
+        font-size: 18px;
+        font-weight: 600;
+      }
+    }
   }
-  //   .navigation {
-  //     position: absolute;
-  //     bottom: 10px;
-  //     left: 0;
-  //     right: 0;
-  //     height: 70px;
-  //     width: 90%;
-  //     padding: 0;
-  //     margin: auto;
-  //     h4,
-  //     h5,
-  //     .navigation-logo {
-  //       display: none;
-  //     }
-  //     &-list {
-  //       margin: 0;
-  //       padding: 16px 31px 12px;
-  //       li {
-  //         width: 33%;
-  //         display: inline-block;
-  //         height: initial;
-  //         .navigation-list-item-link {
-  //           img {
-  //             width: 24px;
-  //             height: 24px;
-  //             margin-bottom: 5px;
-  //           }
-  //           p {
-  //             font-size: 12px;
-  //             line-height: initial;
-  //             padding: 0;
-  //             margin: 0;
-  //           }
-  //         }
-  //       }
-  //     }
-  //   }
+  .side-nav-mobile {
+    position: fixed;
+    top: 77px;
+    left: 0;
+    padding: 0;
+    z-index: 100;
+    width: 275px;
+    h4,
+    h5 {
+      display: none;
+    }
+
+    .navigation {
+      border-radius: 0;
+      border-bottom-right-radius: 13px;
+      height: calc(100vh - 77px);
+      width: 100%;
+      &-list {
+        margin: 0;
+        padding-left: 25px;
+        .navigation-list-item {
+          height: 65px;
+          .navigation-list-item-link {
+            align-items: initial;
+            p {
+              font-size: 15px;
+              line-height: initial;
+              padding: 0;
+              margin: 0;
+              font-weight: 400;
+            }
+          }
+          &:last-child {
+            border-bottom: none;
+          }
+        }
+      }
+      .navigation-languages {
+        margin-bottom: 50px;
+      }
+    }
+  }
 }
