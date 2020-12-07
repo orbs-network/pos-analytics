@@ -209,5 +209,9 @@ input::placeholder {
 @media (max-width: 576px) {
   body {
     padding: 0;
+    .screen {
+      width: 100%;
+      padding: 0;
+    }
   }
 }
