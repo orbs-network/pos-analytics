@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Switch, Route, Redirect, useParams } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import React, { FunctionComponent as Component } from 'react';
 
 import { routes } from './routes';
