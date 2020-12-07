@@ -17,14 +17,14 @@ export const RootRouter: Component = () => {
   return (
     <Router basename={process.env.PUBLIC_URL}>
       <Route path={routes.navigation} render={() => <NavigationMenu />} />
-      {/* <Switch>
+      <Switch>
         <Route exact path="/">
           <Redirect to={routes.overview.stake} />
         </Route>
         <Route path={routes.overview.main} render={() => <Overview />} />
         <Route path={routes.guardians.main} render={() => <Guardians />} />
         <Route path={routes.delegators.main} render={() => <Delegators />} />
-      </Switch> */}
+      </Switch>
     </Router>
   );
 };
