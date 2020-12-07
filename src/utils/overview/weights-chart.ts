@@ -35,6 +35,7 @@ const insertGuardiansByDate = (
         data.forEach(({ address, weight, name }: PosOverviewData) => {
             const percent = (weight / totalWeight) * 100;
             const currDataset = guardianDatasets[address];
+            if(!currDataset) return 
             let date;
             const index = currDataset.data.findIndex((i) => {
                 date = i.x;
