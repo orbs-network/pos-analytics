@@ -2,6 +2,10 @@
     height: 40px;
     overflow-x: hidden;
     width: fit-content;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+   
     &-element{
         background: white;
         width: 158px;
@@ -28,4 +32,20 @@
         }
     }
 
+}
+
+@media (max-width: 800px){
+    .section-menu{
+        height: 30px;
+        width: 100%;
+        justify-content: space-between;
+        &-element{
+            width: auto;
+            margin: 0px;
+            padding: 0px 10px;
+            p{
+                font-size: 12px;
+            }
+        }
+    }
 }

@@ -214,3 +214,24 @@ input:focus::placeholder {
 	}
 
 }
+
+
+@media (max-width: 800px) {
+	.search{
+		  p{
+			  text-align: center;
+			  margin-left: auto;
+			  margin-right: auto;
+			  font-size: 15px;
+		  }
+		 
+		  &-input{
+			&-box{
+				&-results {
+					max-height: calc(100vh - 170px);
+				}
+			}
+		}
+	  }
+   
+}

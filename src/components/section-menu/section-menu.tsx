@@ -35,7 +35,7 @@ export const SectionMenu: Component<StateProps> = ({ options }: StateProps) => {
     }, [window.location.pathname]);
 
     return (
-        <ul className="section-menu flex-start">
+        <ul className="section-menu">
             {options.map((option: MenuOption, index: number) => {
                 const { route, key, name, disabled } = option;
 
