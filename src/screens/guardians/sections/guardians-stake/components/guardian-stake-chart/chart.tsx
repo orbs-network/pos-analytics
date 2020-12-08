@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { Line } from 'react-chartjs-2';
 import { useTranslation } from 'react-i18next';
 import { ChartColors } from 'global/enums';

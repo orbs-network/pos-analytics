@@ -160,7 +160,7 @@ export const getGuardiansRewardActions = (actions?: GuardianAction[]) => {
     });
 };
 
-export const generateGuardiansActionColors = (type: GuardianActionsTypes) => {
+export const generateGuardiansActionColors = (type: GuardianActionsTypes): string => {
     switch (type) {
         case GuardianActionsTypes.STAKED:
         case GuardianActionsTypes.RESTAKED:
@@ -174,7 +174,7 @@ export const generateGuardiansActionColors = (type: GuardianActionsTypes) => {
         case GuardianActionsTypes.FEES_WITHDRAWN:
             return 'black';
         default:
-            break;
+            return 'black';
     }
 };
 
@@ -190,7 +190,7 @@ export const generateGuardiansCurrentStake = (event: GuardianActionsTypes, curre
     }
 };
 
-export const generateGuardiansActionIcon = (event: GuardianActionsTypes) => {
+export const generateGuardiansActionIcon = (event: GuardianActionsTypes): string | undefined => {
     switch (event) {
         case GuardianActionsTypes.BOOTSTRAP_REWARDS_WITHDREW:
             return DAItoken;

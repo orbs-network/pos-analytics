@@ -1,4 +1,4 @@
-import { DelegatorAction, DelegatorReward, GuardianAction, GuardianDelegator } from '@orbs-network/pos-analytics-lib';
+import { GuardianAction } from '@orbs-network/pos-analytics-lib';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { AppState } from 'redux/types/types';
@@ -24,7 +24,11 @@ export const GuardianRewardsActions = () => {
     const noData = !selectedGuardian && !guardianIsLoading;
     return noData ? null : (
         <div className="guardian-rewards-actions">
-            <LoadingComponent isLoading={guardianIsLoading} listElementAmount={4} loaderType={LoaderType.LIST} listLength = {3}>
+            <LoadingComponent
+                isLoading={guardianIsLoading}
+                listElementAmount={4}
+                loaderType={LoaderType.LIST}
+                listLength={3}>
                 <ListMaterial titles={titles} titleClassName="list-titles" listHeaderBg="#F7F7F7">
                     {selectedGuardian &&
                         getGuardiansRewardActions(selectedGuardian.actions).map(
