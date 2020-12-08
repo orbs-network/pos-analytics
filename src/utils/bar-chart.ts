@@ -140,7 +140,7 @@ export const getBarChartConfigOptions = (
                     type: 'time',
                     time: {
                         unit: 'day',
-                       
+
                         parser: DATE_FORMAT
                     },
                     stacked: true,
