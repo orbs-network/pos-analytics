@@ -1,4 +1,4 @@
-import { PosOverview, PosOverviewSlice, PosOverviewData, Guardian } from '@orbs-network/pos-analytics-lib';
+import { PosOverview, PosOverviewSlice, PosOverviewData } from '@orbs-network/pos-analytics-lib';
 import { ChartUnit } from '../../global/enums';
 import { DATE_FORMAT, OVERVIEW_CHART_LIMIT } from '../../global/variables';
 import { generateDays, generateWeeks, getDateFormatByUnit } from '../dates';

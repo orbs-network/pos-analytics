@@ -29,7 +29,7 @@ export enum DelegatorActionsTypes {
     WITHDREW = 'Withdrew',
     DELEGATED = 'Delegated',
     UNSTAKED = 'Unstaked',
-    CLAIMED = 'DelegatorStakingRewardsClaimed'
+    CLAIMED = 'StakingRewardsClaimed'
 }
 
 export enum GuardianActionsTypes {

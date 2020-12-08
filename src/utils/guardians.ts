@@ -160,7 +160,7 @@ export const getGuardiansRewardActions = (actions?: GuardianAction[]) => {
     });
 };
 
-export const generateGuardiansActionColors = (type: GuardianActionsTypes) => {
+export const generateGuardiansActionColors = (type: GuardianActionsTypes): string => {
     switch (type) {
         case GuardianActionsTypes.STAKED:
         case GuardianActionsTypes.RESTAKED:
@@ -174,7 +174,7 @@ export const generateGuardiansActionColors = (type: GuardianActionsTypes) => {
         case GuardianActionsTypes.FEES_WITHDRAWN:
             return 'black';
         default:
-            break;
+            return 'black';
     }
 };
 
@@ -190,7 +190,7 @@ export const generateGuardiansCurrentStake = (event: GuardianActionsTypes, curre
     }
 };
 
-export const generateGuardiansActionIcon = (event: GuardianActionsTypes) => {
+export const generateGuardiansActionIcon = (event: GuardianActionsTypes): string | undefined => {
     switch (event) {
         case GuardianActionsTypes.BOOTSTRAP_REWARDS_WITHDREW:
             return DAItoken;
@@ -204,4 +204,16 @@ export const getGuardianName = (guardians?: Guardian[], address?: string): strin
     const guardian = getGuardianByAddress(guardians, address);
     if (!guardian) return null;
     return `${guardian.name} (${guardian.address})`;
+};
+
+
+export const getGuardianNameFromChart = async (i: any, ref?: any) => {
+    var activeElement = ref.current.chartInstance.getElementAtEvent(i);
+    if (!activeElement[0]) return;
+    const name = activeElement[0]._view.datasetLabel;
+    return name
+    // const address = getGuardianByName(guardians, name);
+    // if (!address) return;
+    // await ref.current.chartInstance.clear();
+    // history.push(routes.guardians.stake.replace(':address', address));
 };
