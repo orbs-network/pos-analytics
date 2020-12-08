@@ -209,6 +209,7 @@ input::placeholder {
 @media (max-width: 576px) {
   body {
     padding: 0;
+    overflow: initial;
     .screen {
       width: 100%;
       padding: 0;
@@ -216,23 +217,21 @@ input::placeholder {
   }
 }
 
-
 @media (max-width: 800px) {
-	.search{
-		  p{
-			  text-align: center;
-			  margin-left: auto;
-			  margin-right: auto;
-			  font-size: 15px;
-		  }
-		 
-		  &-input{
-			&-box{
-				&-results {
-					max-height: calc(100vh - 170px);
-				}
-			}
-		}
-	  }
-   
+  .search {
+    p {
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+      font-size: 15px;
+    }
+
+    &-input {
+      &-box {
+        &-results {
+          max-height: calc(100vh - 170px);
+        }
+      }
+    }
+  }
 }
