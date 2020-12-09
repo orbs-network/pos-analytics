@@ -1,10 +1,31 @@
-.guardian-search{
-   
-    .search-input-box{
-        width: 520px;
-        border: 1px solid #707070;
-        input{
-            border-radius: 5px;
-        }
+.guardian-search {
+  .search-input-box {
+    width: 520px;
+    border: 1px solid #707070;
+    input {
+      border-radius: 5px;
     }
+  }
+}
+
+@media (max-width: 567px) {
+  .guardian-search {
+    width: 100%;
+    .search-input-title {
+      text-align: center;
+      font-size: 15px;
+      margin-bottom: 14px;
+      margin-right: 0;
+    }
+    .search-input-box {
+      width: 100%;
+      border-color: #d8d8d8;
+      &-button {
+        input {
+          color: #aaaaaa;
+          font-size: 14px;
+        }
+      }
+    }
+  }
 }

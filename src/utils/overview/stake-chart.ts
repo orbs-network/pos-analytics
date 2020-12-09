@@ -21,11 +21,10 @@ const insertGuardiansByDate = (
     slices.forEach(({ block_time, data }: PosOverviewSlice) => {
         const blockTimeDate = moment.unix(block_time);
         const blockTimeByUnit = getDateFormatByUnit(blockTimeDate, unit);
-     
+
         data.forEach(({ effective_stake, address }: PosOverviewData, i: number) => {
-           
             const currDataset = guardianDatasets[address];
-            if(!currDataset) return
+            if (!currDataset) return
             let date;
             const index = currDataset.data.findIndex((i) => {
                 date = i.x;
