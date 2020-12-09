@@ -126,13 +126,17 @@
       }
       .MuiTableBody-root {
         tr {
-          .list-item {
-            font-size: 11px;
+          td {
             p {
               font-size: 11px;
-              overflow: hidden;
-              text-overflow: ellipsis;
-              white-space: nowrap;
+            }
+            .list-item {
+              font-size: 11px;
+              p {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+              }
             }
           }
         }
