@@ -7,28 +7,28 @@ import { GuardianDelegator } from '@orbs-network/pos-analytics-lib';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 interface StateProps {
-    delegator: GuardianDelegator;
+  delegator: GuardianDelegator;
 }
 
 export const GuardianDelegatorElement = ({ delegator }: StateProps) => {
-    const { address, stake, non_stake } = delegator;
-    return (
-        <TableRow>
-            <TableCell align="left"
-            >
-                <Link
-                    className="list-item flex-start-center"
-                    to={routes.delegators.stake.replace(':address', address)}>
-                    <p> {address}</p>
-                    <img src={CopyImg} alt="" />
-                </Link>
-            </TableCell>
-            <TableCell align="left">
-                <p className="list-item">{convertToString(stake)}</p>
-            </TableCell>
-            <TableCell align="left">
-                <p className="list-item">{convertToString(non_stake)}</p>
-            </TableCell>
-        </TableRow>
-    );
+  const { address, stake, non_stake } = delegator;
+  return (
+    <TableRow>
+      <TableCell align="left">
+        <Link
+          className="list-item flex-start-center"
+          to={routes.delegators.stake.replace(':address', address)}
+        >
+          <p> {address}</p>
+          <img src={CopyImg} alt="" />
+        </Link>
+      </TableCell>
+      <TableCell align="left">
+        <p className="list-item">{convertToString(stake)}</p>
+      </TableCell>
+      <TableCell align="left">
+        <p className="list-item">{convertToString(non_stake)}</p>
+      </TableCell>
+    </TableRow>
+  );
 };
