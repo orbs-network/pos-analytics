@@ -9,7 +9,6 @@ import { LoadingComponent } from 'components/loading-component/loading-component
 import { LoaderType } from 'global/enums';
 import { DaysSelector } from 'components/days-selector/days-selector';
 import { SelectedGuardian } from 'screens/overview/sections/parts/selected-guardian/selected-guardian';
-import { convertToString } from 'utils/number';
 
 export const MobileWeightChart = () => {
     const ref = useRef<any>(null);
@@ -57,17 +56,19 @@ export const MobileWeightChart = () => {
     }
     const chartData = rawData && generateDoghnutDataset(rawData.data, guardiansColors);
     return (
-        <div className="mobile-stake-chart">
-            <LoadingComponent isLoading={!chartData} loaderType={LoaderType.BIG}>
-                <div className="mobile-stake-chart-title flex-center">
-                    <h5 className="mobile-stake-chart-title-name">Overall stats</h5>
+        <div className="mobile-overview-chart">
+           
+                <div className="mobile-overview-chart-title flex-center">
+                    <h5 className="mobile-overview-chart-title-name">Overall stats</h5>
                     <DaysSelector selectDate={createChartDataset} />
                 </div>
-                <div className="mobile-stake-chart-chart">
+                <div className="mobile-overview-chart-chart">
+                <LoadingComponent isLoading={!chartData} loaderType={LoaderType.BIG}>
                     <Doughnut data={chartData} ref={ref} options={options} />
                     <SelectedGuardian selected={selected} value = {getGuardianPercent()}/>
+                    </LoadingComponent>
                 </div>
-            </LoadingComponent>
+            
         </div>
     );
 };

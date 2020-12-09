@@ -54,17 +54,17 @@ export const MobileStakeChart = () => {
 
     const chartData = generateDoghnutDataset(rawData, guardiansColors);
     return (
-        <div className="mobile-stake-chart">
-            <LoadingComponent isLoading={!chartData} loaderType={LoaderType.BIG}>
-                <div className="mobile-stake-chart-title flex-center">
-                    <h5 className="mobile-stake-chart-title-name">Overall stats</h5>
-                    <DaysSelector selectDate={createChartDataset} />
-                </div>
-                <div className="mobile-stake-chart-chart">
+        <div className="mobile-overview-chart">
+            <div className="mobile-overview-chart-title flex-center">
+                <h5 className="mobile-overview-chart-title-name">Overall stats</h5>
+                <DaysSelector selectDate={createChartDataset} />
+            </div>
+            <div className="mobile-overview-chart-chart">
+                <LoadingComponent isLoading={!chartData} loaderType={LoaderType.BIG}>
                     <Doughnut data={chartData} ref={ref} options={options} />
-                    <SelectedGuardian selected={selected} value = {convertToString(selected?.effective_stake)}/>
-                </div>
-            </LoadingComponent>
+                    <SelectedGuardian selected={selected} value={convertToString(selected?.effective_stake)} />
+                </LoadingComponent>
+            </div>
         </div>
     );
 };

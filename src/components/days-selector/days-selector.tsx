@@ -5,6 +5,7 @@ import { generateDays } from 'utils/dates';
 import CalendarTodayOutlinedIcon from '@material-ui/icons/CalendarTodayOutlined';
 import { useClickOutside } from 'react-click-outside-hook';
 import CloseIcon from '@material-ui/icons/Close';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import './days-selector.scss';
 
 interface StateProps {
@@ -37,8 +38,13 @@ export const DaysSelector = ({ selectDate }: StateProps) => {
     return (
         <div className="days-selector" ref={ref}>
             <section onClick={() => setShowDates(!showDates)} className="days-selector-selected flex-start-center">
-                <CalendarTodayOutlinedIcon />
+               <figure className='days-selector-calendar'>
+               <CalendarTodayOutlinedIcon  />
+               </figure>
                 <h5> {moment(selectedDate).format('DD.MM.YYYY')}</h5>
+               <figure className='days-selector-drop'>
+               <ArrowDropDownIcon />
+               </figure>
             </section>
             {showDates && (
                <div className='days-selector-modal'>
@@ -50,7 +56,7 @@ export const DaysSelector = ({ selectDate }: StateProps) => {
                     <ul className="days-selector-options" >
                    
                     {daysToSelect.map((day) => {
-                        return <li onClick={() => select(day)}>{moment(day).format('DD.MM.YYYY')}</li>;
+                        return <li key = {`${day}`} onClick={() => select(day)}>{moment(day).format('DD.MM.YYYY')}</li>;
                     })}
                 </ul>
                </div>

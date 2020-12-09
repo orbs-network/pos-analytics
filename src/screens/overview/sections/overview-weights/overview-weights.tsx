@@ -5,7 +5,7 @@ import {MobileWeightChart} from './components/mobile-weight-chart/mobile-weight-
 export const  OverviewWeights = () =>  {
     const isMobile = true
     return (
-        <div>
+        <div className="overview-chart">
             {isMobile ? <MobileWeightChart /> : <OverviewWeightChart /> }
         </div>
     )
