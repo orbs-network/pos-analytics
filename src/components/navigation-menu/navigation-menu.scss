@@ -105,6 +105,9 @@
     height: 77px;
     display: flex;
     align-items: center;
+    position: sticky;
+    top: 0px;
+    z-index: 99;
     .nav-header-mobile {
       padding: 0 25px;
       width: 100%;

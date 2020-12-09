@@ -1,65 +1,13 @@
-import React, { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
-import { BarChartComponent } from 'components/bar-chart/bar-chart';
-import { TimeRangeSelector } from 'components/date-format-picker/time-range-selector';
-import { LoadingComponent } from 'components/loading-component/loading-component';
-import { NoData } from 'components/no-data/no-data';
-import { ChartUnit, LoaderType, OverviewChartType } from 'global/enums';
-import { setOverviewWeightsChartData } from 'redux/actions/actions';
-import { AppState } from 'redux/types/types';
-import { getWeightsChartData } from 'utils/overview/weights-chart';
-import './overview-weights.scss';
+import React from 'react'
+import {OverviewWeightChart} from './components/weight-chart/weight-chart'
+import {MobileWeightChart} from './components/mobile-weight-chart/mobile-weight-chart';
 
-export const OverviewWeights = () => {
-    const dispatch = useDispatch();
-    const { overviewData, overviewWeightsChartData, overviewDataLoding } = useSelector(
-        (state: AppState) => state.overview
-    );
-    const { guardians, guardiansColors } = useSelector((state: AppState) => state.guardians);
-    const { t } = useTranslation();
-
-    useEffect(() => {
-        if (!overviewWeightsChartData) {
-            selectChartData(ChartUnit.WEEK);
-        }
-    }, []);
-
-    const selectChartData = (unit: ChartUnit) => {
-        if (!guardians) return;
-        const data = getWeightsChartData(unit, overviewData, guardiansColors);
-        dispatch(setOverviewWeightsChartData(data));
-    };
-    const noData = !overviewData && !overviewDataLoding;
-
+export const  OverviewWeights = () =>  {
+    const isMobile = true
     return (
         <div className="overview-chart">
-            {noData ? (
-                <NoData />
-            ) : (
-                <LoadingComponent isLoading={!overviewWeightsChartData} loaderType={LoaderType.BIG}>
-                    {overviewWeightsChartData && (
-                        <header className="flex-between">
-                            <h4 className="capitalize">{t('overview.graphText')}</h4>
-                            <TimeRangeSelector
-                                selected={overviewWeightsChartData.unit}
-                                selectCallBack={selectChartData}
-                                unitsToHide={[ChartUnit.MONTH]}
-                            />
-                        </header>
-                    )}
-                    {overviewWeightsChartData && (
-                        <div className="bar-chart">
-                            <BarChartComponent
-                                chartData={overviewWeightsChartData}
-                                guardians={guardians}
-                                total={overviewData?.total_stake}
-                                chartType={OverviewChartType.WEIGHTS}
-                            />
-                        </div>
-                    )}
-                </LoadingComponent>
-            )}
+            {isMobile ? <MobileWeightChart /> : <OverviewWeightChart /> }
         </div>
-    );
-};
+    )
+}
+

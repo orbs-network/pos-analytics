@@ -1,29 +1,27 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Doughnut } from 'react-chartjs-2';
-import { PosOverviewData } from '@orbs-network/pos-analytics-lib';
-import { generateDoghnutDataset, getDoughnutStakeChartData } from 'utils/overview/doghnut-chart';
+import { PosOverviewData, PosOverviewSlice } from '@orbs-network/pos-analytics-lib';
+import { generateDoghnutDataset, getDoughnutWeightChartData } from 'utils/overview/doghnut-chart';
 import { useSelector } from 'react-redux';
 import { AppState } from 'redux/types/types';
 import moment from 'moment';
 import { LoadingComponent } from 'components/loading-component/loading-component';
 import { LoaderType } from 'global/enums';
-import { DaysSelector } from '../../../../../../components/days-selector/days-selector';
-import { SelectedGuardian } from '../../../parts/selected-guardian/selected-guardian';
-import './mobile-stake-chart.scss';
-import { convertToString } from 'utils/number';
+import { DaysSelector } from 'components/days-selector/days-selector';
+import { SelectedGuardian } from 'screens/overview/sections/parts/selected-guardian/selected-guardian';
 
-export const MobileStakeChart = () => {
+export const MobileWeightChart = () => {
     const ref = useRef<any>(null);
     const { guardiansColors } = useSelector((state: AppState) => state.guardians);
     const { overviewData } = useSelector((state: AppState) => state.overview);
-    const [rawData, setRawData] = useState<PosOverviewData[] | null>(null);
+    const [rawData, setRawData] = useState<PosOverviewSlice | null>(null);
     const [selected, setSelected] = useState<null | PosOverviewData>(null);
     useEffect(() => {
         createChartDataset(moment().toDate());
     }, []);
 
     const createChartDataset = (date: Date) => {
-        const newRawData = getDoughnutStakeChartData(date, overviewData);
+        const newRawData = getDoughnutWeightChartData(date, overviewData);
         if (!newRawData) return;
         setRawData(newRawData);
         setSelected(null);
@@ -35,7 +33,7 @@ export const MobileStakeChart = () => {
         // eslint-disable-next-line no-underscore-dangle
         const name = activeElement[0]._view.label;
         if (!rawData) return;
-        const guardian = rawData.filter((m: PosOverviewData) => m.name === name)[0];
+        const guardian = rawData.data.filter((m: PosOverviewData) => m.name === name)[0];
         setSelected(guardian);
     };
 
@@ -51,20 +49,26 @@ export const MobileStakeChart = () => {
         cutoutPercentage: 80,
         onClick: (e: any) => selectGuardian(e)
     };
-
-    const chartData = generateDoghnutDataset(rawData, guardiansColors);
+    const getGuardianPercent = () => {
+        if(!rawData || !selected) return '';
+            const result = (selected?.weight / rawData?.total_weight) * 100
+            return `${result.toFixed(2)} %`
+    }
+    const chartData = rawData && generateDoghnutDataset(rawData.data, guardiansColors);
     return (
         <div className="mobile-overview-chart">
-            <div className="mobile-overview-chart-title flex-center">
-                <h5 className="mobile-overview-chart-title-name">Overall stats</h5>
-                <DaysSelector selectDate={createChartDataset} />
-            </div>
-            <div className="mobile-overview-chart-chart">
+           
+                <div className="mobile-overview-chart-title flex-center">
+                    <h5 className="mobile-overview-chart-title-name">Overall stats</h5>
+                    <DaysSelector selectDate={createChartDataset} />
+                </div>
+                <div className="mobile-overview-chart-chart">
                 <LoadingComponent isLoading={!chartData} loaderType={LoaderType.BIG}>
                     <Doughnut data={chartData} ref={ref} options={options} />
-                    <SelectedGuardian selected={selected} value={convertToString(selected?.effective_stake)} />
-                </LoadingComponent>
-            </div>
+                    <SelectedGuardian selected={selected} value = {getGuardianPercent()}/>
+                    </LoadingComponent>
+                </div>
+            
         </div>
     );
 };

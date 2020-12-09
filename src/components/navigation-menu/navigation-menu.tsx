@@ -116,6 +116,7 @@ export const NavigationMenu: Component<any> = () => {
                 return (
                   <li className={className} key={name}>
                     <Link
+                      onClick = {() => setSideMenuOpen(false)}
                       to={route}
                       className="navigation-list-item-link flex-column"
                     >

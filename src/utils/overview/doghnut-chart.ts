@@ -1,26 +1,44 @@
 import { PosOverview, PosOverviewSlice, PosOverviewData } from '@orbs-network/pos-analytics-lib';
+import { GRAPH_DAY_FORMAT } from 'global/variables';
 import moment, { Moment } from 'moment';
 
-const getFirstSlice = (slices: PosOverviewSlice[], date: Moment): PosOverviewData[] | null => {
-    const selectedDateSlice: PosOverviewSlice = slices.filter(({ block_time, data }: PosOverviewSlice) => {
-        const blockTimeDate = moment.unix(block_time);
-        if (moment(blockTimeDate).dayOfYear() !== date.dayOfYear()) return undefined;
+const getFirstSlice = (slices: PosOverviewSlice[], date: Moment): PosOverviewSlice | null => {
+    // eslint-disable-next-line @typescript-eslint/camelcase
+
+    const filteredSlices: PosOverviewSlice[] = slices.filter(({ block_time, data }: PosOverviewSlice) => {
+        const blockTimeDate = moment.unix(block_time).format(GRAPH_DAY_FORMAT);
+
+        if (blockTimeDate !== date.format(GRAPH_DAY_FORMAT)) return undefined;
         return data;
-    })[0];
+    });
+    const slicesLength = filteredSlices.length;
+    console.log(filteredSlices);
+    return filteredSlices[slicesLength - 1];
+};
+
+export const getStakeChartData = (date: Moment, { slices }: PosOverview): null | PosOverviewData[] => {
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    const selectedDateSlice = getFirstSlice(slices, date);
     if (!selectedDateSlice) return null;
     return selectedDateSlice.data.sort((s1, s2) => s2.effective_stake - s1.effective_stake);
 };
 
-export const getOverviewChartData = (date: Moment, { slices }: PosOverview): null | PosOverviewData[] => {
+export const getWeightChartData = (date: Moment, { slices }: PosOverview): null | PosOverviewSlice => {
     // eslint-disable-next-line @typescript-eslint/camelcase
-    const selectedDateSliceGuardians = getFirstSlice(slices, date);
-    if (!selectedDateSliceGuardians) return null;
-    return selectedDateSliceGuardians;
+    const selectedDateSlice = getFirstSlice(slices, date);
+    if (!selectedDateSlice) return null;
+    const guardians = selectedDateSlice.data.sort((s1, s2) => s2.effective_stake - s1.effective_stake);
+    selectedDateSlice.data = guardians;
+    return selectedDateSlice;
 };
 
-export const getDoughnutChartData = (date: Date, overviewData?: PosOverview): PosOverviewData[] | null => {
+export const getDoughnutStakeChartData = (date: Date, overviewData?: PosOverview): PosOverviewData[] | null => {
     if (!overviewData) return null;
-    return getOverviewChartData(moment(date), overviewData);
+    return getStakeChartData(moment(date), overviewData);
+};
+export const getDoughnutWeightChartData = (date: Date, overviewData?: PosOverview): PosOverviewSlice | null => {
+    if (!overviewData) return null;
+    return getWeightChartData(moment(date), overviewData);
 };
 
 interface Result {
@@ -33,12 +51,6 @@ interface Dataset {
     hoverBackgroundColor: string[];
     borderWidth: number;
     weight: number;
-}
-
-interface ChartData {
-    data: number[];
-    labels: string[];
-    backgroundColor: string[];
 }
 
 export const generateDoghnutDataset = (

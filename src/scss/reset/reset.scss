@@ -105,9 +105,11 @@ section {
 body {
 	line-height: 1;
 	background: #f8f8f8;
-
 }
 
+html,body{
+	height: 100%;
+}
 ol,
 ul {
 	list-style: none;
@@ -124,6 +126,9 @@ q:before,
 q:after {
 	content: '';
 	content: none;
+}
+#root{
+	height: 100%;
 }
 
 table {

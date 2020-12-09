@@ -21,6 +21,7 @@ export const Overview = () => {
             dispatch(getOverviewAction());
         }
     }, []);
+    const isMobile = true
 
     return (
         <div className="overview screen">
@@ -29,7 +30,7 @@ export const Overview = () => {
                 <OverviewSectionSelector />
                 <div className="screen-section-container">
                     <LoadingComponent isLoading={!overviewData} loaderType={LoaderType.BIG}>
-                        <div className="overview-flex flex-start-center">
+                        <div className={`overview-flex ${isMobile ? 'flex-column' : 'flex-start-center'}`}>
                             <Route path={routes.overview.stake} render={() => <OverviewStake />} />
                             <Route path={routes.overview.weights} render={() => <OverviewWeights />} />
                             <Route exact path={routes.overview.default}>
