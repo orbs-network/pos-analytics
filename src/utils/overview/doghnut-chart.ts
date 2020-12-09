@@ -2,6 +2,7 @@ import { PosOverview, PosOverviewSlice, PosOverviewData } from '@orbs-network/po
 import moment, { Moment } from 'moment';
 
 const getFirstSlice = (slices: PosOverviewSlice[], date: Moment): PosOverviewData[] | null => {
+    // eslint-disable-next-line @typescript-eslint/camelcase
     const selectedDateSlice: PosOverviewSlice = slices.filter(({ block_time, data }: PosOverviewSlice) => {
         const blockTimeDate = moment.unix(block_time);
         if (moment(blockTimeDate).dayOfYear() !== date.dayOfYear()) return undefined;

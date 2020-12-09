@@ -35,3 +35,17 @@
         font-weight: 600;
     }
 }
+
+
+@media (max-width: 1000px) {
+    .overview{
+        &-flex{
+            align-items: center;
+        }
+    }
+    .overview-chart{
+        width: 100%;
+        display: flex;
+       justify-content: center;
+    }
+  }
