@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { generateDays } from 'utils/dates';
 import CalendarTodayOutlinedIcon from '@material-ui/icons/CalendarTodayOutlined';
 import { useClickOutside } from 'react-click-outside-hook';
-
+import CloseIcon from '@material-ui/icons/Close';
 import './days-selector.scss';
 
 interface StateProps {
@@ -25,7 +25,14 @@ export const DaysSelector = ({ selectDate }: StateProps) => {
         setSelectedDate(date);
         selectDate(date);
         setShowDates(false)
+       
     };
+
+    useEffect(() => {
+        const body: any = document.querySelector('body')
+        if(!body) return
+        body.style.overflow = showDates ? 'hidden' : 'auto';
+    }, [showDates])
 
     return (
         <div className="days-selector" ref={ref}>
@@ -34,11 +41,19 @@ export const DaysSelector = ({ selectDate }: StateProps) => {
                 <h5> {moment(selectedDate).format('DD.MM.YYYY')}</h5>
             </section>
             {showDates && (
-                <ul className="days-selector-options" >
+               <div className='days-selector-modal'>
+                
+                   <section 
+                   onClick={() => setShowDates(false)}
+                   className='overlay'></section>
+                    <button onClick={() => setShowDates(false)}><CloseIcon /></button>
+                    <ul className="days-selector-options" >
+                   
                     {daysToSelect.map((day) => {
                         return <li onClick={() => select(day)}>{moment(day).format('DD.MM.YYYY')}</li>;
                     })}
                 </ul>
+               </div>
             )}
         </div>
     );

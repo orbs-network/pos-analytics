@@ -1,0 +1,68 @@
+.days-selector {
+    position: relative;
+    width: 50%;
+    z-index: 1;
+    z-index: 99;
+    &-selected {
+        align-items: center;
+        padding: 0px 10px;
+        cursor: pointer;
+        svg {
+            font-size: 18px;
+            margin-right: 10px;
+        }
+    }
+    &-modal {
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        top: 0px;
+        left: 0px;
+        overflow: hidden;
+        background: transparent;
+       
+        button{
+            position: fixed;
+            top: 30px;
+           
+            z-index: 99;
+            right: 20px;
+            svg{
+                color: white;
+                font-size: 35px;
+            }
+        }
+        .overlay {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            background: rgba(0,0,0, 0.1);
+        }
+    }
+    &-options {
+      
+        width: calc(100% - 60px);
+        height: calc(100% - 150px);
+        background: white;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        z-index: 10;
+        transform: translate(-50%, -50%);
+        overflow-y: auto;
+        border-radius: 10px;
+        li {
+           justify-content: center;
+            padding: 0px 10px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            &:hover {
+                background: rgba(0, 0, 0, 0.05);
+            }
+        }
+    }
+}

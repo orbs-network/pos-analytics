@@ -79,3 +79,14 @@
     }
 
 }
+
+
+
+@media (max-width: 576px){
+        .overview{
+            &-guardians{
+              width: 100%;
+              margin-bottom: 60px;
+            }
+        }
+}
