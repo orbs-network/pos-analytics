@@ -70,7 +70,7 @@ const OverviewTopComponent = () => {
             <OverviewTopSection
                 textTop={t('overview.guardians')}
                 textBottom={t('overview.candidates')}
-                data={overviewData ? overviewData.n_candidates + overviewData.n_guardians : 0}
+                data={overviewData ?  overviewData.n_guardians : 0}
                 imgSrc={GuardiansImg}
                 btnText={t('overview.guardianList')}
                 link="https://staking.orbs.network"
