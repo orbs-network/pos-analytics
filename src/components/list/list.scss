@@ -115,6 +115,7 @@
   .list {
     .MuiTable-root {
       table-layout: fixed;
+      overflow: hidden;
       .MuiTableHead-root {
         tr {
           .list-titles {
