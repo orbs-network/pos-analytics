@@ -12,35 +12,48 @@ import { getOverviewAction } from 'redux/actions/actions';
 import { LoadingComponent } from 'components/loading-component/loading-component';
 import { LoaderType } from 'global/enums';
 import './overview.scss';
+import { isMobile } from 'react-device-detect';
 
 export const Overview = () => {
-    const { overviewData } = useSelector((state: AppState) => state.overview);
-    const dispatch = useDispatch();
-    useEffect(() => {
-        if (!overviewData) {
-            dispatch(getOverviewAction());
-        }
-    }, []);
-    const isMobile = true
+  const { overviewData } = useSelector((state: AppState) => state.overview);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (!overviewData) {
+      dispatch(getOverviewAction());
+    }
+  }, []);
 
-    return (
-        <div className="overview screen">
-            <OverviewTop />
-            <div className="screen-section">
-                <OverviewSectionSelector />
-                <div className="screen-section-container">
-                    <LoadingComponent isLoading={!overviewData} loaderType={LoaderType.BIG}>
-                        <div className={`overview-flex ${isMobile ? 'flex-column' : 'flex-start-center'}`}>
-                            <Route path={routes.overview.stake} render={() => <OverviewStake />} />
-                            <Route path={routes.overview.weights} render={() => <OverviewWeights />} />
-                            <Route exact path={routes.overview.default}>
-                                <Redirect to={routes.overview.stake} />
-                            </Route>
-                            <OverviewStakeGuadians />
-                        </div>
-                    </LoadingComponent>
-                </div>
+  return (
+    <div className="overview screen">
+      <OverviewTop />
+      <div className="screen-section">
+        <OverviewSectionSelector />
+        <div className="screen-section-container">
+          <LoadingComponent
+            isLoading={!overviewData}
+            loaderType={LoaderType.BIG}
+          >
+            <div
+              className={`overview-flex ${
+                isMobile ? 'flex-column' : 'flex-start-center'
+              }`}
+            >
+              <Route
+                path={routes.overview.stake}
+                render={() => <OverviewStake />}
+              />
+              <Route
+                path={routes.overview.weights}
+                render={() => <OverviewWeights />}
+              />
+              <Route exact path={routes.overview.default}>
+                <Redirect to={routes.overview.stake} />
+              </Route>
+              <OverviewStakeGuadians />
             </div>
+          </LoadingComponent>
         </div>
-    );
+      </div>
+    </div>
+  );
 };

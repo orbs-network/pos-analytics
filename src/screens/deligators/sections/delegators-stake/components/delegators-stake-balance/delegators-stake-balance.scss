@@ -53,6 +53,17 @@
       text-align: center;
       background: #f8f8f8;
       height: initial;
+      width: calc(50% - 3px);
+      min-height: 87px;
+      h4 {
+        font-size: 16px;
+        margin-bottom: 5px;
+      }
+      a {
+        .delegators-stake-balance-to {
+          font-size: 12px;
+        }
+      }
       &:after {
         content: none;
       }
