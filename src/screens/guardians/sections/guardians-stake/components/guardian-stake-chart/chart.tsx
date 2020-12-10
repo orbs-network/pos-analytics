@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { ChartColors } from 'global/enums';
 import { ChartData } from 'global/types';
 import { generateDatasets, getGuardiansLineChartSettings } from 'utils/chart';
-
+    import {isMobile} from 'react-device-detect'
 interface StateProps {
     chartData: ChartData;
 }
@@ -17,7 +17,7 @@ export const Chart = ({ chartData }: StateProps) => {
     };
 
 
-    const options = getGuardiansLineChartSettings(chartData.unit,ref, t);
+    const options = getGuardiansLineChartSettings(chartData.unit,ref, t, isMobile);
     return options ? (
         <div className="line-chart">
             <div className="line-chart-text line-chart-text-left">

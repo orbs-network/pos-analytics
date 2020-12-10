@@ -10,10 +10,9 @@ import FeesImg from 'assets/images/coins.svg';
 import OrbsToken from 'assets/images/token.png';
 import BoostrapToken from 'assets/images/bootstrap-token.png';
 import { ListMaterial } from 'components/list/list-material';
-import './guardian-rewards-top.scss';
 import { isMobile } from 'react-device-detect';
 
-export const GuardianRewardsTop = () => {
+export const GuardianRewardsTopDesktop = () => {
   const { selectedGuardian, guardianIsLoading } = useSelector(
     (state: AppState) => state.guardians
   );

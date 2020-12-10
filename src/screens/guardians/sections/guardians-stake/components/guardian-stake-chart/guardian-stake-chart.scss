@@ -64,6 +64,11 @@
   .guardian-stake-chart {
     padding-top: 0;
     width: 100%;
+    .line-chart{
+      height: 240px;
+     width: calc(100% - 20px);
+     margin: auto;
+    }
     header {
       height: auto;
       display: block;

@@ -1,0 +1,16 @@
+.g-rewards-top-m{
+    &-sections{
+        flex-wrap: wrap;
+        padding: 15px;
+    }
+    
+    .sub-s-selector{
+        justify-content: space-between;
+       
+    }
+    .balance-section {
+        > div{
+            justify-content: flex-start;
+        }
+    }
+}

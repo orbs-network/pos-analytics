@@ -12,7 +12,6 @@ const getFirstSlice = (slices: PosOverviewSlice[], date: Moment): PosOverviewSli
         return data;
     });
     const slicesLength = filteredSlices.length;
-    console.log(filteredSlices);
     return filteredSlices[slicesLength - 1];
 };
 
