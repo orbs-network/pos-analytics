@@ -9,6 +9,8 @@ import { getDelegatorRewardActions } from 'utils/delegators';
 import { LoadingComponent } from 'components/loading-component/loading-component';
 import { ListMaterial } from 'components/list/list-material';
 import { LoaderType } from 'global/enums';
+import { isMobile } from 'react-device-detect';
+
 import './delegator-rewards-actions.scss';
 
 export const DelegatorRewardsActions = () => {
@@ -27,7 +29,7 @@ export const DelegatorRewardsActions = () => {
                 listElementAmount={4}
                 loaderType={LoaderType.LIST}
                 listLength={3}>
-                <ListMaterial titles={titles} titleClassName="list-titles" listHeaderBg="#F7F7F7" listClassName='reward-list'>
+                <ListMaterial titles={titles} titleClassName="list-titles" listHeaderBg={isMobile ? 'transparent' : "#F7F7F7"} listClassName='reward-list'>
                     {selectedDelegator &&
                         getDelegatorRewardActions(selectedDelegator.actions).map(
                             (action: DelegatorAction, key: number) => {

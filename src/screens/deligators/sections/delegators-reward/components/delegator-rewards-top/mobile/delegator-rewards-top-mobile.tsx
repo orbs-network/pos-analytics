@@ -1,26 +1,26 @@
+import { NoData } from 'components/no-data/no-data';
+import { SubSectionSelector } from 'components/sub-section-selector/sub-section-selector';
+import { RewardsSection } from 'global/enums';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { AppState } from 'redux/types/types';
-import { NoData } from 'components/no-data/no-data';
 import { AlreadyClaimed } from './components/AlreadyClaimed';
-import { Total } from './components/Total';
-import { CurrectBalance } from './components/CurrectBalance';
-import { SubSectionSelector } from '../../../../../../../components/sub-section-selector/sub-section-selector';
-import { RewardsSection } from 'global/enums';
+import {Total} from './components/Total'
+import {CurrectBalance} from './components/CurrectBalance'
 import './style.scss';
 
-export const GuardianRewardsTopMobile = () => {
+export const DelegatorRewardsTopMobile = () => {
     const [selectedSection, SetSelectedSection] = useState<RewardsSection>(RewardsSection.CURRENT);
-    const { selectedGuardian, guardianIsLoading } = useSelector((state: AppState) => state.guardians);
+    const { selectedDelegator, delegatorIsLoading } = useSelector((state: AppState) => state.delegator);
     const { t } = useTranslation();
 
     const generateSection = (section: RewardsSection) => {
         const params = {
-            selectedGuardian,
-            guardianIsLoading,
+            selectedDelegator,
+            delegatorIsLoading
         };
-        
+
         switch (section) {
             case RewardsSection.CLAIMED:
                 return <AlreadyClaimed {...params} />;
@@ -34,7 +34,7 @@ export const GuardianRewardsTopMobile = () => {
         }
     };
     const options = [
-       
+      
         {
             name: t('main.currentBalance'),
             value: RewardsSection.CURRENT
@@ -48,13 +48,13 @@ export const GuardianRewardsTopMobile = () => {
             value: RewardsSection.TOTAL
         }
     ];
-    const noData = !guardianIsLoading && !selectedGuardian;
+    const noData = !delegatorIsLoading && !selectedDelegator;
     return noData ? (
         <NoData />
     ) : (
-        <div className="g-rewards-top-m">
+        <div className="d-rewards-top-m">
             <SubSectionSelector options={options} select={SetSelectedSection} selectedValue={selectedSection} />
-            <div className="g-rewards-top-m-sections flex-start">{generateSection(selectedSection)}</div>
+            <div className="d-rewards-top-m-sections flex-start">{generateSection(selectedSection)}</div>
         </div>
     );
 };

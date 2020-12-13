@@ -91,7 +91,7 @@ export enum GuardianChartName {
     DELEGATORS = 'DELEGATORS'
 }
 
-export enum GuardiansRewardsSection {
+export enum RewardsSection {
     CLAIMED = 'CLAIMED',
     CURRENT = 'CURRENT',
     TOTAL = 'TOTAL'
