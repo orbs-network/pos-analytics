@@ -29,7 +29,6 @@ export const StakeBarChart = () => {
 
     const selectChartData = (unit: ChartUnit) => {
         const data = getStakeChartData(unit, overviewData, guardiansColors);
-        console.log(data);
         dispatch(setOverviewStakeChartData(data));
     };
 

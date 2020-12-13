@@ -1,4 +1,4 @@
-import { Guardian } from '@orbs-network/pos-analytics-lib';
+import { Delegator, Guardian, GuardianInfo } from '@orbs-network/pos-analytics-lib';
 import {
     ChartColors,
     ChartUnit,
@@ -107,4 +107,17 @@ export interface GuardiansChartDatasetObject {
     group: string;
     x: string | number;
     y: number | null;
+}
+
+
+
+export interface GuardianMobileRewards {
+    selectedGuardian?: GuardianInfo;
+        guardianIsLoading: boolean;
+}
+
+
+export interface DelegatorMobileRewards {
+    selectedDelegator?: Delegator;
+    delegatorIsLoading: boolean;
 }

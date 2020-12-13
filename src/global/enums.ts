@@ -90,3 +90,9 @@ export enum GuardianChartName {
     DELEGATED_STAKE = 'DELEGATED_STAKE',
     DELEGATORS = 'DELEGATORS'
 }
+
+export enum RewardsSection {
+    CLAIMED = 'CLAIMED',
+    CURRENT = 'CURRENT',
+    TOTAL = 'TOTAL'
+}

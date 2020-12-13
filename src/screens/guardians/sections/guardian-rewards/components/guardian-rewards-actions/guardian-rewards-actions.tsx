@@ -10,7 +10,7 @@ import { getGuardiansRewardActions } from 'utils/guardians';
 import { ListMaterial } from 'components/list/list-material';
 import { LoadingComponent } from 'components/loading-component/loading-component';
 import { LoaderType } from 'global/enums';
-
+import {isMobile} from 'react-device-detect'
 export const GuardianRewardsActions = () => {
     const { selectedGuardian, guardianIsLoading } = useSelector((state: AppState) => state.guardians);
     const { t } = useTranslation();
@@ -29,7 +29,7 @@ export const GuardianRewardsActions = () => {
                 listElementAmount={4}
                 loaderType={LoaderType.LIST}
                 listLength={3}>
-                <ListMaterial titles={titles} titleClassName="list-titles" listHeaderBg="#F7F7F7">
+                <ListMaterial titles={titles} titleClassName="list-titles" listHeaderBg={isMobile ? 'transparent' : "#F7F7F7"}>
                     {selectedGuardian &&
                         getGuardiansRewardActions(selectedGuardian.actions).map(
                             (action: GuardianAction, key: number) => {
