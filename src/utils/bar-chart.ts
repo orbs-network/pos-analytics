@@ -4,19 +4,20 @@ import { DATE_FORMAT } from 'global/variables';
 import { ChartUnit, OverviewChartType } from '../global/enums';
 import { formatNumber } from './number';
 import { getMinDateByUnitOverview } from './overview/overview';
+
+
 export const barChartCustomTooltip = function (
     chartType: OverviewChartType,
     tooltip: any,
     ref: any,
     t: TFunction,
-    total?: number
+    dates?: any
 ) {
     // Tooltip Element
     if (!ref || !ref.current) return;
     let tooltipEl = document.getElementById('chartjs-tooltip');
 
     const chart: any = ref.current.chartInstance;
-
     if (!tooltipEl) {
         tooltipEl = document.createElement('div');
         tooltipEl.id = 'chartjs-tooltip';
@@ -24,6 +25,7 @@ export const barChartCustomTooltip = function (
         if (!chart) return;
         chart?.tooltip._chart.canvas.parentNode?.appendChild(tooltipEl);
     }
+  
     // Hide if no tooltip
     if (tooltip.opacity === 0) {
         tooltipEl.style.opacity = 0 as any;
@@ -37,6 +39,7 @@ export const barChartCustomTooltip = function (
         tooltipEl.classList.add('no-transform');
     }
     function getBody(bodyItem: any) {
+        
         return bodyItem.lines;
     }
     // Set Text
@@ -60,9 +63,11 @@ export const barChartCustomTooltip = function (
             }
 
             let stake = `<p>${number}</p>`;
+            const total = dates[tooltip.title[0]]
             const totalP = `<p class ='chart-tootlip-total'>${t('overview.total')}: ${
                 total ? total.toLocaleString() : 0
             }</p>`;
+         
             const div = `<div class='chart-tootlip-data'>${guardian}${stake}</div>`;
             const span = '<span class="chartjs-tooltip-key"></span>';
             innerHtml += '<tr><td>' + span + totalP + div + '</td></tr>';
@@ -92,7 +97,7 @@ export const getBarChartConfigOptions = (
     ref: any,
     t: TFunction,
     unit: ChartUnit,
-    total?: number
+    dates?: any
 ) => {
     return {
         maintainAspectRatio: false,
@@ -129,7 +134,7 @@ export const getBarChartConfigOptions = (
         tooltips: {
             enabled: false,
             animation: 0,
-            custom: (event: any) => barChartCustomTooltip(chartType, event, ref, t, total)
+            custom: (event: any) => barChartCustomTooltip(chartType, event, ref, t, dates)
         },
 
         scales: {
