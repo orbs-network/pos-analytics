@@ -114,7 +114,7 @@ export const filledEmptyData = (data: GuardiansChartDatasetObject[]) => {
 export const getMinDateByUnitOverview = (unit: ChartUnit): Date => {
     switch (unit) {
         case ChartUnit.WEEK:
-            return moment().subtract(OVERVIEW_CHART_LIMIT, 'weeks').toDate();
+            return moment().add(1, 'days').subtract(OVERVIEW_CHART_LIMIT, 'weeks').toDate();
         case ChartUnit.DAY:
             return moment().subtract(OVERVIEW_CHART_LIMIT, 'days').toDate();
         default:

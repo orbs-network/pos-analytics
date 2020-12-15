@@ -78,13 +78,12 @@ export const getDateFormatByUnit = (date: Moment, unit: ChartUnit): string => {
     }
 };
 
-
 export const convertDateFromUnitFormat = (date: string, unit: ChartUnit): number | null => {
     switch (unit) {
         case ChartUnit.MONTH:
             return moment(date, GRAPH_MONTH_FORMAT).valueOf();
         case ChartUnit.WEEK:
-            return moment(date, GRAPH_WEEK_FORMAT).valueOf();
+            return moment(date, GRAPH_WEEK_FORMAT).add(1, 'day').valueOf();
         case ChartUnit.DAY:
             return moment(date, GRAPH_DAY_FORMAT).valueOf();
         default:

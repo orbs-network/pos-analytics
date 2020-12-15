@@ -25,7 +25,8 @@ export const BarChartComponent = ({ chartData, guardians, total, chartType }: St
     const barChartData = {
         datasets: chartData.data
     };
-
+   
+  
 
     const goToGuardianPage = async (i: any) => {
         const activeElement = ref.current.chartInstance.getElementAtEvent(i);

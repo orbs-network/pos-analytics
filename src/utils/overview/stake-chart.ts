@@ -15,6 +15,7 @@ export const generateDataset = (arr: any) => {
 };
 
 export const groupArr = (slices: PosOverviewSlice[], unit: ChartUnit) => {
+    
     const mapped = slices.map((slice) => {
         let prev: PosOverviewData[] = [];
         const { block_time, data } = slice;
