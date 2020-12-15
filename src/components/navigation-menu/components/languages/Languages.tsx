@@ -39,12 +39,12 @@ export const Languages = () => {
         i18n.changeLanguage(lang);
     };
 
-    return <div className="navigation-languages flex-column">
-        <figure className='navigation-languages-logo'>
-            <img src={Logo} alt="orbs logo"/>
-        </figure>
-        <ul className='flex-start'>
-        {generateSupportedlanguages(supportedlanguages)}
-        </ul>
-    </div>;
+    return (
+        <div className="navigation-languages flex-column">
+            <figure className="navigation-languages-logo">
+                <img src={Logo} alt="orbs logo" />
+            </figure>
+            <ul className="flex-start">{generateSupportedlanguages(supportedlanguages)}</ul>
+        </div>
+    );
 };

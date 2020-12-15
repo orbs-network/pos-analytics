@@ -13,3 +13,7 @@ export const sortByNumber = (arr: any, propertyName: string, asc?: boolean) => {
         return asc ? a[propertyName] - b[propertyName] : b[propertyName] - a[propertyName];
     });
 };
+
+export const findIndexInArray = (arr: [any], propertyName: string, key: string): number => {
+    return arr.findIndex((elem: any) => elem[propertyName] === key);
+};
