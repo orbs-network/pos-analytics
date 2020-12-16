@@ -1,16 +1,11 @@
 import { PosOverviewData, PosOverviewSlice } from '@orbs-network/pos-analytics-lib';
 import { TFunction } from 'i18next';
 import moment from 'moment';
+import _ from 'lodash';
 import { ChartUnit, OverviewSections } from '../../global/enums';
-import {
-    GuardiansChartDatasetObject,
-    MenuOption,
-    OverviewChartObject,
-    OverviewGuardianDataset
-} from '../../global/types';
-
+import { GuardiansChartDatasetObject, MenuOption, OverviewGuardianDataset } from '../../global/types';
 import { routes } from '../../routes/routes';
-import { converFromNumberToDate, getDateFormatByUnit } from '../dates';
+import { getDateFormatByUnit } from '../dates';
 import { overviewguardiansColors } from '../../ui/colors';
 import { DATE_FORMAT, OVERVIEW_CHART_LIMIT } from '../../global/variables';
 
@@ -67,48 +62,10 @@ export const createGuardianDatasets = (
     return guardiansObject;
 };
 
-export const fillEmptyData = (orderObject: any, unit: ChartUnit): OverviewChartObject[] => {
-    const filledChartData = Object.keys(orderObject).map(function (key, index) {
-        const data = orderObject[key];
-        const date = converFromNumberToDate(Number(key), unit, DATE_FORMAT);
-        if (data.length === 0) {
-            return {
-                data: [],
-                date
-            };
-        } else {
-            return {
-                date,
-                data
-            };
-        }
-    });
-    return filledChartData;
-};
-export const getLastSlice = (slices: PosOverviewSlice[]) => {
-    if (!slices || slices.length === 0) return;
+export const getLastSlice = (slices: PosOverviewSlice[]): PosOverviewSlice | null => {
+    if (!slices || slices.length === 0) return null;
     const sorted = slices.sort((s1, s2) => s2.block_time - s1.block_time);
     return sorted[0];
-};
-
-export const filledEmptyData = (data: GuardiansChartDatasetObject[]) => {
-    let previousValue = 0;
-    return data
-        .sort((d1, d2) => moment(d1.x, DATE_FORMAT).valueOf() - moment(d2.x, DATE_FORMAT).valueOf())
-        .map((elem) => {
-            const { y } = elem;
-            if (!y || y === 0) {
-                return {
-                    ...elem,
-                    y: previousValue
-                };
-            } else {
-                previousValue = y || previousValue;
-                return {
-                    ...elem
-                };
-            }
-        });
 };
 
 export const getMinDateByUnitOverview = (unit: ChartUnit): Date => {
@@ -120,4 +77,42 @@ export const getMinDateByUnitOverview = (unit: ChartUnit): Date => {
         default:
             return moment().subtract(OVERVIEW_CHART_LIMIT, 'weeks').toDate();
     }
+};
+
+export const groupDataset = (slices: PosOverviewSlice[], unit: ChartUnit) => {
+    const limit = getMinDateByUnitOverview(unit);
+    const limitMilliseconds = moment(limit).valueOf();
+    const filtered = slices.filter((slice) => {
+        const { block_time } = slice;
+        const blockTimeMilliseconds = moment.unix(block_time).valueOf();
+        return blockTimeMilliseconds > limitMilliseconds;
+    });
+    const mapped = filtered.map((slice) => {
+        let prev: PosOverviewData[] = [];
+        const { block_time, data } = slice;
+        const date = moment.unix(block_time).format(DATE_FORMAT);
+        const { length } = data;
+        if (length > 0) {
+            prev = data;
+        }
+        return {
+            ...slice,
+            date,
+            data: length > 0 ? data : prev
+        };
+    });
+    const result = createGroupedDataset(mapped);
+    return result;
+};
+
+const createGroupedDataset = (mapped: any) => {
+    const grouped = _(mapped)
+        .groupBy((x) => x.date)
+        .map((value, key) => {
+            const sorted = value.sort((s1: PosOverviewSlice, s2: PosOverviewSlice) => s1.block_time - s2.block_time);
+            const slice = sorted[sorted.length - 1];
+            return { date: key, slice };
+        })
+        .value();
+    return grouped;
 };
