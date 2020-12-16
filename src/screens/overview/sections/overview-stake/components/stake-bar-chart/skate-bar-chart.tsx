@@ -68,7 +68,14 @@ const BarComponent = ({ chartData, total }: StateProps) => {
     const ref = useRef<any>(null);
     const { t } = useTranslation();
     const goToGuardian = () => {};
-    const options = getBarChartConfigOptions(OverviewChartType.STAKE, goToGuardian, ref, t, chartData.unit, total);
+    const options = getBarChartConfigOptions(
+        OverviewChartType.STAKE,
+        goToGuardian,
+        ref,
+        t,
+        chartData.unit,
+        chartData.guardianDatasets.totalObject
+    );
     const barChartData = {
         datasets: chartData.data
     };
