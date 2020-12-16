@@ -1,20 +1,30 @@
-import React from 'react'
+import React, { useState } from 'react';
 import { RouteParams } from 'global/types';
 import { GuardianInfo } from './components/guardian-info/guardian-info';
-import { GuardianSearch } from './components/guardian-search/guardian-search'
+import { GuardianSearch } from './components/guardian-search/guardian-search';
 import './guardian-top.scss';
 
 interface StateProps {
-    params: RouteParams;
+  params: RouteParams;
 }
 
+export const GuardianTop = ({ params }: StateProps) => {
+  const [showInfo, setShowInfo] = useState<boolean>(false);
+  return (
+    <div className="guardian-top">
+      <div className="component-wrapper flex-start-center">
+        <GuardianSearch address={params.address} section={params.section} />
 
-export const GuardianTop = ({params}:StateProps ) =>  {
-    return (
-        <div className='guardian-top flex-start-center'>
-                <GuardianSearch address = {params.address} section = {params.section}/>
-                <GuardianInfo />
-        </div>
-    )
-}
-
+        <GuardianInfo showInfo={showInfo} />
+        <button
+          onClick={() => setShowInfo(!showInfo)}
+          type="button"
+          className="guardian-top-mobile-toggle"
+        >
+          <figure></figure>
+          <figure></figure>
+        </button>
+      </div>
+    </div>
+  );
+};

@@ -205,3 +205,15 @@ export const getGuardianName = (guardians?: Guardian[], address?: string): strin
     if (!guardian) return null;
     return `${guardian.name} (${guardian.address})`;
 };
+
+
+export const getGuardianNameFromChart = async (i: any, ref?: any) => {
+    var activeElement = ref.current.chartInstance.getElementAtEvent(i);
+    if (!activeElement[0]) return;
+    const name = activeElement[0]._view.datasetLabel;
+    return name
+    // const address = getGuardianByName(guardians, name);
+    // if (!address) return;
+    // await ref.current.chartInstance.clear();
+    // history.push(routes.guardians.stake.replace(':address', address));
+};

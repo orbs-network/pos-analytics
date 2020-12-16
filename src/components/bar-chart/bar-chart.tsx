@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { Guardian } from '@orbs-network/pos-analytics-lib';
 import { useTranslation } from 'react-i18next';
@@ -25,8 +25,7 @@ export const BarChartComponent = ({ chartData, guardians, total, chartType }: St
     const barChartData = {
         datasets: chartData.data
     };
-   
-  
+
 
     const goToGuardianPage = async (i: any) => {
         const activeElement = ref.current.chartInstance.getElementAtEvent(i);
@@ -46,5 +45,6 @@ export const BarChartComponent = ({ chartData, guardians, total, chartType }: St
         chartData.unit,
         chartData.guardianDatasets.totalObject
     );
+
     return <Bar data={barChartData} options={options} ref={ref} />;
 };

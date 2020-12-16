@@ -6,8 +6,8 @@ import moment from 'moment';
 import { TIME_UNIT_FORMAT } from '../global/variables';
 import { getMinDateByUnit } from './delegators';
 
-export const getGuardiansLineChartSettings = (unit: ChartUnit, ref: any, t: TFunction) => {
-    const settings = getLineChartBaseSettings(unit, ref, t);
+export const getGuardiansLineChartSettings = (unit: ChartUnit, ref: any, t: TFunction, isMobile: boolean) => {
+    const settings = getLineChartBaseSettings(unit, ref, t, isMobile);
     settings.layout.padding.left = 20;
     settings.layout.padding.right = 20;
     settings.scales.yAxes[0].ticks.callback = function (value: number) {
@@ -27,7 +27,7 @@ export const getGuardiansLineChartSettings = (unit: ChartUnit, ref: any, t: TFun
         },
         ticks: {
             maxTicksLimit: 7,
-            fontSize: 12,
+            fontSize: isMobile ? 9 : 12,
             fontFamily: 'Montserrat',
             fontColor: '#666666',
             callback: function (value: number) {
@@ -40,7 +40,7 @@ export const getGuardiansLineChartSettings = (unit: ChartUnit, ref: any, t: TFun
     return settings;
 };
 
-export const getLineChartBaseSettings = (unit: ChartUnit, ref: any, t: TFunction) => {
+export const getLineChartBaseSettings = (unit: ChartUnit, ref: any, t: TFunction, isMobile?: boolean) => {
     return {
         maintainAspectRatio: false,
         responsive: true,
@@ -74,7 +74,7 @@ export const getLineChartBaseSettings = (unit: ChartUnit, ref: any, t: TFunction
         tooltips: {
             enabled: false,
             animation: 0,
-            custom: (event: any) => lineChartCustomTooltip(event, ref, t)
+            custom: !isMobile ?  (event: any) => lineChartCustomTooltip(event, ref, t) : null
         },
         scales: {
             xAxes: [
@@ -111,9 +111,10 @@ export const getLineChartBaseSettings = (unit: ChartUnit, ref: any, t: TFunction
                             return ['|', '', value, moment(date).format('YYYY')];
                         },
                         min: getMinDateByUnit(unit),
+                      
                         autoSkip: true,
                         padding: -10,
-                        fontSize: 12,
+                        fontSize: isMobile ? 9 : 12,
                         fontFamily: 'Montserrat',
                         fontColor: '#666666'
                     }
@@ -125,7 +126,7 @@ export const getLineChartBaseSettings = (unit: ChartUnit, ref: any, t: TFunction
                     scaleLabel: {
                         display: false,
                         labelString: '',
-                        fontSize: 12,
+                        fontSize: isMobile ? 9 : 12,
                         fontFamily: 'Montserrat',
                         fontColor: '#666666'
                     },
@@ -141,7 +142,7 @@ export const getLineChartBaseSettings = (unit: ChartUnit, ref: any, t: TFunction
                     ticks: {
                         autoskip: true,
                         maxTicksLimit: 7,
-                        fontSize: 12,
+                        fontSize: isMobile ? 9 : 12,
                         fontFamily: 'Montserrat',
                         fontColor: '#666666',
                         suggestedMin: 0,

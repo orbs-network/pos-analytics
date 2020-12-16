@@ -3,6 +3,7 @@ import { Line } from 'react-chartjs-2';
 import { useTranslation } from 'react-i18next';
 import { ChartData } from 'global/types';
 import { generateDatasets, getLineChartBaseSettings } from 'utils/chart';
+import {isMobile} from 'react-device-detect'
 
 interface StateProps {
     chartData: ChartData;
@@ -14,6 +15,6 @@ export const Chart = ({ chartData }: StateProps) => {
     const data = {
         datasets: generateDatasets(chartData)
     };
-    const options = getLineChartBaseSettings(chartData.unit, ref, t);
+    const options = getLineChartBaseSettings(chartData.unit, ref, t, isMobile);
     return <Line data={data} options={options} ref={ref} />;
 };

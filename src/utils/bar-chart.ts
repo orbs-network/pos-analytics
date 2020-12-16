@@ -63,6 +63,7 @@ export const barChartCustomTooltip = function (
             }
 
             let stake = `<p>${number}</p>`;
+             
             const total = dates[tooltip.title[0]]
             const totalP = `<p class ='chart-tootlip-total'>${t('overview.total')}: ${
                 total ? total.toLocaleString() : 0
@@ -99,7 +100,7 @@ export const getBarChartConfigOptions = (
     unit: ChartUnit,
     dates?: any
 ) => {
-    return {
+    return { 
         maintainAspectRatio: false,
         responsive: true,
 
@@ -145,7 +146,7 @@ export const getBarChartConfigOptions = (
                     type: 'time',
                     time: {
                         unit: 'day',
-                       
+
                         parser: DATE_FORMAT
                     },
                     stacked: true,

@@ -1,76 +1,127 @@
 .overview-top {
-    height: 170px;
+  height: 170px;
 
-    &-section {
-        height: 100%;
-        width: calc(100% / 3 - 10px);
-        background: white;
-        box-shadow: 0px 5px 10px #0812261A;
-        border-radius: 13px;
-        padding: 25px 36px 20px;
-        margin-right: 20px;
-        &:nth-child(3){
-            margin: 0px;
-        }
-        .loader{
-            width: 30%;
-            height: 20px;
-        }
-
-        p{
-           font-size: 16px;
-           line-height: normal;
-           text-transform: capitalize;
-        }
-        img{
-            margin-right: 10px;
-            height: 60px;
-            object-fit: contain;
-        }
-        h4{
-            font-size: 24px;
-            font-weight: bold;
-        }
-        button {
-            width: 100%;
-            height: 43px;
-            box-shadow: 0px 3px 6px #00000029;
-            border-radius: 4px;
-            margin-top: auto;
-            font-size: 15px;
-            font-weight: 600;
-            background: #EBEBEB;
-            transition: 0.2s all;
-            border-bottom: 3px solid #469DAF;
-            a{
-                width: 100%;
-                height: 100%;
-                color: black;
-              text-decoration: none;
-            }
-            &:hover{
-                background: #F7F7F7;
-            }
-        }
+  &-section {
+    height: 100%;
+    width: calc(100% / 3 - 10px);
+    background: white;
+    box-shadow: 0px 5px 10px #0812261a;
+    border-radius: 13px;
+    padding: 25px 36px 20px;
+    margin-right: 20px;
+    &:nth-child(3) {
+      margin: 0px;
     }
-}
+    .loader {
+      width: 30%;
+      height: 20px;
+    }
 
-
-
-@media only screen and (max-width: 1500px) {
-    .overview-top{
-        height: 155px;
-        &-section{
-            padding: 25px 20px 20px;
-            h4{
-                font-size: 23px;
-            }
-            p{
-                font-size: 16px;
-            }
-            img{
-                height: 50px;
-            }
-        }
+    p {
+      font-size: 16px;
+      line-height: normal;
+      text-transform: capitalize;
+    }
+    img {
+      margin-right: 10px;
+      height: 60px;
+      object-fit: contain;
+    }
+    h4 {
+      font-size: 24px;
+      font-weight: bold;
+    }
+    button {
+      width: 100%;
+      height: 43px;
+      box-shadow: 0px 3px 6px #00000029;
+      border-radius: 4px;
+      margin-top: auto;
+      font-size: 15px;
+      font-weight: 600;
+      background: #ebebeb;
+      transition: 0.2s all;
+      border-bottom: 3px solid #469daf;
+      a {
+        width: 100%;
+        height: 100%;
+        color: black;
+        text-decoration: none;
+      }
+      &:hover {
+        background: #f7f7f7;
+      }
     }
   }
+}
+
+@media only screen and (max-width: 1500px) {
+  .overview-top {
+    height: 155px;
+    &-section {
+      padding: 25px 20px 20px;
+      h4 {
+        font-size: 23px;
+      }
+      p {
+        font-size: 16px;
+      }
+      img {
+        height: 50px;
+      }
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .overview-top {
+    background: #1c1c1c;
+    padding: 16px 20px 21px;
+    height: 109px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+    scrollbar-width: none;
+    margin-bottom: 0;
+    &::-webkit-scrollbar {
+      display: none; /* Safari and Chrome */
+    }
+    .overview-top-section {
+      width: 160px;
+      min-width: 160px;
+      height: 72px;
+      border-radius: 5px;
+      margin-right: 10px;
+      padding: 10px 11px;
+      .img-text {
+        margin-bottom: 7px;
+        img {
+          width: 18px;
+          height: 20px;
+        }
+       
+        .text {
+          font-size: 11px;
+          font-weight: 600;
+          text-transform: uppercase;
+        }
+      }
+      .btn-action {
+        display: none;
+      }
+      .value {
+        text-align: center;
+        font-size: 19px;
+        font-weight: 400;
+      }
+      &:last-child {
+        .btn-action {
+          display: initial;
+          height: 25px;
+          width: 60%;
+          align-self: center;
+        }
+      }
+    }
+  }
+}

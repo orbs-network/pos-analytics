@@ -1,63 +1,13 @@
-import React, { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
-import { BarChartComponent } from 'components/bar-chart/bar-chart';
-import { TimeRangeSelector } from 'components/date-format-picker/time-range-selector';
-import { LoadingComponent } from 'components/loading-component/loading-component';
-import { NoData } from 'components/no-data/no-data';
-import { ChartUnit, LoaderType, OverviewChartType } from 'global/enums';
-import { setOverviewStakeChartData } from 'redux/actions/actions';
-import { AppState } from 'redux/types/types';
-import { getStakeChartData } from 'utils/overview/stake-chart';
+import React from 'react';
+import { StakeBarChart } from './components/stake-bar-chart/skate-bar-chart';
+import { MobileStakeChart } from './components/mobile-stake-chart/mobile-stake-chart';
 import './overview-stake.scss';
+import { isMobile } from 'react-device-detect';
 
 export const OverviewStake = () => {
-    const dispatch = useDispatch();
-    const { overviewData, overviewStakeChartData, overviewDataLoding } = useSelector(
-        (state: AppState) => state.overview
-    );
-    const { guardiansColors, guardians } = useSelector((state: AppState) => state.guardians);
-    const { t } = useTranslation();
-
-    useEffect(() => {
-        if (!overviewStakeChartData) {
-            selectChartData(ChartUnit.WEEK);
-        }
-    }, []);
-
-    const selectChartData = (unit: ChartUnit) => {
-        const data = getStakeChartData(unit, overviewData, guardiansColors);
-        dispatch(setOverviewStakeChartData(data));
-    };
-    const noData = !overviewData && !overviewDataLoding;
-    return (
-        <div className="overview-chart">
-            {noData ? (
-                <NoData />
-            ) : (
-                <LoadingComponent isLoading={!overviewStakeChartData} loaderType={LoaderType.BIG}>
-                    {overviewStakeChartData && (
-                        <header className="flex-between">
-                            <h4 className="capitalize">{t('overview.graphText')}</h4>
-                            <TimeRangeSelector
-                                selected={overviewStakeChartData.unit}
-                                selectCallBack={selectChartData}
-                                unitsToHide={[ChartUnit.MONTH]}
-                            />
-                        </header>
-                    )}
-                    {overviewStakeChartData && (
-                        <div className="bar-chart">
-                            <BarChartComponent
-                                chartData={overviewStakeChartData}
-                                guardians={guardians}
-                                total={overviewData?.total_stake}
-                                chartType={OverviewChartType.STAKE}
-                            />
-                        </div>
-                    )}
-                </LoadingComponent>
-            )}
-        </div>
-    );
+  return (
+    <div className="overview-chart">
+      {isMobile ? <MobileStakeChart /> : <StakeBarChart />}
+    </div>
+  );
 };

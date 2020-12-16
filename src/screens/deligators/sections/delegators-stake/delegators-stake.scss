@@ -1,11 +1,17 @@
-
 .delegators {
-        .loader-text{
-            width: 100px;
-            height: 25px;
-        }
-    &-stake {
-        height: 100%;
-      
-    }
+  .loader-text {
+    width: 100px;
+    height: 25px;
+  }
+  &-stake {
+    height: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .delegators-stake-flex {
+    padding-top: 0;
+    padding: 15px;
+    flex-direction: column;
+  }
 }
