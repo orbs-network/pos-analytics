@@ -1,12 +1,10 @@
-import { PosOverview, PosOverviewSlice, PosOverviewData, Guardian } from '@orbs-network/pos-analytics-lib';
+import { PosOverview, PosOverviewSlice, PosOverviewData } from '@orbs-network/pos-analytics-lib';
 import { OverviewGuardianDataset, GuardiansChartDatasetObject } from 'global/types';
-import moment from 'moment';
 import { findIndexInArray } from 'utils/array';
 import { ChartUnit } from '../../global/enums';
-import { DATE_FORMAT, OVERVIEW_CHART_LIMIT } from '../../global/variables';
-import { generateWeeks, generateDays, getDateFormatByUnit } from '../dates';
-import { createGuardianDatasets, filledEmptyData, getLastSlice } from './overview';
-import { groupArr } from './stake-chart';
+import { OVERVIEW_CHART_LIMIT } from '../../global/variables';
+import { generateWeeks, generateDays } from '../dates';
+import { createGuardianDatasets, getLastSlice, groupDataset } from './overview';
 
 export const generateDataset = (arr: any) => {
     const result = Object.keys(arr).map((key) => {
@@ -14,67 +12,32 @@ export const generateDataset = (arr: any) => {
     });
     return result;
 };
-
-const calculateTotalWeight = (data: PosOverviewData[]) => {
-    return data
-        .map((m) => m.weight)
-        .reduce(function (total, g1) {
-            return total + g1;
-        }, 0);
-};
-
 const insertGuardiansByDate = (
     slices: PosOverviewSlice[],
     unit: ChartUnit,
     guardianDatasets: { [id: string]: OverviewGuardianDataset },
 ) => {
-    const grouped = groupArr(slices, unit)
+    const grouped = groupDataset(slices, unit)
     const totalObject: any ={}
-    grouped.forEach(({ slice, date, rawDate }: any) => {
+    grouped.forEach(({ slice, date }: any) => {
         const { data, total_weight, total_effective_stake } = slice;
-        const dateString = moment(rawDate).format(DATE_FORMAT);
-        totalObject[dateString] = total_effective_stake;
+        totalObject[date] = total_effective_stake;
         
         data.forEach(({ weight, address }: PosOverviewData) => {
             const currDataset = guardianDatasets[address];
             if (!currDataset) return;
-            const index = findIndexInArray(currDataset.data as any, 'group', date);
+            const index = findIndexInArray(currDataset.data as any, 'x', date);
             if (index < 0) return;
             const percent = (weight / total_weight) * 100;
             const point: GuardiansChartDatasetObject = {
                 group: date,
-                x: dateString,
+                x: date,
                 y: percent
             };
             currDataset.data.splice(index, 1, point);
         });
     });
-    // slices.forEach(({ block_time, data }: PosOverviewSlice) => {
-    //     const blockTimeDate = moment.unix(block_time);
-    //     const blockTimeByUnit = getDateFormatByUnit(blockTimeDate, unit);
-    //     const totalWeight = calculateTotalWeight(data);
-
-    //     data.forEach(({ address, weight, name }: PosOverviewData) => {
-    //         const percent = (weight / totalWeight) * 100;
-    //         const currDataset = guardianDatasets[address];
-    //         if(!currDataset) return 
-    //         let date;
-    //         const index = currDataset.data.findIndex((i) => {
-    //             date = i.x;
-    //             return blockTimeDate.format(DATE_FORMAT) === i.x;
-    //         });
-
-    //         if (index < 0 || !date) return;
-
-    //         const point: GuardiansChartDatasetObject = {
-    //             group: blockTimeByUnit,
-    //             x: date,
-    //             y: percent
-    //         };
-    //         currDataset.data.splice(index, 1, point);
-    //         currDataset.data = filledEmptyData(currDataset.data);
-    //     });
-    // });
+   
     guardianDatasets.totalObject = totalObject
     return guardianDatasets;
 };
