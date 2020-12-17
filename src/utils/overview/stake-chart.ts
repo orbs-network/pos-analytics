@@ -22,6 +22,7 @@ const insertGuardiansByDate = (
     const totalObject: any = {};
     const grouped = groupDataset(slices, unit);
     grouped.forEach(({ slice, date }: any) => {
+    
         const { data, total_effective_stake } = slice;
         totalObject[date] = total_effective_stake;
         data.forEach(({ effective_stake, address }: PosOverviewData) => {
