@@ -88,7 +88,6 @@ export const groupDataset = (slices: PosOverviewSlice[], unit: ChartUnit) => {
         return blockTimeMilliseconds > limitMilliseconds;
     });
     const mapped = filtered.map((slice) => {
-        console.log(slice)
         let prev: PosOverviewData[] = [];
         const { block_time, data } = slice;
         const date = moment.unix(block_time).format(DATE_FORMAT);

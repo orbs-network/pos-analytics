@@ -12,33 +12,47 @@ export const generateDataset = (arr: any) => {
     });
     return result;
 };
+
+const calcTotalWeight = (data: PosOverviewData[]) => {
+    let total = 0;
+    data.forEach((el) => {
+        if (!el.weight || !el.name ) return; 
+
+        total += el.weight;
+    });
+    return total;
+};
 const insertGuardiansByDate = (
     slices: PosOverviewSlice[],
     unit: ChartUnit,
-    guardianDatasets: { [id: string]: OverviewGuardianDataset },
+    guardianDatasets: { [id: string]: OverviewGuardianDataset }
 ) => {
-    const grouped = groupDataset(slices, unit)
-    const totalObject: any ={}
+    const grouped = groupDataset(slices, unit);
+    const totalObject: any = {};
     grouped.forEach(({ slice, date }: any) => {
         const { data, total_weight, total_effective_stake } = slice;
         totalObject[date] = total_effective_stake;
-        
+        const total = calcTotalWeight(data)
         data.forEach(({ weight, address }: PosOverviewData) => {
+          
             const currDataset = guardianDatasets[address];
             if (!currDataset) return;
             const index = findIndexInArray(currDataset.data as any, 'x', date);
-            if (index < 0) return;
-            const percent = (weight / total_weight) * 100;
+            if (index < 0) {
+                return;
+            }
+            const percent = (weight / total) * 100;
             const point: GuardiansChartDatasetObject = {
                 group: date,
                 x: date,
                 y: percent
             };
+
             currDataset.data.splice(index, 1, point);
         });
     });
-   
-    guardianDatasets.totalObject = totalObject
+
+    guardianDatasets.totalObject = totalObject;
     return guardianDatasets;
 };
 
