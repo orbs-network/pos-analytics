@@ -5,7 +5,7 @@ import { LOCAIZE_API, LOCAIZE_PROJECT_ID } from '../../global/variables';
 class Api {
     ethereumEndpoint = 'https://mainnet.infura.io/v3/9679dc4f2d724f7997547f05f769d74e';
     //nodeEndpoints = ['https://0xcore.orbs.com/services/management-service/status/analytics.json'];
-    nodeEndpoints = ['https://analytics-proxy.herokuapp.com/'];
+    nodeEndpoints = ['https://0xcore-management-direct.global.ssl.fastly.net/analytics'];
     async getDelegatorApi(address: string) {
         try {
             const res = await getDelegator(address, this.ethereumEndpoint);
