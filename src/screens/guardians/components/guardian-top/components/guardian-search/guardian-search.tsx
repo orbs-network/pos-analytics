@@ -26,6 +26,9 @@ export const GuardianSearch = ({ address, section }: StateProps) => {
   const { guardians, selectedGuardian } = useSelector(
     (state: AppState) => state.guardians
   );
+  const { chain } = useSelector(
+    (state: AppState) => state.main
+  );
 
   const dispatch = useDispatch();
   const history: any = useHistory();
@@ -66,7 +69,7 @@ export const GuardianSearch = ({ address, section }: StateProps) => {
         .replace(':section?', section)
         .replace(':address', addressParam)
     );
-    dispatch(getGuardianAction(addressParam));
+    dispatch(getGuardianAction(addressParam, chain));
   };
 
   const selectGuardian = (guardianAddress: string) => {

@@ -3,40 +3,36 @@ import axios from 'axios';
 import { SupportedLanguage } from '../../global/types';
 import { LOCAIZE_API, LOCAIZE_PROJECT_ID } from '../../global/variables';
 class Api {
-    ethereumEndpoint = 'https://mainnet.infura.io/v3/9679dc4f2d724f7997547f05f769d74e';
-    //nodeEndpoints = ['https://0xcore.orbs.com/services/management-service/status/analytics.json'];
-    nodeEndpoints = ['https://0xcore-management-direct.global.ssl.fastly.net/analytics'];
-    async getDelegatorApi(address: string) {
+    async getDelegatorApi(address: string, ethereumEndpoint: string) {
+        
         try {
-            const res = await getDelegator(address, this.ethereumEndpoint);
+            const res = await getDelegator(address, ethereumEndpoint);
             return res;
         } catch (error) {
             return undefined;
         }
     }
 
-    async getGuardianApi(address: string) {
+    async getGuardianApi(address: string, ethereumEndpoint: string) {
+        
         try {
-            const res = await getGuardian(address, this.ethereumEndpoint);
-            return res;
+           return getGuardian(address, ethereumEndpoint);
         } catch (error) {
             return undefined;
         }
     }
 
-    async getGuardiansApi() {
+    async getGuardiansApi(nodeEndpoints: string[]) {
         try {
-            const res = await getGuardians(this.nodeEndpoints);
+           return getGuardians(nodeEndpoints);
 
-            return res;
         } catch (error) {
             return null;
         }
     }
-    async getOverviewApi() {
+    async getOverviewApi(nodeEndpoints: string[], ethereumEndpoint: string) {
         try {
-            const res = await getOverview(this.nodeEndpoints, this.ethereumEndpoint);
-            return res;
+           return getOverview(nodeEndpoints, ethereumEndpoint);
         } catch (error) {
             return null;
         }

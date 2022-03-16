@@ -1,8 +1,8 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import isDev from '../config/env';
 import { LOCAIZE_API_KEY, LOCAIZE_PROJECT_ID } from '../global/variables';
 import Backend from 'i18next-locize-backend';
+const isDev = process.env.NODE_ENV !== 'production'
 
 const locizeOptions = {
     projectId: LOCAIZE_PROJECT_ID,
@@ -23,7 +23,7 @@ i18n.use(initReactI18next)
         interpolation: {
             escapeValue: false
         },
-        debug: isDev()
+        debug: isDev
     });
 
 export default i18n;

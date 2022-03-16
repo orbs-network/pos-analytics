@@ -1,14 +1,14 @@
 import { combineReducers } from 'redux';
 import { connectRouter } from 'connected-react-router';
-import { authReducer } from './auth-reducer';
 import { delegatorReducer } from './delegator';
 import { guardiansReducer } from './guardians';
 import { overviewReducer } from './overview';
+import {mainReducer} from './main'
 
 const rootReducer = (history: any) =>
     combineReducers({
         router: connectRouter(history),
-        auth: authReducer,
+        main: mainReducer,
         delegator: delegatorReducer,
         guardians: guardiansReducer,
         overview: overviewReducer
