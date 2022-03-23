@@ -1,23 +1,24 @@
 {
   "files": {
-    "main.css": "/static/css/main.ec509fc0.chunk.css",
-    "main.js": "/static/js/main.4f5f2087.chunk.js",
-    "main.js.map": "/static/js/main.4f5f2087.chunk.js.map",
+    "main.css": "/static/css/main.c5c61fea.chunk.css",
+    "main.js": "/static/js/main.f4cf4981.chunk.js",
+    "main.js.map": "/static/js/main.f4cf4981.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.c5215a92.js",
     "runtime-main.js.map": "/static/js/runtime-main.c5215a92.js.map",
-    "static/js/2.97905243.chunk.js": "/static/js/2.97905243.chunk.js",
-    "static/js/2.97905243.chunk.js.map": "/static/js/2.97905243.chunk.js.map",
+    "static/js/2.2e0888a6.chunk.js": "/static/js/2.2e0888a6.chunk.js",
+    "static/js/2.2e0888a6.chunk.js.map": "/static/js/2.2e0888a6.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.f143bfe5667743464c287d34415a7809.js": "/precache-manifest.f143bfe5667743464c287d34415a7809.js",
+    "precache-manifest.b3ad9733a9ed04870af8a09fd7d2ed13.js": "/precache-manifest.b3ad9733a9ed04870af8a09fd7d2ed13.js",
     "service-worker.js": "/service-worker.js",
-    "static/css/main.ec509fc0.chunk.css.map": "/static/css/main.ec509fc0.chunk.css.map",
-    "static/js/2.97905243.chunk.js.LICENSE.txt": "/static/js/2.97905243.chunk.js.LICENSE.txt",
+    "static/css/main.c5c61fea.chunk.css.map": "/static/css/main.c5c61fea.chunk.css.map",
+    "static/js/2.2e0888a6.chunk.js.LICENSE.txt": "/static/js/2.2e0888a6.chunk.js.LICENSE.txt",
     "static/media/coins.svg": "/static/media/coins.c698f8c2.svg",
     "static/media/copy.svg": "/static/media/copy.5ae6ccfe.svg",
     "static/media/cpu.svg": "/static/media/cpu.3ee6411f.svg",
     "static/media/delegators-selected.svg": "/static/media/delegators-selected.fe49925e.svg",
     "static/media/delegators.svg": "/static/media/delegators.091557cd.svg",
     "static/media/encrypted.svg": "/static/media/encrypted.fc6fbf16.svg",
+    "static/media/ethereum-menu-logo.svg": "/static/media/ethereum-menu-logo.618f65f7.svg",
     "static/media/getFetch.cjs": "/static/media/getFetch.013f0b90.cjs",
     "static/media/guardians-selected.svg": "/static/media/guardians-selected.e200a932.svg",
     "static/media/guardians.svg": "/static/media/guardians.95190aa2.svg",
@@ -27,6 +28,7 @@
     "static/media/navbar-logo.svg": "/static/media/navbar-logo.863932b6.svg",
     "static/media/overview-selected.svg": "/static/media/overview-selected.57aad41c.svg",
     "static/media/overview.svg": "/static/media/overview.416db91d.svg",
+    "static/media/polygon-menu-logo.svg": "/static/media/polygon-menu-logo.e6f22593.svg",
     "static/media/south-korea.svg": "/static/media/south-korea.7c4a415d.svg",
     "static/media/stellar.svg": "/static/media/stellar.7cf558ab.svg",
     "static/media/token.png": "/static/media/token.51d4bc2c.png",
@@ -36,8 +38,8 @@
   },
   "entrypoints": [
     "static/js/runtime-main.c5215a92.js",
-    "static/js/2.97905243.chunk.js",
-    "static/css/main.ec509fc0.chunk.css",
-    "static/js/main.4f5f2087.chunk.js"
+    "static/js/2.2e0888a6.chunk.js",
+    "static/css/main.c5c61fea.chunk.css",
+    "static/js/main.f4cf4981.chunk.js"
   ]
 }
