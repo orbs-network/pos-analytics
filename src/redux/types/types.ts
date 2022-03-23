@@ -1,11 +1,12 @@
-import { AuthState } from './auth-types';
+import { MainState } from './main-types';
 import { DelegatorState } from './delegator-types';
 import { GuardiansState } from './guardians-types';
 import { OverviewState } from './overview-types';
 
 export const types = {
     SET_DATA_TO_GLOBAL_REDUCER: 'SET_DATA_TO_GLOBAL_REDUCER',
-    LOGIN: 'LOGIN',
+    SET_CHAIN: 'SET_CHAIN',
+    SET_WEB3: 'SET_WEB3',
 
     DELEGATOR: {
         SET_DELEGATOR: 'SET_DELEGATOR',
@@ -32,7 +33,7 @@ export const types = {
 };
 
 export interface AppState {
-    auth: AuthState;
+    main: MainState;
     delegator: DelegatorState;
     guardians: GuardiansState;
     overview: OverviewState;

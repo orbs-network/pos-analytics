@@ -1,21 +1,25 @@
-import React, { FunctionComponent as Component, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { isMobile } from 'react-device-detect';
-import { useDispatch } from 'react-redux';
-import { getGuardiansAction, getOverviewAction } from './redux/actions/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { getGuardiansAction, setChain } from './redux/actions/actions';
 import { RootRouter } from './routes';
 import './scss/app.scss';
+import { AppState } from './redux/types/types';
 
-const App: Component = () => {
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getGuardiansAction());
-  }, []);
+const App = () => {
+    const dispatch = useDispatch();
+    const { chain } = useSelector((state: AppState) => state.main);
 
-  return (
-    <div className={`app ${isMobile ? '' : 'flex-between'}`}>
-      <RootRouter />
-    </div>
-  );
+    useEffect(() => {
+        dispatch(getGuardiansAction(chain));
+        dispatch(setChain(chain));
+    }, []);
+
+    return (
+        <div className={`app ${isMobile ? '' : 'flex-between'}`}>
+            <RootRouter chain={chain} />
+        </div>
+    );
 };
 
 export default App;

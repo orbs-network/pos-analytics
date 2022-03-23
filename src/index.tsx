@@ -4,10 +4,10 @@ import { Provider } from "react-redux"
 import {  ConnectedRouter } from "connected-react-router"
 import * as serviceWorker from "./serviceWorker"
 import { createBrowserHistory } from "history";
-import App from "./app"
 import store from "./redux/store/store"
 import './i18n';
 import { AppLoader } from "./components/app-loader/app-loader"
+import AppWrapper from "./app-wrapper"
 
 const history = createBrowserHistory()
 
@@ -17,7 +17,7 @@ ReactDOM.render(
   <Suspense fallback={<AppLoader />} >
     <Provider store={store}>
       <ConnectedRouter history={history}>
-      <App />
+      <AppWrapper />
       </ConnectedRouter>
     </Provider>
   </Suspense>,

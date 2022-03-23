@@ -1,17 +1,24 @@
 import { Dispatch } from 'redux';
+import { CHAINS } from 'types';
+import { getChainConfig } from 'utils/chain';
 import { api } from '../../services/api';
 import { types } from '../types/types';
 
-export const getOverviewAction = () => async (dispatch: any) => {
-    const overview = await api.getOverviewApi();
-    if (!overview) {
-        return dispatch(setOverviewIsLoading(false));
-    }
+export const getOverviewAction = (chain: CHAINS, web3: any) => async (dispatch: any) => {
+    const { node } = getChainConfig(chain);
 
-    return dispatch({
-        type: types.OVERVIEW.SET_OVERVIEW,
-        payload: overview
-    });
+    try {
+        const overview = await api.getOverviewApi(node, web3);
+
+        dispatch({
+            type: types.OVERVIEW.SET_OVERVIEW,
+            payload: overview
+        });
+    } catch (error) {
+        console.log(error);
+    } finally {
+        dispatch(setOverviewIsLoading(false));
+    }
 };
 
 export const setOverviewStakeChartData = (data: any) => async (dispatch: Dispatch) => {

@@ -1,4 +1,4 @@
-import { Delegator, DelegatorAction } from '@orbs-network/pos-analytics-lib';
+import { Delegator, DelegatorAction, DelegatorInfo } from '@orbs-network/pos-analytics-lib';
 import { TFunction } from 'i18next';
 import { ChartColors, ChartUnit, ChartYaxis, DelegatorActionsTypes, DelegatorsSections } from '../global/enums';
 import { ChartData, MenuOption } from '../global/types';
@@ -28,14 +28,14 @@ export const generateDelegatorsRoutes = (t: TFunction, address: string): MenuOpt
     ];
 };
 
-export const checkIfLoadDeligator = (address?: string, delegator?: Delegator): boolean => {
+export const checkIfLoadDeligator = (address?: string, delegator?: DelegatorInfo): boolean => {
     if (!address) return false;
     if (!delegator) return true;
     if (delegator.address.toLowerCase() === address.toLowerCase()) return false;
     return true;
 };
 
-export const getDelegatorChartData = (unit: ChartUnit, { stake_slices }: Delegator): ChartData => {
+export const getDelegatorChartData = (unit: ChartUnit, { stake_slices }: DelegatorInfo): ChartData => {
     const points = stake_slices
         .map((m) => {
             return {
@@ -83,7 +83,7 @@ export const generateDelegatorsCurrentStake = (event: DelegatorActionsTypes, cur
     }
 };
 
-export const generateDelegatorChartData = (unit: ChartUnit, selectedDelegator?: Delegator): ChartData | undefined => {
+export const generateDelegatorChartData = (unit: ChartUnit, selectedDelegator?: DelegatorInfo): ChartData | undefined => {
     if (!selectedDelegator) return;
     let dates;
     switch (unit) {

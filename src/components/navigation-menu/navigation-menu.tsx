@@ -14,11 +14,12 @@ import { NavigationLink, RouteParams } from '../../global/types';
 import { Languages } from './components/languages/Languages';
 import { isMobile } from 'react-device-detect';
 import { HamburgerButton } from 'react-hamburger-button';
-
+import ChainSelector from '../ChainSelector'
 import './navigation-menu.scss';
 
 export const NavigationMenu: Component<any> = () => {
   const { t } = useTranslation();
+  
 
   const [selectedSection, setSelectedSection] = useState<string | null>(null);
   const [sideMenuOpen, setSideMenuOpen] = useState<boolean>(false);
@@ -59,20 +60,13 @@ export const NavigationMenu: Component<any> = () => {
             <img
               src={Logo}
               alt=""
-              className={`nav-header-navigation-logo ${
-                sideMenuOpen ? 'back-left' : ''
-              }`}
+              className={`nav-header-navigation-logo`}
             />
             <div className="titles">
               <p className="title">ORBS UNIVERSE</p>
               <p className="subtitle">ANALYTICS</p>
             </div>
-            <p
-              className={`x-btn ${sideMenuOpen ? 'd-block' : 'd-none'}`}
-              onClick={() => openSideMenu(!sideMenuOpen)}
-            >
-              X
-            </p>
+      
           </div>
         </div>
       ) : (
@@ -80,6 +74,7 @@ export const NavigationMenu: Component<any> = () => {
           <img src={Logo} alt="" className="navigation-logo" />
           <h4 className="navigation-title">{t('navigation.orbsUniverse')}</h4>
           <h5 className="navigation-sub-title">{t('navigation.analytics')}</h5>
+          <ChainSelector />
           <ul className="navigation-list flex-column">
             {generateNavigationLinks(t).map((link: NavigationLink) => {
               const { name, image, route, selectedImage } = link;
@@ -125,6 +120,7 @@ export const NavigationMenu: Component<any> = () => {
                   </li>
                 );
               })}
+               <ChainSelector />
             </ul>
             <Languages />
           </nav>

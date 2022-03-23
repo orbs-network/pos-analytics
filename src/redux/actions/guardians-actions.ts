@@ -1,12 +1,15 @@
 import { Guardian } from '@orbs-network/pos-analytics-lib';
+import { CHAINS } from 'types';
+import { getChainConfig } from 'utils/chain';
 import { getGuardianColor } from 'utils/overview/overview';
 import { ChartData } from '../../global/types';
 import { api } from '../../services/api';
 import { types } from '../types/types';
 
-export const getGuardianAction = (address: string) => async (dispatch: any) => {
+export const getGuardianAction = (address: string, web3: any) => async (dispatch: any) => {
+  
     dispatch(resetguardian());
-    const guardian = await api.getGuardianApi(address);
+    const guardian = await api.getGuardianApi(address, web3);
     dispatch(setGuardianLoading(false));
     if (!guardian) {
         return dispatch(setGuardianNotFound(true));
@@ -17,8 +20,9 @@ export const getGuardianAction = (address: string) => async (dispatch: any) => {
     });
 };
 
-export const getGuardiansAction = () => async (dispatch: any) => {
-    const guardians = await api.getGuardiansApi();
+export const getGuardiansAction = (chain: CHAINS) => async (dispatch: any) => {
+    const {node} = getChainConfig(chain)
+    const guardians = await api.getGuardiansApi(node);
     if (!guardians) return null;
     const guardiansColors: { [id: string]: string } = {};
     guardians

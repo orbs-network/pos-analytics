@@ -1,43 +1,46 @@
-import { getDelegator, getGuardian, getGuardians, getOverview } from '@orbs-network/pos-analytics-lib';
+import {
+    getDelegator,
+    getGuardian,
+    getGuardians,
+    getOverview,
+    getWeb3,
+    getWeb3Polygon
+} from '@orbs-network/pos-analytics-lib';
 import axios from 'axios';
 import { SupportedLanguage } from '../../global/types';
 import { LOCAIZE_API, LOCAIZE_PROJECT_ID } from '../../global/variables';
 class Api {
-    ethereumEndpoint = 'https://mainnet.infura.io/v3/9679dc4f2d724f7997547f05f769d74e';
-    //nodeEndpoints = ['https://0xcore.orbs.com/services/management-service/status/analytics.json'];
-    nodeEndpoints = ['https://0xcore-management-direct.global.ssl.fastly.net/analytics'];
-    async getDelegatorApi(address: string) {
+    async getDelegatorApi(address: string, web3: any) {
         try {
-            const res = await getDelegator(address, this.ethereumEndpoint);
+            const res = await getDelegator(address, web3);
             return res;
         } catch (error) {
             return undefined;
         }
     }
 
-    async getGuardianApi(address: string) {
+    async getGuardianApi(address: string, web3: any) {
         try {
-            const res = await getGuardian(address, this.ethereumEndpoint);
-            return res;
+            return getGuardian(address, web3);
         } catch (error) {
             return undefined;
         }
     }
 
-    async getGuardiansApi() {
+    async getGuardiansApi(nodeEndpoints: string[]) {
         try {
-            const res = await getGuardians(this.nodeEndpoints);
-
-            return res;
+            return getGuardians(nodeEndpoints);
         } catch (error) {
             return null;
         }
     }
-    async getOverviewApi() {
+    async getOverviewApi(nodeEndpoints: string[], web3: any) {
+                        
         try {
-            const res = await getOverview(this.nodeEndpoints, this.ethereumEndpoint);
-            return res;
+            return getOverview(nodeEndpoints, web3);
         } catch (error) {
+            console.log(error);
+            
             return null;
         }
     }
