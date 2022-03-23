@@ -1,22 +1,27 @@
-import { getDelegator, getGuardian, getGuardians, getOverview } from '@orbs-network/pos-analytics-lib';
+import {
+    getDelegator,
+    getGuardian,
+    getGuardians,
+    getOverview,
+    getWeb3,
+    getWeb3Polygon
+} from '@orbs-network/pos-analytics-lib';
 import axios from 'axios';
 import { SupportedLanguage } from '../../global/types';
 import { LOCAIZE_API, LOCAIZE_PROJECT_ID } from '../../global/variables';
 class Api {
-    async getDelegatorApi(address: string, ethereumEndpoint: string) {
-        
+    async getDelegatorApi(address: string, web3: any) {
         try {
-            const res = await getDelegator(address, ethereumEndpoint);
+            const res = await getDelegator(address, web3);
             return res;
         } catch (error) {
             return undefined;
         }
     }
 
-    async getGuardianApi(address: string, ethereumEndpoint: string) {
-        
+    async getGuardianApi(address: string, web3: any) {
         try {
-           return getGuardian(address, ethereumEndpoint);
+            return getGuardian(address, web3);
         } catch (error) {
             return undefined;
         }
@@ -24,16 +29,18 @@ class Api {
 
     async getGuardiansApi(nodeEndpoints: string[]) {
         try {
-           return getGuardians(nodeEndpoints);
-
+            return getGuardians(nodeEndpoints);
         } catch (error) {
             return null;
         }
     }
-    async getOverviewApi(nodeEndpoints: string[], ethereumEndpoint: string) {
+    async getOverviewApi(nodeEndpoints: string[], web3: any) {
+                        
         try {
-           return getOverview(nodeEndpoints, ethereumEndpoint);
+            return getOverview(nodeEndpoints, web3);
         } catch (error) {
+            console.log(error);
+            
             return null;
         }
     }

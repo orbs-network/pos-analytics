@@ -6,10 +6,10 @@ import { ChartData } from '../../global/types';
 import { api } from '../../services/api';
 import { types } from '../types/types';
 
-export const getGuardianAction = (address: string, chain: CHAINS) => async (dispatch: any) => {
-    const {rpc} = getChainConfig(chain)
+export const getGuardianAction = (address: string, web3: any) => async (dispatch: any) => {
+  
     dispatch(resetguardian());
-    const guardian = await api.getGuardianApi(address, rpc);
+    const guardian = await api.getGuardianApi(address, web3);
     dispatch(setGuardianLoading(false));
     if (!guardian) {
         return dispatch(setGuardianNotFound(true));

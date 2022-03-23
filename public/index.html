@@ -33,26 +33,32 @@
     // the correct url will be waiting in the browser's history for
     // the single page app to route accordingly.
     (function (l) {
-      if (l.search[1] === '/') {
-        var decoded = l.search.slice(1).split('&').map(function (s) {
-          return s.replace(/~and~/g, '&')
-        }).join('?');
-        window.history.replaceState(null, null,
-          l.pathname.slice(0, -1) + decoded + l.hash
-        );
+        if (l.search[1] === "/") {
+          var decoded = l.search
+            .slice(1)
+            .split("&")
+            .map(function (s) {
+              return s.replace(/~and~/g, "&");
+            })
+            .join("?");
+          window.history.replaceState(
+            null,
+            null,
+            l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      })(window.location);
+      // if it's on index.html
+      if (window.sessionStorage.path) {
+        let path = window.sessionStorage.path; // gets the path saved on sessionStorage
+        window.history.pushState(null, null, path); // push it on url
+        window.sessionStorage.removeItem("path"); // removes from session
+      } else {
+        // if it's on 404.html (path doens't exist)
+        let path = window.location.pathname; // get the path url
+        window.sessionStorage.path = path; // saves on sessionStorage
+        window.location.href = "/"; // go to index
       }
-    }(window.location))
-    // if it's on index.html
-    if (window.sessionStorage.path) {
-      let path = window.sessionStorage.path; // gets the path saved on sessionStorage
-      window.history.pushState(null, null, path); // push it on url
-      window.sessionStorage.removeItem('path'); // removes from session
-
-    } else { // if it's on 404.html (path doens't exist)
-      let path = window.location.pathname; // get the path url
-      window.sessionStorage.path = path; // saves on sessionStorage
-      window.location.href = '/'; // go to index
-    }
 
 
   </script>

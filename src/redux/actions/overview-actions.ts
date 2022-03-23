@@ -4,12 +4,11 @@ import { getChainConfig } from 'utils/chain';
 import { api } from '../../services/api';
 import { types } from '../types/types';
 
-export const getOverviewAction = (chain: CHAINS) => async (dispatch: any) => {
-    const { node, rpc } = getChainConfig(chain);
+export const getOverviewAction = (chain: CHAINS, web3: any) => async (dispatch: any) => {
+    const { node } = getChainConfig(chain);
 
     try {
-        const overview = await api.getOverviewApi(node, rpc);
-        console.log({ overview });
+        const overview = await api.getOverviewApi(node, web3);
 
         dispatch({
             type: types.OVERVIEW.SET_OVERVIEW,
@@ -17,7 +16,6 @@ export const getOverviewAction = (chain: CHAINS) => async (dispatch: any) => {
         });
     } catch (error) {
         console.log(error);
-        
     } finally {
         dispatch(setOverviewIsLoading(false));
     }

@@ -7,6 +7,7 @@ import { NavigationMenu } from '../components/navigation-menu/navigation-menu';
 import { Guardians } from '../screens/guardians/guardians';
 import { Overview } from '../screens/overview/overview';
 import { CHAINS } from 'types';
+import ChainSelector from 'components/ChainSelector';
 
 interface Props{
     chain: CHAINS
@@ -15,6 +16,7 @@ export const RootRouter = ({chain}: Props) => {
     return (
         <Router basename={`${process.env.PUBLIC_URL}/${chain}`}>
             <NavigationMenu />
+
             <Switch>
                 <Route exact path="/">
                     <Redirect to={routes.overview.stake} />

@@ -1,0 +1,65 @@
+.chain-selector {
+    width: calc(100% - 30px);
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30px;
+    position: relative;
+    &-open{
+        .chain-selector-current{
+            border-bottom: 1px solid transparent;
+        }
+    }
+    &-current {
+        border: 1px solid white;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        padding-left: 10px;
+        height: 40px;
+        font-size: 14px;
+        cursor: pointer;
+        img {
+            margin-right: 10px;
+            width: 20px;
+            height: 50%;
+        }
+    }
+    &-list {
+        position: absolute;
+        border: 1px solid white;
+        border-top: none;
+        width: 100%;
+        left: 0px;
+        top:calc(100% - 1px);
+
+        li {
+            cursor: pointer;
+            padding-left: 10px;
+            height: 45px;
+
+            font-size: 14px;
+            a {
+                display: flex;
+                align-items: center;
+                height: 100%;
+                color: white;
+                img {
+                    margin-right: 10px;
+                    width: 20px;
+                    height: 50%;
+                }
+            }
+        }
+    }
+
+    .arrow-down {
+        width: 0;
+        height: 0;
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+
+        border-top: 6px solid white;
+        margin-left: auto;
+        margin-right: 10px;
+    }
+}

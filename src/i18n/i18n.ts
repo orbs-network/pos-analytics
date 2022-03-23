@@ -17,11 +17,12 @@ i18n.use(initReactI18next)
         keySeparator: '.',
         backend: locizeOptions,
         defaultNS: 'all',
+        ns:'all',
         react: {
             useSuspense: true
         },
         interpolation: {
-            escapeValue: false
+            escapeValue: true
         },
         debug: isDev
     });

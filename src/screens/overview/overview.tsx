@@ -16,13 +16,12 @@ import { isMobile } from 'react-device-detect';
 
 export const Overview = () => {
   const { overviewData } = useSelector((state: AppState) => state.overview);
-  const { chain } = useSelector((state: AppState) => state.main);
-  console.log(chain);
+  const { chain, web3 } = useSelector((state: AppState) => state.main);
   
   const dispatch = useDispatch();
   useEffect(() => {    
     if (!overviewData) {
-      dispatch(getOverviewAction(chain));
+      dispatch(getOverviewAction(chain, web3));
     }
   }, []);
 

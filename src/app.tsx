@@ -1,25 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { isMobile } from 'react-device-detect';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getGuardiansAction, setChain } from './redux/actions/actions';
 import { RootRouter } from './routes';
-import { getRouterBaseName } from './utils/router';
 import './scss/app.scss';
-
-const chain = getRouterBaseName();
+import { AppState } from './redux/types/types';
 
 const App = () => {
     const dispatch = useDispatch();
-    const [appLoaded, setAppLoaded] = useState(false)
-    useEffect(() => {      
+    const { chain } = useSelector((state: AppState) => state.main);
+
+    useEffect(() => {
         dispatch(getGuardiansAction(chain));
-        dispatch(setChain(chain))
-        setAppLoaded(true)
+        dispatch(setChain(chain));
     }, []);
 
     return (
         <div className={`app ${isMobile ? '' : 'flex-between'}`}>
-           {appLoaded &&  <RootRouter chain={chain} />}
+            <RootRouter chain={chain} />
         </div>
     );
 };
