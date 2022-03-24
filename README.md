@@ -60,5 +60,17 @@ npm run deploy
 * Setting up github pages
 Under setting of repository go to the github pages section and choose the branch `gh-pages` and the root directory and press `Save`. If you also published with a specific domain you can setup the Custom Domain name.
 
+<img src="https://analyticsinsight.b-cdn.net/wp-content/uploads/2022/03/Polygon-MATIC-amp-Terra-LUNA-Price-Drop-Bitgert-Surge-To.jpeg" alt="drawing" width="200"/>
+
+## Polygon network support
+As of march 29 2022, Orbs network supports both ETH and Polygon network.
+
+Staking and reward claiming is now cheaper and faster using the L2 Polygon netwrok.
+
+Analytics UI also supports both
+
+Network selector is on the left in a dropdown underneath the logo.
+
+
 
 
