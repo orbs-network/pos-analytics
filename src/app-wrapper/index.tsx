@@ -15,7 +15,13 @@ function AppWrapper() {
         dispatch(createWeb3(chain));
     }, []);
 
-    return web3 ? <App /> : null;
+    return web3 ? (
+        <App />
+    ) : (
+        <div className="loading"  style={{ display: 'flex', alignItems: 'center', justifyContent:'center', height: '100vh', fontSize: 20 }}>
+            Loading...
+        </div>
+    );
 }
 
 export default AppWrapper;
