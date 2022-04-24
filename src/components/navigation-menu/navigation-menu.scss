@@ -11,6 +11,12 @@
   align-items: center;
   padding-top: 30px;
   color: white;
+
+  .crypto-com-widget {
+     margin-top: 20px;
+     width: 100%;
+  }
+
   &-logo {
     width: 72px;
     height: 70px;
@@ -28,7 +34,7 @@
   }
 
   &-list {
-    margin-top: 140px;
+    margin-top: 10px;
     width: 100%;
     &-item {
       height: 100px;

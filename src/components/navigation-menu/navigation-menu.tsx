@@ -19,7 +19,7 @@ import './navigation-menu.scss';
 
 export const NavigationMenu: Component<any> = () => {
   const { t } = useTranslation();
-  
+
 
   const [selectedSection, setSelectedSection] = useState<string | null>(null);
   const [sideMenuOpen, setSideMenuOpen] = useState<boolean>(false);
@@ -30,8 +30,22 @@ export const NavigationMenu: Component<any> = () => {
   };
 
   useEffect(() => {
+
     const { section } = params;
+
     setSelectedSection(section);
+
+    const script = document.createElement('script');
+
+    script.src = "https://crypto.com/price/static/widget/index.js";
+    script.async = true;
+
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    }
+
   }, [params.section]);
 
   useEffect(() => {
@@ -66,7 +80,7 @@ export const NavigationMenu: Component<any> = () => {
               <p className="title">ORBS UNIVERSE</p>
               <p className="subtitle">ANALYTICS</p>
             </div>
-      
+
           </div>
         </div>
       ) : (
@@ -74,7 +88,19 @@ export const NavigationMenu: Component<any> = () => {
           <img src={Logo} alt="" className="navigation-logo" />
           <h4 className="navigation-title">{t('navigation.orbsUniverse')}</h4>
           <h5 className="navigation-sub-title">{t('navigation.analytics')}</h5>
+
+
           <ChainSelector />
+
+          <div
+              id="crypto-widget-CoinBlocks"
+              data-transparent="true"
+              className="crypto-com-widget"
+              data-theme="dark"
+              data-design="modern"
+              data-coins="orbs"></div>
+
+
           <ul className="navigation-list flex-column">
             {generateNavigationLinks(t).map((link: NavigationLink) => {
               const { name, image, route, selectedImage } = link;
