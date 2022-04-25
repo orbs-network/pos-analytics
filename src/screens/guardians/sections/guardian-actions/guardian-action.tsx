@@ -2,7 +2,7 @@ import { GuardianAction } from '@orbs-network/pos-analytics-lib';
 import React from 'react';
 import moment from 'moment';
 import { useTranslation } from 'react-i18next';
-import { ETHERSCAN_BLOCK_ADDRESS } from 'keys/keys';
+import { ETHERSCAN_BLOCK_ADDRESS, POLYGONSCAN_BLOCK_ADDRESS } from 'keys/keys';
 import { convertToString } from 'utils/number';
 import {
   generateGuardiansActionColors,
@@ -34,6 +34,7 @@ export const GuardianActionComponent = ({ action }: StateProps) => {
     current_stake
   );
   const eventName = t(`guardians.${event}`);
+  const explorer_url = window.location.href.includes('/polygon/') ? POLYGONSCAN_BLOCK_ADDRESS : ETHERSCAN_BLOCK_ADDRESS; // TODO: better way
 
   return (
     <TableRow>
@@ -62,7 +63,7 @@ export const GuardianActionComponent = ({ action }: StateProps) => {
       </TableCell>
       <TableCell align="left">
         <a
-          href={`${ETHERSCAN_BLOCK_ADDRESS}/${block_number}`}
+          href={`${explorer_url}/${block_number}`}
           target="_blank"
           rel="noopener noreferrer"
           className="list-item"
@@ -75,7 +76,7 @@ export const GuardianActionComponent = ({ action }: StateProps) => {
         {!isMobile && (
           <TableCell align="left">
             <p className="list-item">
-              {moment.unix(block_time).format('YYYY-MM-DD HH:mm')}
+              {moment.unix(block_time).format('YYYY-MM-DD')}
             </p>
           </TableCell>
         )}{' '}

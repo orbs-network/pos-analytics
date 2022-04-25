@@ -8,7 +8,7 @@ import {
 } from 'utils/delegators';
 import LinkIcon from 'assets/images/copy.svg';
 import { convertToString } from 'utils/number';
-import { ETHERSCAN_BLOCK_ADDRESS } from 'keys/keys';
+import { ETHERSCAN_BLOCK_ADDRESS, POLYGONSCAN_BLOCK_ADDRESS } from 'keys/keys';
 import moment from 'moment';
 import { useTranslation } from 'react-i18next';
 import { DelegatorActionsTypes } from 'global/enums';
@@ -75,6 +75,7 @@ export const DelegatorActionElement = ({ action }: StateProps) => {
     event as DelegatorActionsTypes,
     current_stake
   );
+  const explorer_url = window.location.href.includes('/polygon/') ? POLYGONSCAN_BLOCK_ADDRESS : ETHERSCAN_BLOCK_ADDRESS; // TODO: better way
 
   return (
     <TableRow>
@@ -89,7 +90,7 @@ export const DelegatorActionElement = ({ action }: StateProps) => {
       </TableCell>
       <TableCell>
         <a
-          href={`${ETHERSCAN_BLOCK_ADDRESS}/${block_number}`}
+          href={`${explorer_url}/${block_number}`}
           target="_blank"
           rel="noopener noreferrer"
           className="list-item"
@@ -100,7 +101,7 @@ export const DelegatorActionElement = ({ action }: StateProps) => {
       {!isMobile && (
         <TableCell>
           <p className="list-item">
-            {moment.unix(block_time).format('YYYY-MM-DD HH:mm')}
+            {moment.unix(block_time).format('YYYY-MM-DD')}
           </p>
         </TableCell>
       )}
