@@ -1631,10 +1631,10 @@
   "resolved" "https://registry.npmjs.org/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz"
   "version" "1.1.3"
 
-"@orbs-network/pos-analytics-lib@^0.8.7":
-  "integrity" "sha512-hlEBtp3sasN5KsrgvqcU+JKZgPyXtDqdxEqxrdGMtVZM8u53hBeE9LbUIL7RB+s2T3qL4M2dteBBT5ws7Rt/6w=="
-  "resolved" "https://registry.npmjs.org/@orbs-network/pos-analytics-lib/-/pos-analytics-lib-0.8.7.tgz"
-  "version" "0.8.7"
+"@orbs-network/pos-analytics-lib@^0.8.8":
+  "integrity" "sha512-WV57fzGxo0zI33yercFUu1yaGAvRxWUofebBTU/4O31y9/kmV4wQIiwHAGm/rwMnfONQrMf6YEyntDRH4Dl5UQ=="
+  "resolved" "https://registry.npmjs.org/@orbs-network/pos-analytics-lib/-/pos-analytics-lib-0.8.8.tgz"
+  "version" "0.8.8"
   dependencies:
     "@makerdao/multicall" "0.11.0"
     "bignumber.js" "^9.0.0"
