@@ -13,7 +13,6 @@
   color: white;
 
   .crypto-com-widget {
-     margin-top: auto;
      width: 100%;
   }
 
@@ -34,10 +33,10 @@
   }
 
   &-list {
-    margin-top: auto;
+   
     width: 100%;
     &-item {
-      height: 100px;
+      height: 90px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 
       &-link {
@@ -47,13 +46,13 @@
         height: 100%;
 
         img {
-          width: 30px;
-          height: 30px;
+          width: 25px;
+          height: 25px;
           object-fit: contain;
           margin-bottom: 10px;
         }
         p {
-          font-size: 18px;
+          font-size: 16px;
           font-weight: 500;
           color: white;
           border: 0px;

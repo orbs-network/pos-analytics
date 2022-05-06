@@ -5,6 +5,7 @@
     margin-top: 30px;
     z-index: 999;
     position: relative;
+    background: #1C1C1C;
     &-open{
         .chain-selector-current{
             border-bottom: 1px solid transparent;
@@ -32,13 +33,17 @@
         width: 100%;
         left: 0px;
         top:calc(100% - 1px);
-
+        background: rgba(28, 28, 28, 1);
         li {
             cursor: pointer;
             padding-left: 10px;
             height: 45px;
-
             font-size: 14px;
+            transition: 0.2s all;
+            
+            &:hover{
+                background: rgba(255, 255, 255, 0.05);
+            }
             a {
                 display: flex;
                 align-items: center;
