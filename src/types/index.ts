@@ -10,4 +10,5 @@ export interface IChain {
     getWeb3: () => void;
     name: string;
     logo: string;
+    explorerUrl: string;
 }

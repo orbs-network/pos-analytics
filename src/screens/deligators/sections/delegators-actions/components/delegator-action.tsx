@@ -1,5 +1,5 @@
 import { DelegatorAction } from '@orbs-network/pos-analytics-lib';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { routes } from 'routes/routes';
 import {
@@ -14,6 +14,9 @@ import { useTranslation } from 'react-i18next';
 import { DelegatorActionsTypes } from 'global/enums';
 import { TableCell, TableRow } from '@material-ui/core';
 import { isMobile } from 'react-device-detect';
+import { getExplorerUrl } from 'utils/chain';
+import { useSelector } from 'react-redux';
+import { AppState } from 'redux/types/types';
 
 interface StateProps {
   action: DelegatorAction;
@@ -30,7 +33,7 @@ export const DelegatorActionElement = ({ action }: StateProps) => {
     additional_info_link,
   } = action;
   const { t } = useTranslation();
-
+  const { chain } = useSelector((state: AppState) => state.main);
   const generateAction = () => {
     const isDeligated = event === DelegatorActionsTypes.DELEGATED;
     const eventName = `delegators.${event}`;
@@ -75,7 +78,7 @@ export const DelegatorActionElement = ({ action }: StateProps) => {
     event as DelegatorActionsTypes,
     current_stake
   );
-  const explorer_url = window.location.href.includes('/polygon/') ? POLYGONSCAN_BLOCK_ADDRESS : ETHERSCAN_BLOCK_ADDRESS; // TODO: better way
+  const explorerUrl = useMemo(() => getExplorerUrl(chain), [chain])
 
   return (
     <TableRow>
@@ -90,7 +93,7 @@ export const DelegatorActionElement = ({ action }: StateProps) => {
       </TableCell>
       <TableCell>
         <a
-          href={`${explorer_url}/${block_number}`}
+          href={`${explorerUrl}/${block_number}`}
           target="_blank"
           rel="noopener noreferrer"
           className="list-item"
