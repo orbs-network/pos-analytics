@@ -1,5 +1,5 @@
 import { GuardianAction } from '@orbs-network/pos-analytics-lib';
-import React from 'react';
+import React, { useMemo } from 'react';
 import moment from 'moment';
 import { useTranslation } from 'react-i18next';
 import { ETHERSCAN_BLOCK_ADDRESS, POLYGONSCAN_BLOCK_ADDRESS } from 'keys/keys';
@@ -13,6 +13,9 @@ import { GuardianActionsTypes } from 'global/enums';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import { isMobile } from 'react-device-detect';
+import { getExplorerUrl } from 'utils/chain';
+import { useSelector } from 'react-redux';
+import { AppState } from 'redux/types/types';
 interface StateProps {
   action: GuardianAction;
 }
@@ -27,6 +30,8 @@ export const GuardianActionComponent = ({ action }: StateProps) => {
     current_stake,
   } = action;
   const { t } = useTranslation();
+  const { chain } = useSelector((state: AppState) => state.main);
+
   const color = generateGuardiansActionColors(event as GuardianActionsTypes);
   const tokenImg = generateGuardiansActionIcon(event as GuardianActionsTypes);
   const currentStake = generateGuardiansCurrentStake(
@@ -34,7 +39,7 @@ export const GuardianActionComponent = ({ action }: StateProps) => {
     current_stake
   );
   const eventName = t(`guardians.${event}`);
-  const explorer_url = window.location.href.includes('/polygon/') ? POLYGONSCAN_BLOCK_ADDRESS : ETHERSCAN_BLOCK_ADDRESS; // TODO: better way
+  const explorerUrl = useMemo(() => getExplorerUrl(chain), [chain])
 
   return (
     <TableRow>
@@ -63,7 +68,7 @@ export const GuardianActionComponent = ({ action }: StateProps) => {
       </TableCell>
       <TableCell align="left">
         <a
-          href={`${explorer_url}/${block_number}`}
+          href={`${explorerUrl}/${block_number}`}
           target="_blank"
           rel="noopener noreferrer"
           className="list-item"
