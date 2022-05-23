@@ -9,19 +9,20 @@ import {
 import axios from 'axios';
 import { SupportedLanguage } from '../../global/types';
 import { LOCAIZE_API, LOCAIZE_PROJECT_ID } from '../../global/variables';
+import {BlockRef} from '../../redux/types/main-types'
 class Api {
-    async getDelegatorApi(address: string, web3: any) {
+    async getDelegatorApi(address: string, web3: any, blockRef: BlockRef) {
         try {
-            const res = await getDelegator(address, web3);
+            const res = await getDelegator(address, web3, undefined, blockRef );
             return res;
         } catch (error) {
             return undefined;
         }
     }
 
-    async getGuardianApi(address: string, web3: any) {
+    async getGuardianApi(address: string, web3: any, blockRef: BlockRef) {
         try {
-            return getGuardian(address, web3);
+            return getGuardian(address, web3, undefined, blockRef);
         } catch (error) {
             return undefined;
         }

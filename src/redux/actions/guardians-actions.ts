@@ -1,4 +1,5 @@
 import { Guardian } from '@orbs-network/pos-analytics-lib';
+import { BlockRef } from 'redux/types/main-types';
 import { CHAINS } from 'types';
 import { getChainConfig } from 'utils/chain';
 import { getGuardianColor } from 'utils/overview/overview';
@@ -6,10 +7,11 @@ import { ChartData } from '../../global/types';
 import { api } from '../../services/api';
 import { types } from '../types/types';
 
-export const getGuardianAction = (address: string, web3: any) => async (dispatch: any) => {
-  
+export const getGuardianAction = (address: string, web3: any, blockRef: BlockRef) => async (dispatch: any, getState: any) => {
+    
+    
     dispatch(resetguardian());
-    const guardian = await api.getGuardianApi(address, web3);
+    const guardian = await api.getGuardianApi(address, web3, blockRef);
     dispatch(setGuardianLoading(false));
     if (!guardian) {
         return dispatch(setGuardianNotFound(true));

@@ -1,14 +1,15 @@
 import { Delegator, DelegatorInfo } from '@orbs-network/pos-analytics-lib';
 import { Dispatch } from 'redux';
+import { BlockRef } from 'redux/types/main-types';
 import { CHAINS } from 'types';
 import { getChainConfig } from 'utils/chain';
 import { ChartData } from '../../global/types';
 import { api } from '../../services/api';
 import { types } from '../types/types';
 
-export const findDelegatorAction = (address: string, web3: any) => async (dispatch: any) => {
+export const findDelegatorAction = (address: string, web3: any, blockRef: BlockRef) => async (dispatch: any) => {
     dispatch(resetDelegator());
-    const delegator = await api.getDelegatorApi(address, web3);
+    const delegator = await api.getDelegatorApi(address, web3, blockRef);
     dispatch(setDelegatorLoading(false));
     if (!delegator) {
         return dispatch(delegatorNotFound(true));

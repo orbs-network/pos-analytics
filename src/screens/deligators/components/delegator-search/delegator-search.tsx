@@ -15,7 +15,7 @@ import './delegator-search.scss';
 
 export const DelegatorSearch = () => {
     const { selectedDelegator, delegatorNotFound } = useSelector((state: AppState) => state.delegator);
-    const { web3 } = useSelector((state: AppState) => state.main);
+    const { web3, blockRef } = useSelector((state: AppState) => state.main);
     const [ref, hasClickedOutside] = useClickOutside();
     const [inputValue, setInputValue] = useState<string>('');
     const dispatch = useDispatch();
@@ -45,7 +45,7 @@ export const DelegatorSearch = () => {
     const findDelegator = (address: string) => {
         const LoadDelegator = checkIfLoadDeligator(address, selectedDelegator);
         if (LoadDelegator) {
-            dispatch(findDelegatorAction(address, web3));
+            dispatch(findDelegatorAction(address, web3, blockRef!!));
         }
     };
 
