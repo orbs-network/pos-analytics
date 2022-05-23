@@ -12,17 +12,13 @@ const initialState: MainState = {
 export const mainReducer = (state = initialState, { payload, type }: any): MainState => {
     switch (type) {
        
-            case types.SET_WEB3:
+            case types.SET_INITIAL_CONFIG:
                 return {
                     ...state,
                     web3: payload.web3,
-                    chain: payload.chain
+                    chain: payload.chain,
+                    blockRef: payload.blockRef
                 };
-                case types.SET_LATEST_BLOCK_REF:
-                    return {
-                        ...state,
-                        blockRef: payload,
-                    };
         default:
             return state;
     }

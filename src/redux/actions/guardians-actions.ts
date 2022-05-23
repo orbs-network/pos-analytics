@@ -9,7 +9,6 @@ import { types } from '../types/types';
 
 export const getGuardianAction = (address: string, web3: any, blockRef: BlockRef) => async (dispatch: any, getState: any) => {
     
-    
     dispatch(resetguardian());
     const guardian = await api.getGuardianApi(address, web3, blockRef);
     dispatch(setGuardianLoading(false));

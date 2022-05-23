@@ -5,9 +5,8 @@ import { OverviewState } from './overview-types';
 
 export const types = {
     SET_DATA_TO_GLOBAL_REDUCER: 'SET_DATA_TO_GLOBAL_REDUCER',
-    SET_CHAIN: 'SET_CHAIN',
-    SET_WEB3: 'SET_WEB3',
-    SET_LATEST_BLOCK_REF:'SET_LATEST_BLOCK_REF',
+    SET_INITIAL_CONFIG: 'SET_INITIAL_CONFIG',
+ 
 
     DELEGATOR: {
         SET_DELEGATOR: 'SET_DELEGATOR',

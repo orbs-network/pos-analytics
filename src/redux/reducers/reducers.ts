@@ -3,7 +3,7 @@ import { connectRouter } from 'connected-react-router';
 import { delegatorReducer } from './delegator';
 import { guardiansReducer } from './guardians';
 import { overviewReducer } from './overview';
-import {mainReducer} from './main'
+import {mainReducer} from './global'
 
 const rootReducer = (history: any) =>
     combineReducers({

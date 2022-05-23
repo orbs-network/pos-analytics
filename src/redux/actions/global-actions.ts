@@ -1,20 +1,10 @@
-import { chains } from 'config';
+import { BlockRef } from 'redux/types/main-types';
 import { types } from 'redux/types/types';
 import { CHAINS } from 'types';
 
-export const createWeb3 = (chain: CHAINS) => async (dispatch: any) => {
-    const chainConfig = chains[chain];
-    if (!chainConfig) {
-        return;
-    }
-    try {
-        const { getWeb3 } = chainConfig;
-
-        const web3 = await getWeb3();
-
-        dispatch({
-            type: types.SET_WEB3,
-            payload: { web3, chain }
-        });
-    } catch (error) {}
+export const setInitialConfiguration = (chain: CHAINS, web3: any, blockRef: BlockRef) => async (dispatch: any) => {
+    dispatch({
+        type: types.SET_INITIAL_CONFIG,
+        payload: { web3, chain, blockRef }
+    });
 };

@@ -1,21 +1,34 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import App from '../app';
 import { getRouterBaseName } from '../utils/router';
-import { useDispatch, useSelector } from 'react-redux';
-import { createWeb3 } from '../redux/actions/global-actions';
-import { AppState } from '../redux/types/types';
+import { useDispatch } from 'react-redux';
+import { setInitialConfiguration } from '../redux/actions/global-actions';
+import { AppLoader } from '../components/app-loader/app-loader';
+import { getRefBlocks } from '@orbs-network/pos-analytics-lib/dist/eth-helpers';
+import { chains } from '../config';
+import { CHAINS } from '../types';
 
 const chain = getRouterBaseName();
 
 function AppWrapper() {
-    const { web3 } = useSelector((state: AppState) => state.main);
+    const [appLoading, setAppLoading] = useState(true);
 
     const dispatch = useDispatch();
+
     useEffect(() => {
-        dispatch(createWeb3(chain));
+        const onLoad = async () => {
+            const chainConfig = chains[chain] || chains[CHAINS.ETHEREUM];
+            const { getWeb3 } = chainConfig;
+
+            const web3 = await getWeb3();
+            const blockRef = await getRefBlocks([web3]);
+            dispatch(setInitialConfiguration(chain, web3, blockRef));
+            setAppLoading(false);
+        };
+        onLoad();
     }, []);
 
-    return web3 ? <App /> : null;
+    return !appLoading ? <App /> : <AppLoader />;
 }
 
 export default AppWrapper;
