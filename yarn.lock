@@ -1631,10 +1631,10 @@
   "resolved" "https://registry.npmjs.org/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz"
   "version" "1.1.3"
 
-"@orbs-network/pos-analytics-lib@^0.8.11":
-  "integrity" "sha512-mjTvX7jbk7BOUYCnYpNe0m6OPUz3W4I4a8D4Q6l5GIAyRvPyRNpzpcDquNBTQH8vzV1Cj2YO8mE48WLoigwrdg=="
-  "resolved" "https://registry.npmjs.org/@orbs-network/pos-analytics-lib/-/pos-analytics-lib-0.8.11.tgz"
-  "version" "0.8.11"
+"@orbs-network/pos-analytics-lib@^0.8.12":
+  "integrity" "sha512-foOaYZf9IxhbZeAXa798SjjVDp0/RJgBTxIifqv/pRzoRG5Zu0HRmLJiEPuQVeRLYvlyZCDre4YdEJrHuH3afA=="
+  "resolved" "https://registry.npmjs.org/@orbs-network/pos-analytics-lib/-/pos-analytics-lib-0.8.12.tgz"
+  "version" "0.8.12"
   dependencies:
     "@makerdao/multicall" "0.11.0"
     "bignumber.js" "^9.0.0"
@@ -8884,9 +8884,9 @@
   "version" "0.10.0"
 
 "node-gyp-build@^4.2.0", "node-gyp-build@^4.3.0":
-  "integrity" "sha512-amJnQCcgtRVw9SvoebO3BKGESClrfXGCUTX9hSn1OuGQTQBOZmVd0Z0OlecpuRksKvbsUqALE8jls/ErClAPuQ=="
-  "resolved" "https://registry.npmjs.org/node-gyp-build/-/node-gyp-build-4.4.0.tgz"
-  "version" "4.4.0"
+  "integrity" "sha512-2iGbaQBV+ITgCz76ZEjmhUKAKVf7xfY1sRl4UiKQspfZMH2h06SyhNsnSVy50cwkFQDGLyif6m/6uFXHkOZ6rg=="
+  "resolved" "https://registry.npmjs.org/node-gyp-build/-/node-gyp-build-4.5.0.tgz"
+  "version" "4.5.0"
 
 "node-int64@^0.4.0":
   "integrity" "sha1-h6kGXNs1XTGC2PlM4RGIuCXGijs="
