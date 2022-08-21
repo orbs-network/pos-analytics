@@ -6,15 +6,26 @@ import { getGuardianColor } from 'utils/overview/overview';
 import { ChartData } from '../../global/types';
 import { api } from '../../services/api';
 import { types } from '../types/types';
+import { getAvgBlockTime, getRefBlock } from './utils';
 
 export const getGuardianAction = (address: string, web3: any, blockRef: BlockRef) => async (dispatch: any, getState: any) => {
     
     dispatch(resetguardian());
     const guardian = await api.getGuardianApi(address, web3, blockRef);
+    if (!guardian) return dispatch(setGuardianNotFound(true));
+
+    // get reference block for calculating estimated block time
+    const refBlock = await getRefBlock(web3, guardian.actions[0].block_number);
+    const avgBlockTime = await getAvgBlockTime(web3, refBlock);
+
+    guardian.actions = guardian.actions.map((action: any) => {
+        return {
+            ...action,
+            block_time: refBlock.time + Math.round((action.block_number - refBlock.number) * avgBlockTime)
+        };
+    });
+
     dispatch(setGuardianLoading(false));
-    if (!guardian) {
-        return dispatch(setGuardianNotFound(true));
-    }
     dispatch({
         type: types.GUARDIAN.SET_GUARDIAN,
         payload: guardian

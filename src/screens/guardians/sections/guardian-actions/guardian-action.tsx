@@ -2,7 +2,6 @@ import { GuardianAction } from '@orbs-network/pos-analytics-lib';
 import React, { useMemo } from 'react';
 import moment from 'moment';
 import { useTranslation } from 'react-i18next';
-import { ETHERSCAN_BLOCK_ADDRESS, POLYGONSCAN_BLOCK_ADDRESS } from 'keys/keys';
 import { convertToString } from 'utils/number';
 import {
   generateGuardiansActionColors,
@@ -81,7 +80,7 @@ export const GuardianActionComponent = ({ action }: StateProps) => {
         {!isMobile && (
           <TableCell align="left">
             <p className="list-item">
-              {moment.unix(block_time).format('YYYY-MM-DD')}
+              {moment.unix(block_time).format('YYYY-MM-DD HH:mm')}
             </p>
           </TableCell>
         )}{' '}

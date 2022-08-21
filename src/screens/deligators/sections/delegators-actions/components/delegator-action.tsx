@@ -8,7 +8,6 @@ import {
 } from 'utils/delegators';
 import LinkIcon from 'assets/images/copy.svg';
 import { convertToString } from 'utils/number';
-import { ETHERSCAN_BLOCK_ADDRESS, POLYGONSCAN_BLOCK_ADDRESS } from 'keys/keys';
 import moment from 'moment';
 import { useTranslation } from 'react-i18next';
 import { DelegatorActionsTypes } from 'global/enums';
@@ -104,7 +103,7 @@ export const DelegatorActionElement = ({ action }: StateProps) => {
       {!isMobile && (
         <TableCell>
           <p className="list-item">
-            {moment.unix(block_time).format('YYYY-MM-DD')}
+            {moment.unix(block_time).format('YYYY-MM-DD HH:mm')}
           </p>
         </TableCell>
       )}
