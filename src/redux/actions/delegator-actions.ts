@@ -4,17 +4,26 @@ import { BlockRef } from 'redux/types/main-types';
 import { ChartData } from '../../global/types';
 import { api } from '../../services/api';
 import { types } from '../types/types';
+import {getAvgBlockTime, getRefBlock} from "./utils";
 
-export const findDelegatorAction = (address: string, web3: any, blockRef: BlockRef) => async (dispatch: any) => {        
-            console.log(web3);
-            
+export const findDelegatorAction = (address: string, web3: any, blockRef: BlockRef) => async (dispatch: any) => {
     dispatch(resetDelegator());
     const delegator = await api.getDelegatorApi(address, web3, blockRef);
-    dispatch(setDelegatorLoading(false));
     if (!delegator) {
         return dispatch(delegatorNotFound(true));
     }
-     dispatch(setDelegator(delegator));
+    // get reference block for calculating estimated block time
+    const refBlock = await getRefBlock(web3, delegator.actions[0].block_number);
+    const avgBlockTime = await getAvgBlockTime(web3, refBlock);
+
+    delegator.actions = delegator.actions.map((action: any) => {
+        return {
+            ...action,
+            block_time: refBlock.time + Math.round((action.block_number - refBlock.number) * avgBlockTime)
+        };
+    });
+    dispatch(setDelegatorLoading(false));
+    dispatch(setDelegator(delegator));
 };
 
 const setDelegator = (delegator: DelegatorInfo) => async (dispatch: any) => {
