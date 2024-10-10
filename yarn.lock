@@ -1658,10 +1658,10 @@
   "resolved" "https://registry.npmjs.org/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz"
   "version" "1.1.3"
 
-"@orbs-network/pos-analytics-lib@^0.9.7":
-  "integrity" "sha512-msuB2J/gpwGQFrkJ89U1IPaEuLjkowvaeJT2upVgE1lud5Ts8t4xSr4heYzykcWJ6+aImVZ+Dp5Zfwzgx7huOA=="
-  "resolved" "https://registry.npmjs.org/@orbs-network/pos-analytics-lib/-/pos-analytics-lib-0.9.7.tgz"
-  "version" "0.9.7"
+"@orbs-network/pos-analytics-lib@^0.9.8":
+  "integrity" "sha512-b2shvSPGa0qWch17GIqLQMhNuZQreOk8YslYZ4LIBNn0FkdXpi62x9Cy12kDYICq8M0MCvtG7gpZ5UEXzULYNg=="
+  "resolved" "https://registry.npmjs.org/@orbs-network/pos-analytics-lib/-/pos-analytics-lib-0.9.8.tgz"
+  "version" "0.9.8"
   dependencies:
     "@makerdao/multicall" "0.11.0"
     "bignumber.js" "^9.0.0"
@@ -1689,9 +1689,9 @@
     "lodash-es" "^4.17.15"
 
 "@scure/base@~1.1.6":
-  "integrity" "sha512-PPNYBslrLNNUQ/Yad37MHYsNQtK67EhWb6WtSvNLLPo7SdVZgkUjD6Dg+5On7zNwmskf8OX7I7Nx5oN+MIWE0g=="
-  "resolved" "https://registry.npmjs.org/@scure/base/-/base-1.1.7.tgz"
-  "version" "1.1.7"
+  "integrity" "sha512-8YKhl8GHiNI/pU2VMaofa2Tor7PJRAjwQLBBuilkJ9L5+13yVbC7JO/wS7piioAvPSwR3JKM1IJ/u4xQzbcXKg=="
+  "resolved" "https://registry.npmjs.org/@scure/base/-/base-1.1.9.tgz"
+  "version" "1.1.9"
 
 "@scure/bip32@1.4.0":
   "integrity" "sha512-sVUpc0Vq3tXCkDGYVWGIZTRfnvu8LoTDaev7vbwh0omSvVORONr960MQWdKqJDCReIEmTj3PAr73O3aoxz7OPg=="
@@ -1913,9 +1913,9 @@
     "@babel/types" "^7.3.0"
 
 "@types/bn.js@^5.1.0", "@types/bn.js@^5.1.1":
-  "integrity" "sha512-V46N0zwKRF5Q00AZ6hWtN0T8gGmDUaUzLWQvHFo5yThtVwK/VCenFY3wXVbOvNfajEpsTfQM4IN9k/d6gUVX3A=="
-  "resolved" "https://registry.npmjs.org/@types/bn.js/-/bn.js-5.1.5.tgz"
-  "version" "5.1.5"
+  "integrity" "sha512-Xh8vSwUeMKeYYrj3cX4lGQgFSF/N03r+tv4AiLl1SucqV+uTQpxRcnM8AkXKHwYP9ZPXOYXRr2KPXpVlIvqh9w=="
+  "resolved" "https://registry.npmjs.org/@types/bn.js/-/bn.js-5.1.6.tgz"
+  "version" "5.1.6"
   dependencies:
     "@types/node" "*"
 
@@ -4606,11 +4606,11 @@
     "ms" "2.1.2"
 
 "debug@^4.1.1":
-  "integrity" "sha512-O/09Bd4Z1fBrU4VzkhFqVgpPzaGbw6Sm9FEkBT1A/YBXQFGuuSxa1dN2nxgxS34JmKXqYx8CZAwEVoJFImUXIg=="
-  "resolved" "https://registry.npmjs.org/debug/-/debug-4.3.6.tgz"
-  "version" "4.3.6"
+  "integrity" "sha512-Er2nc/H7RrMXZBFCEim6TCmMk02Z8vLC2Rbi1KEBggpo0fS6l0S1nnapwmIi3yW/+GOJap1Krg4w0Hg80oCqgQ=="
+  "resolved" "https://registry.npmjs.org/debug/-/debug-4.3.7.tgz"
+  "version" "4.3.7"
   dependencies:
-    "ms" "2.1.2"
+    "ms" "^2.1.3"
 
 "debug@=3.1.0":
   "integrity" "sha512-OX8XqP7/1a9cqkxYw2yXss15f26NKWBpDXQd0/uK/KPqdQhxbPa994hnzjcE2VqQpDslf55723cKPUOGSmMY3g=="
@@ -8920,6 +8920,11 @@
   "resolved" "https://registry.npmjs.org/ms/-/ms-2.1.2.tgz"
   "version" "2.1.2"
 
+"ms@^2.1.3":
+  "integrity" "sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA=="
+  "resolved" "https://registry.npmjs.org/ms/-/ms-2.1.3.tgz"
+  "version" "2.1.3"
+
 "ms@2.0.0":
   "integrity" "sha1-VgiurfwAvmwpAd9fmGF4jeDVl8g="
   "resolved" "https://registry.npmjs.org/ms/-/ms-2.0.0.tgz"
@@ -9076,9 +9081,9 @@
   "version" "0.10.0"
 
 "node-gyp-build@^4.2.0", "node-gyp-build@^4.3.0":
-  "integrity" "sha512-OSs33Z9yWr148JZcbZd5WiAXhh/n9z8TxQcdMhIOlpN9AhWpLfvVFO73+m77bBABQMaY9XSvIa+qk0jlI7Gcaw=="
-  "resolved" "https://registry.npmjs.org/node-gyp-build/-/node-gyp-build-4.8.1.tgz"
-  "version" "4.8.1"
+  "integrity" "sha512-IRUxE4BVsHWXkV/SFOut4qTlagw2aM8T5/vnTsmrHJvVoKueJHRc/JaFND7QDDc61kLYUJ6qlZM3sqTSyx2dTw=="
+  "resolved" "https://registry.npmjs.org/node-gyp-build/-/node-gyp-build-4.8.2.tgz"
+  "version" "4.8.2"
 
 "node-int64@^0.4.0":
   "integrity" "sha1-h6kGXNs1XTGC2PlM4RGIuCXGijs="
