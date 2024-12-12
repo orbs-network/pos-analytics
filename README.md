@@ -10,7 +10,8 @@ State - redux, redux-thunk <br />
 
 The Project works in tandem with [github.com/orbs-network/pos-analytics-lib](orbs-network/pos-analytics-lib). 
 
-In the project directory, you can run:
+> **I order to run this code, you need to create a .env file with `REACT_APP_MAINNET_RPC` and `REACT_APP_POLYGON_RPC` entries.**
+**For Production deployment, don't use a free Infura account!**
 
 ### `yarn start`
 
