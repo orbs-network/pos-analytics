@@ -24,9 +24,9 @@ const GuardiansComponent = () => {
                 <SectionMenu options={generateGuardiansRoutes(t, address || '')} />
                 <div className="screen-section-container">
                     <Route path={routes.guardians.stake} render={() => <GuardiansStake />} />
-                    <Route path={routes.guardians.rewards} render={() => <GuardianRewards />} />
+                    {/* <Route path={routes.guardians.rewards} render={() => <GuardianRewards />} /> */}
                     <Route path={routes.guardians.delegators} render={() => <GuardianDelegators />} />
-                    <Route path={routes.guardians.actions} render={() => <GuardianActions />} />
+                    {/* <Route path={routes.guardians.actions} render={() => <GuardianActions />} /> */}
                     <CheckGuardianAddress addressParam={address} />
                 </div>
             </div>

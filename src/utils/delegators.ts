@@ -15,16 +15,16 @@ export const generateDelegatorsRoutes = (t: TFunction, address: string): MenuOpt
             route: routes.delegators.stake.replace(':address', address),
             key: DelegatorsSections.STAKE
         },
-        {
-            name: t('main.rewards'),
-            route: routes.delegators.rewards.replace(':address', address),
-            key: DelegatorsSections.REWARDS
-        },
-        {
-            name: t('main.actions'),
-            route: routes.delegators.actions.replace(':address', address),
-            key: DelegatorsSections.ACTIONS
-        }
+        // {
+        //     name: t('main.rewards'),
+        //     route: routes.delegators.rewards.replace(':address', address),
+        //     key: DelegatorsSections.REWARDS
+        // },
+        // {
+        //     name: t('main.actions'),
+        //     route: routes.delegators.actions.replace(':address', address),
+        //     key: DelegatorsSections.ACTIONS
+        // }
     ];
 };
 

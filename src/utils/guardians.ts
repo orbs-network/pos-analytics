@@ -17,21 +17,21 @@ export const generateGuardiansRoutes = (t: TFunction, address: string): MenuOpti
             route: routes.guardians.stake.replace(':address', address),
             key: GuardiansSections.STAKE
         },
-        {
-            name: t('main.rewards'),
-            route: routes.guardians.rewards.replace(':address', address),
-            key: GuardiansSections.REWARDS
-        },
+        // {
+        //     name: t('main.rewards'),
+        //     route: routes.guardians.rewards.replace(':address', address),
+        //     key: GuardiansSections.REWARDS
+        // },
         {
             name: t('main.delegetors'),
             route: routes.guardians.delegators.replace(':address', address),
             key: GuardiansSections.DELEGATORS
         },
-        {
-            name: t('main.actions'),
-            route: routes.guardians.actions.replace(':address', address),
-            key: GuardiansSections.ACTIONS
-        }
+        // {
+        //     name: t('main.actions'),
+        //     route: routes.guardians.actions.replace(':address', address),
+        //     key: GuardiansSections.ACTIONS
+        // }
     ];
 };
 
