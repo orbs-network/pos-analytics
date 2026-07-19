@@ -6,9 +6,13 @@ import { ETHERSCAN_BLOCK_ADDRESS, POLYGONSCAN_BLOCK_ADDRESS } from 'keys/keys';
 import { getWeb3PolygonFromRegistry } from 'utils/polygon-web3';
 
 
-// largest eth_getLogs block range our RPC provider accepts, used as the chunk size for
-// history scans; rpcman (Chainstack upstream) rejects ranges of 1M+ blocks
-const GETLOGS_PACE = 500000;
+// largest eth_getLogs block range that never fails on rpcman's upstream pool, used as the
+// chunk size for history scans. The pools differ per chain and are heterogeneous - a chunk
+// size must be reliable on the WEAKEST upstream, because each rejection stalls ~30s.
+// Measured 2026-07-19 on fresh ranges: eth 4M 0/3 failed (full range rejected);
+// polygon 500k 5/5 failed, 250k 2/5, 100k 0/5.
+const GETLOGS_PACE_ETH = 4000000;
+const GETLOGS_PACE_POLYGON = 100000;
 
 const chains: { [key in CHAINS]: IChain} = {
     [CHAINS.ETHEREUM]: {
@@ -17,11 +21,11 @@ const chains: { [key in CHAINS]: IChain} = {
         chainId: 1,
         // pace is passed here (not only assigned after boot) because getWeb3's registry
         // scan already needs chunked getLogs on range-capped providers
-        getWeb3: () => getWeb3(process.env.REACT_APP_MAINNET_RPC!!, true, GETLOGS_PACE),
+        getWeb3: () => getWeb3(process.env.REACT_APP_MAINNET_RPC!!, true, GETLOGS_PACE_ETH),
         name:'Ethereum',
         logo: ethLogo,
         explorerUrl: ETHERSCAN_BLOCK_ADDRESS,
-        getLogsPace: GETLOGS_PACE
+        getLogsPace: GETLOGS_PACE_ETH
     },
     [CHAINS.POLYGON]: {
         rpc: process.env.REACT_APP_POLYGON_RPC!!,
@@ -31,7 +35,7 @@ const chains: { [key in CHAINS]: IChain} = {
         name:'Polygon',
         logo: polygonLogo,
         explorerUrl: POLYGONSCAN_BLOCK_ADDRESS,
-        getLogsPace: GETLOGS_PACE
+        getLogsPace: GETLOGS_PACE_POLYGON
     }
 };
 
