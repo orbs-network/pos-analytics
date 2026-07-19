@@ -31,6 +31,18 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
+### Event cache (feature/speed-cache)
+
+Historical `eth_getLogs` results are cached incrementally in IndexedDB (immutable event
+history is stored per contract/filter; only the tail since the last visit is fetched).
+Toggle per visit via URL param to compare behaviour: `?cache=on`, `?cache=off`,
+`?cache=clear` (wipe stored events). Default is enabled; set `REACT_APP_EVENT_CACHE=off`
+in `.env` to disable by default.
+
+While the matching `@orbs-network/pos-analytics-lib` changes are unpublished, sync a local
+lib build into `node_modules` with `./scripts/sync-local-lib.sh` (expects the lib checkout
+at `../pos-analytics-lib`).
+
 ### `yarn format`
 
 Formats the entire code of the app by prettier rules
