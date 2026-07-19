@@ -39,7 +39,8 @@ function AppWrapper() {
             const { getWeb3 } = chainConfig;
 
             await setupEventCache();
-            const web3 = await getWeb3();
+            const web3: any = await getWeb3();
+            if (chainConfig.getLogsPace) Object.assign(web3, { getLogsPace: chainConfig.getLogsPace });
             const blockRef = await getRefBlocks([web3]);
             dispatch(setInitialConfiguration(chain, web3, blockRef));
             setAppLoading(false);
