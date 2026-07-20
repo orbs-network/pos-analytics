@@ -9,9 +9,10 @@ import { getWeb3PolygonFromRegistry } from 'utils/polygon-web3';
 // largest eth_getLogs block range that never fails on rpcman's upstream pool, used as the
 // chunk size for history scans. The pools differ per chain and are heterogeneous - a chunk
 // size must be reliable on the WEAKEST upstream, because each rejection stalls ~30s.
-// Measured 2026-07-19 on fresh ranges: eth 4M 0/3 failed (full range rejected);
-// polygon 500k 5/5 failed, 250k 2/5, 100k 0/5.
-const GETLOGS_PACE_ETH = 4000000;
+// Measured 2026-07-19 on fresh ranges: polygon 500k 5/5 failed, 250k 2/5, 100k 0/5.
+// ETH: 4M was fine for address-filtered scans, but the global (all-guardians) scans return
+// more results per chunk and failed at 4M; 1M passed - and is only ~14 chunks per filter.
+const GETLOGS_PACE_ETH = 1000000;
 const GETLOGS_PACE_POLYGON = 100000;
 
 const chains: { [key in CHAINS]: IChain} = {
