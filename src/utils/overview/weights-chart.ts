@@ -1,10 +1,9 @@
 import { PosOverview, PosOverviewSlice, PosOverviewData } from 'pos-analytics-graph';
 import { OverviewGuardianDataset, GuardiansChartDatasetObject } from 'global/types';
-import { findIndexInArray } from 'utils/array';
 import { ChartUnit } from '../../global/enums';
 import { OVERVIEW_CHART_LIMIT } from '../../global/variables';
 import { generateWeeks, generateDays } from '../dates';
-import { createGuardianDatasets, getLastSlice, groupDataset } from './overview';
+import { createGuardianDatasets, forEachBucketSlice, getLastSlice } from './overview';
 
 export const generateDataset = (arr: any) => {
     const result = Object.keys(arr).map((key) => {
@@ -27,27 +26,19 @@ const insertGuardiansByDate = (
     unit: ChartUnit,
     guardianDatasets: { [id: string]: OverviewGuardianDataset }
 ) => {
-    const grouped = groupDataset(slices, unit);
     const totalObject: any = {};
-    grouped.forEach(({ slice, date }: any) => {
-        const { data, total_weight, total_effective_stake } = slice;
-        totalObject[date] = total_effective_stake;
-        const total = calcTotalWeight(data)
-        data.forEach(({ weight, address }: PosOverviewData) => {
-          
+    forEachBucketSlice(slices, guardianDatasets, (slice, bucketX, index) => {
+        totalObject[bucketX] = slice.total_effective_stake;
+        const total = calcTotalWeight(slice.data);
+        slice.data.forEach(({ weight, address }: PosOverviewData) => {
             const currDataset = guardianDatasets[address];
             if (!currDataset) return;
-            const index = findIndexInArray(currDataset.data as any, 'x', date);
-            if (index < 0) {
-                return;
-            }
             const percent = (weight / total) * 100;
             const point: GuardiansChartDatasetObject = {
-                group: date,
-                x: date,
+                group: bucketX,
+                x: bucketX,
                 y: percent
             };
-
             currDataset.data.splice(index, 1, point);
         });
     });
