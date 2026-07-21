@@ -1,0 +1,46 @@
+import { defineConfig, loadEnv } from 'vite';
+import react from '@vitejs/plugin-react';
+import tsconfigPaths from 'vite-tsconfig-paths';
+import { nodePolyfills } from 'vite-plugin-node-polyfills';
+
+// The app still reads CRA-style process.env.REACT_APP_* vars; map them via define so
+// no source changes are needed. Absent vars become undefined so code-level defaults
+// (rpcman RPC, hub.orbs.network subgraphs) kick in.
+const CRA_VARS = [
+    'REACT_APP_MAINNET_RPC',
+    'REACT_APP_POLYGON_RPC',
+    'REACT_APP_SUBGRAPH_ETH',
+    'REACT_APP_SUBGRAPH_POLYGON',
+    'REACT_APP_EVENT_CACHE'
+];
+
+export default defineConfig(({ mode }) => {
+    const env = loadEnv(mode, process.cwd(), 'REACT_APP_');
+    const define: Record<string, string> = {
+        // '' matches CRA's PUBLIC_URL for a root-domain homepage (router basename uses it)
+        'process.env.PUBLIC_URL': JSON.stringify(''),
+        'process.env.NODE_ENV': JSON.stringify(mode === 'production' ? 'production' : 'development')
+    };
+    for (const key of CRA_VARS) {
+        define[`process.env.${key}`] = env[key] !== undefined ? JSON.stringify(env[key]) : 'undefined';
+    }
+    return {
+        plugins: [
+            react({ jsxRuntime: 'classic' }), // React 16 has no automatic JSX runtime
+            tsconfigPaths(),
+            nodePolyfills() // web3 1.x needs node globals (Buffer, process, stream, ...)
+        ],
+        define,
+        css: {
+            preprocessorOptions: {
+                // CRA resolved @import 'scss/...' relative to src/
+                scss: { includePaths: ['src'] }
+            }
+        },
+        server: { port: 3001 },
+        build: {
+            outDir: 'build', // keep CRA's output dir so the gh-pages deploy script is unchanged
+            sourcemap: false
+        }
+    };
+});
