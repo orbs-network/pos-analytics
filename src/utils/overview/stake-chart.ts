@@ -3,8 +3,7 @@ import { GuardiansChartDatasetObject, OverviewGuardianDataset } from 'global/typ
 import { ChartUnit } from '../../global/enums';
 import {  OVERVIEW_CHART_LIMIT } from '../../global/variables';
 import {  generateDays, generateWeeks } from '../dates';
-import { createGuardianDatasets, getLastSlice, groupDataset } from './overview';
-import { findIndexInArray } from 'utils/array';
+import { createGuardianDatasets, forEachBucketSlice, getLastSlice } from './overview';
 import _ from 'lodash';
 export const generateDataset = (arr: any) => {
     const result = Object.keys(arr).map((key) => {
@@ -20,19 +19,14 @@ const insertGuardiansByDate = (
     guardianDatasets: { [id: string]: OverviewGuardianDataset }
 ) => {
     const totalObject: any = {};
-    const grouped = groupDataset(slices, unit);
-    grouped.forEach(({ slice, date }: any) => {
-    
-        const { data, total_effective_stake } = slice;
-        totalObject[date] = total_effective_stake;
-        data.forEach(({ effective_stake, address }: PosOverviewData) => {
+    forEachBucketSlice(slices, guardianDatasets, (slice, bucketX, index) => {
+        totalObject[bucketX] = slice.total_effective_stake;
+        slice.data.forEach(({ effective_stake, address }: PosOverviewData) => {
             const currDataset = guardianDatasets[address];
             if (!currDataset) return;
-            const index = findIndexInArray(currDataset.data as any, 'x', date);
-            if (index < 0) return;
             const point: GuardiansChartDatasetObject = {
-                group: date,
-                x: date,
+                group: bucketX,
+                x: bucketX,
                 y: effective_stake
             };
             currDataset.data.splice(index, 1, point);

@@ -1,7 +1,6 @@
 import { PosOverviewData, PosOverviewSlice } from 'pos-analytics-graph';
 import { TFunction } from 'i18next';
 import moment from 'moment';
-import _ from 'lodash';
 import { ChartUnit, OverviewSections } from '../../global/enums';
 import { GuardiansChartDatasetObject, MenuOption, OverviewGuardianDataset } from '../../global/types';
 import { routes } from '../../routes/routes';
@@ -79,40 +78,28 @@ export const getMinDateByUnitOverview = (unit: ChartUnit): Date => {
     }
 };
 
-export const groupDataset = (slices: PosOverviewSlice[], unit: ChartUnit) => {
-    const limit = getMinDateByUnitOverview(unit);
-    const limitMilliseconds = moment(limit).valueOf();
-    const filtered = slices.filter((slice) => {
-        const { block_time } = slice;
-        const blockTimeMilliseconds = moment.unix(block_time).valueOf();
-        return blockTimeMilliseconds > limitMilliseconds;
-    });
-    const mapped = filtered.map((slice) => {
-        let prev: PosOverviewData[] = [];
-        const { block_time, data } = slice;
-        const date = moment.unix(block_time).format(DATE_FORMAT);
-        const { length } = data;
-        if (length > 0) {
-            prev = data;
+// Committee stake/weight is a step function: a chart bucket must show the state
+// carried forward from the most recent committee event at or before it - NOT only
+// events that happened to land on the bucket's exact calendar day (the old behavior,
+// which left random bars empty depending on which weekday the site was opened).
+export const forEachBucketSlice = (
+    slices: PosOverviewSlice[],
+    guardianDatasets: { [id: string]: OverviewGuardianDataset },
+    fill: (slice: PosOverviewSlice, bucketX: string, index: number) => void
+) => {
+    const sample = Object.values(guardianDatasets)[0];
+    if (!sample || !Array.isArray(sample.data)) return;
+    const sorted = [...slices].sort((s1, s2) => s1.block_time - s2.block_time);
+    sample.data.forEach((point: GuardiansChartDatasetObject, index: number) => {
+        const bucketEnd = moment(point.x as string, DATE_FORMAT)
+            .endOf('day')
+            .unix();
+        let latest: PosOverviewSlice | null = null;
+        for (const slice of sorted) {
+            if (slice.block_time > bucketEnd) break;
+            latest = slice;
         }
-        return {
-            ...slice,
-            date,
-            data: length > 0 ? data : prev
-        };
+        if (!latest) return; // bucket predates all known data
+        fill(latest, point.x as string, index);
     });
-    const result = createGroupedDataset(mapped);
-    return result;
-};
-
-const createGroupedDataset = (mapped: any) => {
-    const grouped = _(mapped)
-        .groupBy((x) => x.date)
-        .map((value, key) => {
-            const sorted = value.sort((s1: PosOverviewSlice, s2: PosOverviewSlice) => s1.block_time - s2.block_time);
-            const slice = sorted[sorted.length - 1];
-            return { date: key, slice };
-        })
-        .value();
-    return grouped;
 };
