@@ -62,7 +62,9 @@
         "lint": "eslint --fix '**/*.{js,jsx,ts,tsx}'",
         "predeploy": "npm run build",
         "deploy": "gh-pages -d build",
-        "preview": "vite preview"
+        "preview": "vite preview",
+        "test": "vitest run",
+        "typecheck": "tsc --noEmit"
     },
     "browserslist": {
         "production": [
@@ -85,7 +87,8 @@
         "prettier": "^2.0.5",
         "typescript": "^5.5",
         "vite": "^5",
-        "vite-tsconfig-paths": "^4"
+        "vite-tsconfig-paths": "^4",
+        "vitest": "^4.1.10"
     },
     "peerDependencies": {
         "jquery": "^3.5.1",

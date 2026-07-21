@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import tsconfigPaths from 'vite-tsconfig-paths';
@@ -29,11 +30,11 @@ export default defineConfig(({ mode }) => {
             tsconfigPaths()
         ],
         resolve: {
-            alias: {
-                // web3 1.x source needs a zoo of node polyfills; its browser bundle is
-                // self-contained. Phase 3 (viem) removes web3 entirely.
-                web3: 'web3/dist/web3.min.js'
-            }
+            // web3 1.x source needs a zoo of node polyfills in the browser; its dist
+            // bundle is self-contained. In node (vitest) the source works natively and
+            // the browser bundle does not (references `self`), so only alias for the app.
+            // Phase 3 (viem) removes web3 entirely.
+            alias: mode === 'test' ? undefined : { web3: 'web3/dist/web3.min.js' }
         },
         define,
         optimizeDeps: {
@@ -51,6 +52,10 @@ export default defineConfig(({ mode }) => {
         build: {
             outDir: 'build', // keep CRA's output dir so the gh-pages deploy script is unchanged
             sourcemap: false
+        },
+        test: {
+            environment: 'node',
+            include: ['src/**/*.test.ts']
         }
     };
 });
