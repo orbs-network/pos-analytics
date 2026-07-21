@@ -1,4 +1,4 @@
-const numeral = require('numeral');
+import numeral from 'numeral';
 
 export const formatNumber = (num: number, format: string): string => {
     return numeral(num).format(format);

@@ -1,7 +1,6 @@
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import tsconfigPaths from 'vite-tsconfig-paths';
-import { nodePolyfills } from 'vite-plugin-node-polyfills';
 
 // The app still reads CRA-style process.env.REACT_APP_* vars; map them via define so
 // no source changes are needed. Absent vars become undefined so code-level defaults
@@ -27,10 +26,21 @@ export default defineConfig(({ mode }) => {
     return {
         plugins: [
             react({ jsxRuntime: 'classic' }), // React 16 has no automatic JSX runtime
-            tsconfigPaths(),
-            nodePolyfills() // web3 1.x needs node globals (Buffer, process, stream, ...)
+            tsconfigPaths()
         ],
+        resolve: {
+            alias: {
+                // web3 1.x source needs a zoo of node polyfills; its browser bundle is
+                // self-contained. Phase 3 (viem) removes web3 entirely.
+                web3: 'web3/dist/web3.min.js'
+            }
+        },
         define,
+        optimizeDeps: {
+            esbuildOptions: {
+                define: { global: 'globalThis' }
+            }
+        },
         css: {
             preprocessorOptions: {
                 // CRA resolved @import 'scss/...' relative to src/

@@ -8,6 +8,11 @@
   <meta name="description" content="ORBS PoS analytics - staking, delegations and rewards" />
   <link rel="manifest" href="/manifest.json" />
   <title>Orbs PoS Analytics</title>
+  <script>
+    // minimal node-global shims for legacy web3-era dependencies
+    window.global = window;
+    window.process = window.process || { env: {} };
+  </script>
   <script type="text/javascript">
     // Single Page Apps for GitHub Pages
     // MIT License
