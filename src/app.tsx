@@ -5,6 +5,7 @@ import { getGuardiansAction} from './redux/actions/actions';
 import { RootRouter } from './routes';
 import './scss/app.scss';
 import { AppState } from './redux/types/types';
+import { LoadProgressBar } from './components/load-progress-bar/load-progress-bar';
 
 
 const App = () => {
@@ -19,6 +20,7 @@ const App = () => {
 
     return (
         <div className={`app ${isMobile ? '' : 'flex-between'}`}>
+            <LoadProgressBar />
             <RootRouter chain={chain} />
         </div>
     );
