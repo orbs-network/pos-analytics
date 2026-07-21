@@ -74,5 +74,8 @@ export const getStakeChartData = (
             break;
     }
     if (!dates) return;
+    // generateWeeks/generateDays return limit+1 buckets; the extra oldest one was
+    // invisible before carry-forward filling (its data was filtered out) - drop it
+    dates = dates.slice(0, OVERVIEW_CHART_LIMIT);
     return getOverviewChartData(dates, unit, overviewData, guardiansColors);
 };
