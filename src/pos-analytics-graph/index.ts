@@ -7,7 +7,7 @@
  * identical results.
  */
 
-export { getDelegator } from './delegator';
+export { getDelegator, getDelegatorStakeHistory } from './delegator';
 export { getGuardian, getGuardians, getDelegators } from './guardian';
 export { getAllDelegators, getOverview } from './overview';
 export { getDelegatorStakingRewards, getGuardianStakingRewards } from './rewards';

@@ -6,9 +6,10 @@
 body {
   background: #fafafa;
   font-family: 'Montserrat';
+  min-width: 320px;
   overflow: hidden;
-  padding-top: 15px;
-  padding-left: 15px;
+  overflow-wrap: break-word;
+  word-break: keep-all;
 }
 
 .flex-start {
@@ -51,7 +52,8 @@ body {
 }
 
 .screen {
-  width: calc(100% - 233px);
+  min-width: 0;
+  width: 100%;
   padding-left: 30px;
   padding-right: 30px;
   &-section {
@@ -68,6 +70,45 @@ body {
 
 .app {
   align-items: flex-start;
+  width: 100%;
+
+  &--desktop,
+  &--tablet {
+    display: grid;
+    grid-template-columns: 233px minmax(0, 1fr);
+    height: 100vh;
+  }
+
+  &--desktop {
+    padding: 15px;
+  }
+
+  &--tablet {
+    padding: 12px;
+
+    .screen {
+      height: 100%;
+      overflow-y: auto;
+      padding-left: 20px;
+      padding-right: 8px;
+    }
+
+    .screen-section-container {
+      padding: 24px;
+    }
+  }
+
+  &--mobile {
+    display: block;
+    height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    .screen {
+      padding: 0;
+      width: 100%;
+    }
+  }
 }
 
 .text-overflow {
@@ -206,18 +247,7 @@ input::placeholder {
   }
 }
 
-@media (max-width: 576px) {
-  body {
-    padding: 0;
-    overflow: initial;
-    .screen {
-      width: 100%;
-      padding: 0;
-    }
-  }
-}
-
-@media (max-width: 800px) {
+.app--mobile {
   .search {
     p {
       text-align: center;

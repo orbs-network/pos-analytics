@@ -17,12 +17,29 @@
     top: 160px;
   }
   .search-input-box {
-    width: 500px;
+    max-width: 500px;
+    width: min(500px, 100%);
   }
 }
 
-@media (max-width: 576px) {
-  .delegators {
+@media (min-width: 768px) and (max-width: 1199px) {
+  .app--tablet .delegators {
+    padding-top: 32px;
+
+    .screen-section {
+      margin-top: 32px;
+
+      &-container {
+        height: auto;
+        min-height: 640px;
+      }
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .app--mobile .delegators {
+    padding-top: 0;
     .delegators-top {
       height: auto;
       padding: 20px;

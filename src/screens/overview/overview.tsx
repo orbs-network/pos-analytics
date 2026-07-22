@@ -12,7 +12,6 @@ import { getOverviewAction } from 'redux/actions/actions';
 import { LoadingComponent } from 'components/loading-component/loading-component';
 import { LoaderType } from 'global/enums';
 import './overview.scss';
-import { isMobile } from 'react-device-detect';
 
 export const Overview = () => {
   const { overviewData } = useSelector((state: AppState) => state.overview);
@@ -35,11 +34,7 @@ export const Overview = () => {
             isLoading={!overviewData}
             loaderType={LoaderType.BIG}
           >
-            <div
-              className={`overview-flex ${
-                isMobile ? 'flex-column' : 'flex-start-center'
-              }`}
-            >
+            <div className="overview-flex">
               <Route
                 path={routes.overview.stake}
                 render={() => <OverviewStake />}

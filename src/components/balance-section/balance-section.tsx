@@ -4,7 +4,7 @@ import { LoadingComponent } from '../loading-component/loading-component';
 import TokenImg from '../../assets/images/token.png';
 
 import './balance-section.scss';
-import { isMobile } from 'react-device-detect';
+import { useIsMobileViewport } from 'hooks/useViewport';
 
 interface StateProps {
     isLoading: boolean;
@@ -16,6 +16,7 @@ interface StateProps {
 }
 
 export const BalanceSection = ({ isLoading, text, data, hideImg, customImg, titleImg }: StateProps) => {
+    const isMobile = useIsMobileViewport();
     return (
         <div className="balance-section flex-column">
             {titleImg ? (

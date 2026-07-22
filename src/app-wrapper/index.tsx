@@ -8,14 +8,16 @@ import { AppLoader } from '../components/app-loader/app-loader';
 import { getRefBlocks, configureStreamCache, configurePosAnalyticsSubgraph } from 'pos-analytics-graph';
 import { chains } from '../config';
 import { CHAINS } from '../types';
+import { useTranslation } from 'react-i18next';
+import { getAppInitializationMessages } from './app-status-messages';
 
 const chain = getRouterBaseName();
 
 // Incremental subgraph-stream cache (session memory + IndexedDB). Toggle per visit:
 //   ?cache=off   disable    ?cache=on   enable    ?cache=clear   wipe, then enable
 // Default comes from REACT_APP_EVENT_CACHE ('off' disables); otherwise enabled.
-// Subgraph endpoints default to The Graph Studio dev URLs (subgraph-events.ts);
-// production overrides them via .env, e.g. the Fastly proxy on hub.orbs.network:
+// Subgraph endpoints default to the production Fastly proxy on hub.orbs.network
+// (subgraph-events.ts). Environment variables can optionally override them:
 //   REACT_APP_SUBGRAPH_ETH=https://hub.orbs.network/posAnalyticsSubgraphEth
 //   REACT_APP_SUBGRAPH_POLYGON=https://hub.orbs.network/posAnalyticsSubgraphPol
 const setupSubgraphEndpoints = () => {
@@ -37,26 +39,53 @@ const setupStreamCache = async () => {
 };
 
 function AppWrapper() {
-    const [appLoading, setAppLoading] = useState(true);
+    const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading');
+    const [retrySequence, setRetrySequence] = useState(0);
 
     const dispatch = useDispatch();
+    const { i18n } = useTranslation();
+    const initializationMessages = getAppInitializationMessages(i18n.language);
 
     useEffect(() => {
+        let mounted = true;
         const onLoad = async () => {
+            setStatus('loading');
             const chainConfig = chains[chain] || chains[CHAINS.ETHEREUM];
             const { getWeb3 } = chainConfig;
 
-            setupSubgraphEndpoints();
-            await setupStreamCache();
-            const web3 = await getWeb3();
-            const blockRef = await getRefBlocks([web3]);
-            dispatch(setInitialConfiguration(chain, web3, blockRef));
-            setAppLoading(false);
+            try {
+                setupSubgraphEndpoints();
+                await setupStreamCache();
+                const web3 = await getWeb3();
+                if (!web3) throw new Error('Web3 provider was not created');
+                const blockRef = await getRefBlocks([web3]);
+                if (!blockRef) throw new Error('Reference blocks were not loaded');
+                if (!mounted) return;
+                dispatch(setInitialConfiguration(chain, web3, blockRef));
+                setStatus('ready');
+            } catch (_loadError) {
+                if (!mounted) return;
+                setStatus('error');
+            }
         };
         onLoad();
-    }, []);
+        return () => {
+            mounted = false;
+        };
+    }, [dispatch, retrySequence]);
 
-    return !appLoading ? <App /> : <AppLoader />;
+    if (status === 'ready') return <App />;
+    if (status === 'error') {
+        return (
+            <AppLoader
+                title={initializationMessages.title}
+                description={initializationMessages.description}
+                retryLabel={initializationMessages.retry}
+                onRetry={() => setRetrySequence((value) => value + 1)}
+            />
+        );
+    }
+    return <AppLoader />;
 }
 
 export default AppWrapper;

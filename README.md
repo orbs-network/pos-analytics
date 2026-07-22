@@ -8,10 +8,11 @@ State - redux, redux-thunk <br />
 
 ## Development
 
-The Project works in tandem with [github.com/orbs-network/pos-analytics-lib](orbs-network/pos-analytics-lib). 
+The project includes its analytics data library in `src/pos-analytics-graph`.
 
-> **I order to run this code, you need to create a .env file with `REACT_APP_MAINNET_RPC` and `REACT_APP_POLYGON_RPC` entries.**
-**For Production deployment, don't use a free Infura account!**
+No RPC environment variables are required. By default, the app uses the Orbs rpcman endpoints configured in
+`src/config/index.ts`. `REACT_APP_MAINNET_RPC` and `REACT_APP_POLYGON_RPC` are optional overrides for development or
+alternative RPC providers.
 
 ### `yarn start`
 
@@ -71,7 +72,6 @@ Staking and reward claiming is now cheaper and faster using the L2 Polygon netwr
 Analytics UI also supports both
 
 Network selector is on the left in a dropdown underneath the logo.
-
 
 
 

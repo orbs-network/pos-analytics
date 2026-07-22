@@ -18,9 +18,8 @@ padding-top: 30px;
     }
 }
 
-@media (max-width: 576px) {
-    .delegators-rewards-actions{
+@media (max-width: 767px) {
+    .app--mobile .delegators-rewards-actions{
         padding-top: 0px;
     }
   }
-  

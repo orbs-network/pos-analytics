@@ -1668,18 +1668,6 @@
   resolved "https://registry.npmjs.org/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz"
   integrity sha512-shAmDyaQC4H92APFoIaVDHCx5bStIocgvbwQyxPRrbUY20V1EYTbSDchWbuwlMG3V17cprZhA6+78JfB+3DTPw==
 
-"@orbs-network/pos-analytics-lib@0.9.11":
-  version "0.9.11"
-  resolved "https://registry.yarnpkg.com/@orbs-network/pos-analytics-lib/-/pos-analytics-lib-0.9.11.tgz#8208391d83cadd5f01dba1db6492b3503f8b73f7"
-  integrity sha512-KPtBkaCQdpxVcQ3ICXO7VSuIYeGYY7lUeEGUw3x5ats9FPduK3q1wRC0YAJryFLldd8ktD3d0sU7/69rrP9vGw==
-  dependencies:
-    "@makerdao/multicall" "0.11.0"
-    bignumber.js "^9.0.0"
-    lodash "^4.17.15"
-    ts-retry-promise "^0.5.0"
-    web3 "^1.2.11"
-    xlsx "^0.16.9"
-
 "@popperjs/core@^2.0.0":
   version "2.5.3"
   resolved "https://registry.npmjs.org/@popperjs/core/-/core-2.5.3.tgz"

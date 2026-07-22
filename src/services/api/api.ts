@@ -1,49 +1,79 @@
 import {
+    DelegatorInfo,
+    DelegatorStakeHistoryRange,
     getDelegator,
+    getDelegatorStakeHistory,
     getGuardian,
     getGuardians,
-    getOverview,
-    getWeb3,
-    getWeb3Polygon
+    getOverview
 } from 'pos-analytics-graph';
 import axios from 'axios';
 import { SupportedLanguage } from '../../global/types';
 import { LOCAIZE_API, LOCAIZE_PROJECT_ID } from '../../global/variables';
-import {BlockRef} from '../../redux/types/main-types'
+import { BlockRef } from '../../redux/types/main-types';
+
+type PageApiName =
+    | 'delegator'
+    | 'delegator-current'
+    | 'delegator-stake-history'
+    | 'guardian'
+    | 'guardians'
+    | 'overview';
+
+const runObservedPageApi = async <T, F>(name: PageApiName, request: () => Promise<T>, fallback: F): Promise<T | F> => {
+    const startedAt = Date.now();
+    let succeeded = false;
+    try {
+        const result = await request();
+        succeeded = true;
+        return result;
+    } catch (error) {
+        return fallback;
+    } finally {
+        console.info('[page-api]', {
+            name,
+            durationMs: Math.max(0, Date.now() - startedAt),
+            status: succeeded ? 'success' : 'failure'
+        });
+    }
+};
+
 class Api {
     async getDelegatorApi(address: string, web3: any, blockRef: BlockRef) {
-        try {
-            const res = await getDelegator(address, web3, undefined, blockRef );
-            return res;
-        } catch (error) {
-            return undefined;
-        }
+        return runObservedPageApi('delegator', () => getDelegator(address, web3, undefined, blockRef), undefined);
+    }
+
+    async getDelegatorCurrentApi(address: string, web3: any, blockRef: BlockRef) {
+        return runObservedPageApi(
+            'delegator-current',
+            () => getDelegator(address, web3, { read_history: false }, blockRef),
+            undefined
+        );
+    }
+
+    async getDelegatorStakeHistoryApi(
+        address: string,
+        web3: any,
+        range: DelegatorStakeHistoryRange,
+        current: DelegatorInfo
+    ) {
+        return runObservedPageApi(
+            'delegator-stake-history',
+            () => getDelegatorStakeHistory(address, web3, range, { current }),
+            undefined
+        );
     }
 
     async getGuardianApi(address: string, web3: any, blockRef: BlockRef) {
-        try {
-            return getGuardian(address, web3, undefined, blockRef);
-        } catch (error) {
-            return undefined;
-        }
+        return runObservedPageApi('guardian', () => getGuardian(address, web3, undefined, blockRef), undefined);
     }
 
     async getGuardiansApi(nodeEndpoints: string[]) {
-        try {
-            return getGuardians(nodeEndpoints);
-        } catch (error) {
-            return null;
-        }
+        return runObservedPageApi('guardians', () => getGuardians(nodeEndpoints), null);
     }
+
     async getOverviewApi(nodeEndpoints: string[], web3: any) {
-                        
-        try {
-            return getOverview(nodeEndpoints, web3);
-        } catch (error) {
-            console.log(error);
-            
-            return null;
-        }
+        return runObservedPageApi('overview', () => getOverview(nodeEndpoints, web3), null);
     }
 
     async getSupportedlanguages(): Promise<{ [id: string]: SupportedLanguage } | null> {

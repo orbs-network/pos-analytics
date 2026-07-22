@@ -3,8 +3,8 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { isMobile } from 'react-device-detect';
 import { Link, useParams } from 'react-router-dom';
+import { useIsMobileViewport } from 'hooks/useViewport';
 import {
   DelegatorsSections,
   GuardiansSections,
@@ -36,6 +36,7 @@ interface StateProps {
 }
 
 export const SectionMenu: Component<StateProps> = ({ options }: StateProps) => {
+  const isMobile = useIsMobileViewport();
   const [selected, setSelected] = useState<string | null>(null);
   const params: RouteParams = useParams();
   useEffect(() => {

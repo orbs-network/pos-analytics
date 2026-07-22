@@ -1,13 +1,12 @@
-import { Delegator, DelegatorAction, DelegatorInfo } from 'pos-analytics-graph';
+import { DelegatorAction, DelegatorInfo } from 'pos-analytics-graph';
 import { TFunction } from 'i18next';
 import { ChartColors, ChartUnit, ChartYaxis, DelegatorActionsTypes, DelegatorsSections } from '../global/enums';
 import { ChartData, MenuOption } from '../global/types';
 import { routes } from '../routes/routes';
 import moment from 'moment';
-import { generateDays, generateMonths, generateWeeks, returnDateNumber } from './dates';
-import { STACK_GRAPH_MONTHS_LIMIT } from '../global/variables';
 import { convertToString } from './number';
 import { chartDatasetObjectComparer } from './chart';
+import { getDelegatorHistoryRange } from './delegator-history-range';
 export const generateDelegatorsRoutes = (t: TFunction, address: string): MenuOption[] => {
     return [
         {
@@ -85,37 +84,11 @@ export const generateDelegatorsCurrentStake = (event: DelegatorActionsTypes, cur
 
 export const generateDelegatorChartData = (unit: ChartUnit, selectedDelegator?: DelegatorInfo): ChartData | undefined => {
     if (!selectedDelegator) return;
-    let dates;
-    switch (unit) {
-        case ChartUnit.MONTH:
-            dates = generateMonths(STACK_GRAPH_MONTHS_LIMIT);
-            break;
-        case ChartUnit.WEEK:
-            dates = generateWeeks(STACK_GRAPH_MONTHS_LIMIT);
-            break;
-        case ChartUnit.DAY:
-            dates = generateDays(STACK_GRAPH_MONTHS_LIMIT);
-            break;
-        default:
-            dates = generateWeeks(STACK_GRAPH_MONTHS_LIMIT);
-            break;
-    }
-    if (!dates) return;
-
     return getDelegatorChartData(unit, selectedDelegator);
 };
 
 export const getMinDateByUnit = (unit: ChartUnit): Date => {
-    switch (unit) {
-        case ChartUnit.MONTH:
-            return moment().subtract(STACK_GRAPH_MONTHS_LIMIT, 'month').toDate();
-        case ChartUnit.WEEK:
-            return moment().subtract(STACK_GRAPH_MONTHS_LIMIT, 'weeks').toDate();
-        case ChartUnit.DAY:
-            return moment().subtract(STACK_GRAPH_MONTHS_LIMIT, 'days').toDate();
-        default:
-            return moment().subtract(STACK_GRAPH_MONTHS_LIMIT, 'weeks').toDate();
-    }
+    return new Date(getDelegatorHistoryRange(unit).fromTime * 1000);
 };
 
 export const getDelegatorRewardActions = (actions?: DelegatorAction[]) => {

@@ -10,29 +10,43 @@ const initialState: GuardiansState = {
     guardiansColors: undefined
 };
 
-export const guardiansReducer = (state = initialState, { payload, type }: any): GuardiansState => {
+const isCurrentRequest = (state: GuardiansState, meta?: { requestId?: string }): boolean =>
+    !meta || !meta.requestId || meta.requestId === state.activeGuardianRequestId;
+
+export const guardiansReducer = (state = initialState, { payload, type, meta }: any): GuardiansState => {
     switch (type) {
         case types.GUARDIAN.SET_GUARDIAN:
+            if (!isCurrentRequest(state, meta)) return state;
             return {
                 ...state,
-                selectedGuardian: payload
+                selectedGuardian: payload,
+                guardianNotFound: false,
+                guardianIsLoading: false,
+                activeGuardianRequestId: undefined
             };
-        case types.GUARDIAN.SET_GUARDIANS:
+        case types.GUARDIAN.SET_GUARDIANS: {
             const { guardiansColors, guardians } = payload;
             return {
                 ...state,
                 guardians,
                 guardiansColors
             };
+        }
         case types.GUARDIAN.GUARDIAN_NOT_FOUND:
+            if (!isCurrentRequest(state, meta)) return state;
             return {
                 ...state,
-                guardianNotFound: payload
+                guardianNotFound: payload,
+                selectedGuardian: payload ? undefined : state.selectedGuardian,
+                guardianIsLoading: false,
+                activeGuardianRequestId: undefined
             };
         case types.GUARDIAN.GUARDIAN_LOADING:
+            if (!isCurrentRequest(state, meta)) return state;
             return {
                 ...state,
-                guardianIsLoading: payload
+                guardianIsLoading: payload,
+                activeGuardianRequestId: payload ? state.activeGuardianRequestId : undefined
             };
         case types.GUARDIAN.SET_GUARDIAN_CHART_DATA:
             return {
@@ -45,7 +59,8 @@ export const guardiansReducer = (state = initialState, { payload, type }: any): 
                 guardianChartData: undefined,
                 selectedGuardian: undefined,
                 guardianNotFound: false,
-                guardianIsLoading: true
+                guardianIsLoading: true,
+                activeGuardianRequestId: meta && meta.requestId
             };
         default:
             return state;

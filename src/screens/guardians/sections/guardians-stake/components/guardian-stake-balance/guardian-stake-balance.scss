@@ -1,22 +1,56 @@
 @import 'scss/colors/colors.scss';
 
 .guardian-stake-balance {
+  border-bottom: 1px solid #d9d9d9;
+  column-gap: 0;
+  display: grid !important;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  height: 100px;
   margin-left: auto;
   margin-right: auto;
-  height: 100px;
-  border-bottom: 1px solid #d9d9d9;
-  padding-top: 0px;
   padding-left: 20px;
+  padding-top: 0;
   width: 100%;
+
+  .balance-section {
+    min-width: 0;
+    overflow: hidden;
+    padding-left: 24px;
+    padding-right: 24px;
+
+    .one-line {
+      white-space: normal;
+    }
+  }
 }
 
-@media (max-width: 576px) {
-  .guardian-stake-balance {
-    padding-left: 0;
-    padding-right: 0;
+@media (min-width: 768px) and (max-width: 1199px) {
+  .app--tablet .guardian-stake-balance {
     border-bottom: none;
-    flex-wrap: wrap;
+    grid-template-columns: repeat(5, minmax(200px, 1fr));
+    height: 112px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    padding: 0;
+
+    .balance-section {
+      min-width: 200px;
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .app--mobile .guardian-stake-balance {
+    border-bottom: none;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     height: auto;
-    padding: 15px 15px 0px 15px;
+    padding: 15px 15px 0;
+
+    .balance-section {
+      margin: 0 0 4px;
+      min-width: 0;
+      width: 100%;
+    }
   }
 }

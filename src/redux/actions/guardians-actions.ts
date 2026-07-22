@@ -8,32 +8,65 @@ import { api } from '../../services/api';
 import { types } from '../types/types';
 import { getAvgBlockTime, getRefBlock } from './utils';
 
-export const getGuardianAction = (address: string, web3: any, blockRef: BlockRef) => async (dispatch: any, getState: any) => {
-    
-    dispatch(resetguardian());
-    const guardian = await api.getGuardianApi(address, web3, blockRef);
-    if (!guardian) return dispatch(setGuardianNotFound(true));
+let guardianRequestSequence = 0;
 
-    // get reference block for calculating estimated block time
-    const refBlock = await getRefBlock(web3, guardian.actions[0].block_number);
-    const avgBlockTime = await getAvgBlockTime(web3, refBlock);
+const nextGuardianRequestId = (): string => {
+    guardianRequestSequence += 1;
+    return `guardian-${guardianRequestSequence}`;
+};
 
-    guardian.actions = guardian.actions.map((action: any) => {
-        return {
-            ...action,
-            block_time: refBlock.time + Math.round((action.block_number - refBlock.number) * avgBlockTime)
+const isActiveGuardianRequest = (getState: any, requestId: string): boolean =>
+    getState().guardians.activeGuardianRequestId === requestId;
+
+export const getGuardianAction = (address: string, web3: any, blockRef: BlockRef) => async (
+    dispatch: any,
+    getState: any
+) => {
+    const requestId = nextGuardianRequestId();
+    dispatch(resetguardian(requestId));
+
+    try {
+        const guardian = await api.getGuardianApi(address, web3, blockRef);
+        if (!isActiveGuardianRequest(getState, requestId)) return;
+        if (!guardian) {
+            dispatch(setGuardianNotFound(true, requestId));
+            return;
+        }
+
+        const actions = guardian.actions || [];
+        let actionsWithTimes = actions;
+        if (actions.length > 0) {
+            // get reference block for calculating estimated block time
+            const refBlock = await getRefBlock(web3, actions[0].block_number);
+            if (!isActiveGuardianRequest(getState, requestId)) return;
+            const avgBlockTime = await getAvgBlockTime(web3, refBlock);
+            if (!isActiveGuardianRequest(getState, requestId)) return;
+
+            actionsWithTimes = actions.map((action: any) => {
+                return {
+                    ...action,
+                    block_time: refBlock.time + Math.round((action.block_number - refBlock.number) * avgBlockTime)
+                };
+            });
+        }
+        const guardianWithActionTimes = {
+            ...guardian,
+            actions: actionsWithTimes
         };
-    });
 
-    dispatch(setGuardianLoading(false));
-    dispatch({
-        type: types.GUARDIAN.SET_GUARDIAN,
-        payload: guardian
-    });
+        dispatch({
+            type: types.GUARDIAN.SET_GUARDIAN,
+            payload: guardianWithActionTimes,
+            meta: { requestId }
+        });
+    } catch (_error) {
+        if (!isActiveGuardianRequest(getState, requestId)) return;
+        dispatch(setGuardianNotFound(true, requestId));
+    }
 };
 
 export const getGuardiansAction = (chain: CHAINS) => async (dispatch: any) => {
-    const {node} = getChainConfig(chain)
+    const { node } = getChainConfig(chain);
     const guardians = await api.getGuardiansApi(node);
     if (!guardians) return null;
     const guardiansColors: { [id: string]: string } = {};
@@ -48,17 +81,19 @@ export const getGuardiansAction = (chain: CHAINS) => async (dispatch: any) => {
     });
 };
 
-export const setGuardianLoading = (value: boolean) => async (dispatch: any) => {
+export const setGuardianLoading = (value: boolean, requestId?: string) => async (dispatch: any) => {
     return dispatch({
         type: types.GUARDIAN.GUARDIAN_LOADING,
-        payload: value
+        payload: value,
+        meta: requestId ? { requestId } : undefined
     });
 };
 
-export const setGuardianNotFound = (value: boolean) => async (dispatch: any) => {
+export const setGuardianNotFound = (value: boolean, requestId?: string) => async (dispatch: any) => {
     return dispatch({
         type: types.GUARDIAN.GUARDIAN_NOT_FOUND,
-        payload: value
+        payload: value,
+        meta: requestId ? { requestId } : undefined
     });
 };
 
@@ -69,8 +104,9 @@ export const setGuardianChartData = (chartData: ChartData | undefined) => async 
     });
 };
 
-export const resetguardian = () => async (dispatch: any) => {
+export const resetguardian = (requestId?: string) => async (dispatch: any) => {
     return dispatch({
-        type: types.GUARDIAN.RESET_GUARDIAN
+        type: types.GUARDIAN.RESET_GUARDIAN,
+        meta: requestId ? { requestId } : undefined
     });
 };
