@@ -14,5 +14,7 @@ export { getDelegatorStakingRewards, getGuardianStakingRewards } from './rewards
 export { getStartOfDelegationBlock, getStartOfPosBlock, getStartOfRewardsBlock, getWeb3, getWeb3Polygon, getRefBlocks } from './eth-helpers';
 export { configurePosAnalyticsSubgraph, getSubgraphHeadBlock } from './subgraph-events';
 export { configureStreamCache } from './stream-cache';
+export { getLoadProgress } from './load-progress';
+export type { LoadProgress } from './load-progress';
 
 export * from './model';
