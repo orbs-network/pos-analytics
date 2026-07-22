@@ -42,6 +42,7 @@ body {
 }
 
 :root {
+  --mobile-header-height: 77px;
   --transition: 0.2s all;
 }
 
@@ -101,10 +102,12 @@ body {
   &--mobile {
     display: block;
     height: 100vh;
-    overflow-x: hidden;
-    overflow-y: auto;
+    overflow: hidden;
 
     .screen {
+      height: calc(100vh - var(--mobile-header-height));
+      overflow-x: hidden;
+      overflow-y: auto;
       padding: 0;
       width: 100%;
     }

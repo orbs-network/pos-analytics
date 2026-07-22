@@ -1,14 +1,16 @@
+// @vitest-environment jsdom
 import React from 'react';
 import { fireEvent, render, wait } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { vi } from 'vitest';
 import { OverviewStakeGuadians } from './overview-guardians';
 
-jest.mock('react-redux', () => ({
-    useSelector: jest.fn()
+vi.mock('react-redux', () => ({
+    useSelector: vi.fn()
 }));
 
-jest.mock('react-i18next', () => ({
+vi.mock('react-i18next', () => ({
     useTranslation: () => ({
         t: (key: string) => key,
         i18n: { language: 'ko' }
@@ -18,13 +20,13 @@ jest.mock('react-i18next', () => ({
 describe('OverviewStakeGuadians', () => {
     it('keeps guardian navigation on the name and copies from a separate localized button', async () => {
         const address = '0xabcdef1234567890';
-        const writeText = jest.fn().mockResolvedValue(undefined);
+        const writeText = vi.fn().mockResolvedValue(undefined);
         Object.defineProperty(navigator, 'clipboard', {
             configurable: true,
             value: { writeText }
         });
 
-        (useSelector as jest.Mock).mockImplementation((selector) => selector({
+        vi.mocked(useSelector).mockImplementation((selector) => selector({
             overview: {
                 overviewData: {
                     slices: [{ data: [{ address, name: 'Guardian One' }] }]

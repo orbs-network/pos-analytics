@@ -1,13 +1,15 @@
+// @vitest-environment jsdom
 import React from 'react';
 import { fireEvent, render, wait } from '@testing-library/react';
 import { useSelector } from 'react-redux';
+import { vi } from 'vitest';
 import { GuardianInfo } from './guardian-info';
 
-jest.mock('react-redux', () => ({
-    useSelector: jest.fn()
+vi.mock('react-redux', () => ({
+    useSelector: vi.fn()
 }));
 
-jest.mock('react-i18next', () => ({
+vi.mock('react-i18next', () => ({
     useTranslation: () => ({
         t: (key: string) => key,
         i18n: { language: 'ko-KR' }
@@ -17,13 +19,13 @@ jest.mock('react-i18next', () => ({
 describe('GuardianInfo', () => {
     it('renders four uniform information items and copies the exact node address', async () => {
         const nodeAddress = '0xe61e7f9a1231396a394271da509ee6f82113ae56';
-        const writeText = jest.fn().mockResolvedValue(undefined);
+        const writeText = vi.fn().mockResolvedValue(undefined);
         Object.defineProperty(navigator, 'clipboard', {
             configurable: true,
             value: { writeText }
         });
 
-        (useSelector as jest.Mock).mockImplementation((selector) => selector({
+        vi.mocked(useSelector).mockImplementation((selector) => selector({
             guardians: {
                 guardianIsLoading: false,
                 selectedGuardian: {

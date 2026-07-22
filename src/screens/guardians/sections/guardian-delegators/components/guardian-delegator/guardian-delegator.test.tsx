@@ -1,16 +1,18 @@
+// @vitest-environment jsdom
 import React from 'react';
 import { fireEvent, render, wait } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
+import { vi } from 'vitest';
 import { GuardianDelegatorElement } from './guardian-delegator';
 
-jest.mock('react-i18next', () => ({
+vi.mock('react-i18next', () => ({
     useTranslation: () => ({ i18n: { language: 'ja' } })
 }));
 
 describe('GuardianDelegatorElement', () => {
     it('keeps delegator navigation on the address and copies from a separate localized button', async () => {
         const address = '0x1234567890abcdef';
-        const writeText = jest.fn().mockResolvedValue(undefined);
+        const writeText = vi.fn().mockResolvedValue(undefined);
         Object.defineProperty(navigator, 'clipboard', {
             configurable: true,
             value: { writeText }

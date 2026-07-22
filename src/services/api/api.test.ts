@@ -1,30 +1,29 @@
-/* eslint-env jest */
-
+import { Mock, MockInstance, vi } from 'vitest';
 import { getDelegator, getDelegatorStakeHistory, getGuardian, getGuardians, getOverview } from 'pos-analytics-graph';
 import { api } from './api';
 
-jest.mock('pos-analytics-graph', () => ({
-    getDelegator: jest.fn(),
-    getDelegatorStakeHistory: jest.fn(),
-    getGuardian: jest.fn(),
-    getGuardians: jest.fn(),
-    getOverview: jest.fn(),
-    getWeb3: jest.fn(),
-    getWeb3Polygon: jest.fn()
+vi.mock('pos-analytics-graph', () => ({
+    getDelegator: vi.fn(),
+    getDelegatorStakeHistory: vi.fn(),
+    getGuardian: vi.fn(),
+    getGuardians: vi.fn(),
+    getOverview: vi.fn(),
+    getWeb3: vi.fn(),
+    getWeb3Polygon: vi.fn()
 }));
 
-const mockedGetDelegator = getDelegator as jest.Mock;
-const mockedGetDelegatorStakeHistory = getDelegatorStakeHistory as jest.Mock;
-const mockedGetGuardian = getGuardian as jest.Mock;
-const mockedGetGuardians = getGuardians as jest.Mock;
-const mockedGetOverview = getOverview as jest.Mock;
+const mockedGetDelegator = getDelegator as Mock;
+const mockedGetDelegatorStakeHistory = getDelegatorStakeHistory as Mock;
+const mockedGetGuardian = getGuardian as Mock;
+const mockedGetGuardians = getGuardians as Mock;
+const mockedGetOverview = getOverview as Mock;
 
 describe('page API contracts and observations', () => {
-    let infoSpy: jest.SpyInstance;
+    let infoSpy: MockInstance;
 
     beforeEach(() => {
-        jest.clearAllMocks();
-        infoSpy = jest.spyOn(console, 'info').mockImplementation(() => undefined);
+        vi.clearAllMocks();
+        infoSpy = vi.spyOn(console, 'info').mockImplementation(() => undefined);
     });
 
     afterEach(() => {

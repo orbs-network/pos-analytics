@@ -21,6 +21,7 @@ import { feeBootstrapRewardAbi } from './abis/feebootstrap';
 import { bigToNumber, DECIMALS, getIpFromHex } from './helpers';
 import { registryAbi } from './abis/registry';
 import { readSubgraphStream, rowToEvent, specForTopic, specsForContract } from './subgraph-events';
+import { trackLoadUnit } from './load-progress';
 
 export enum Topics {
     Staked = '0x1449c6dd7851abc30abf37f57715f492010519147cc2652fbc38202c18a6ee90',
@@ -214,7 +215,7 @@ export async function readBalances(addresses:string[], web3:any) {
             returns: [[address, (v: BigNumber.Value) => bigToNumber(new BigNumber(v))]]
         });
     }
-    const r = await aggregate(calls, config);
+    const r = await trackLoadUnit<any>(() => aggregate(calls, config));
     return r.results.transformed;
 }
 
@@ -231,7 +232,7 @@ export async function readStakes(addresses:string[], web3:any) {
             returns: [[address, (v: BigNumber.Value) => bigToNumber(new BigNumber(v))]]
         });
     }
-    const r = await aggregate(calls, config);
+    const r = await trackLoadUnit<any>(() => aggregate(calls, config));
     return r.results.transformed;
 }
 
@@ -257,7 +258,7 @@ export async function readOverviewDataFromState(web3:any) {
         },
     ];
 
-    const r = await aggregate(calls, config);
+    const r = await trackLoadUnit<any>(() => aggregate(calls, config));
     return { block: multicallToBlockInfo(r),
              totalStake: bigToNumber(r.results.transformed['staked'].minus(r.results.transformed['uncapped']))};
 }
@@ -307,7 +308,7 @@ async function readDelegatorState(address:string, web3:any) {
         }
     ];
 
-    const r = await aggregate(calls, config);
+    const r = await trackLoadUnit<any>(() => aggregate(calls, config));
     return { block: multicallToBlockInfo(r), data: r.results.transformed};
 }
 
@@ -442,7 +443,7 @@ async function readGuardianState(address:string, web3:any) {
         }
     ];
 
-    const r = await aggregate(calls, config);
+    const r = await trackLoadUnit<any>(() => aggregate(calls, config));
     return { block: multicallToBlockInfo(r), data: r.results.transformed};
 }
 

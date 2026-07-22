@@ -1,0 +1,33 @@
+.load-progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 18px;
+    background: #66707e;
+    isolation: isolate;
+    pointer-events: none;
+    z-index: 2147483647;
+
+    &__fill {
+        height: 100%;
+        background: #2f80ed;
+        transition: width 0.3s linear;
+    }
+
+    &__label {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-size: 11px;
+        line-height: 18px;
+        color: #fff;
+        pointer-events: none;
+    }
+}
+
+.load-progress-bar--mobile {
+    top: var(--mobile-header-height);
+}

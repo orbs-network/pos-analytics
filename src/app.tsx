@@ -5,6 +5,7 @@ import { RootRouter } from './routes';
 import './scss/app.scss';
 import { AppState } from './redux/types/types';
 import { useViewportMode } from './hooks/useViewport';
+import { LoadProgressBar } from './components/load-progress-bar/load-progress-bar';
 
 
 const App = () => {
@@ -20,6 +21,7 @@ const App = () => {
 
     return (
         <div className={`app app--${viewportMode}`} data-viewport-mode={viewportMode}>
+            <LoadProgressBar viewportMode={viewportMode} />
             <RootRouter chain={chain} />
         </div>
     );

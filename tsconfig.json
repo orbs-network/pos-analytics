@@ -1,8 +1,8 @@
 {
     "compilerOptions": {
         "baseUrl": "./src",
-        "rootDir": "./src",
-        "target": "es5",
+        "target": "ES2018",
+        "useDefineForClassFields": true,
         "lib": ["dom", "dom.iterable", "esnext"],
         "allowJs": true,
         "skipLibCheck": true,
@@ -10,16 +10,13 @@
         "allowSyntheticDefaultImports": true,
         "strict": true,
         "forceConsistentCasingInFileNames": true,
-        "module": "esnext",
-        "moduleResolution": "node",
+        "module": "ESNext",
+        "moduleResolution": "bundler",
         "resolveJsonModule": true,
         "isolatedModules": true,
         "noEmit": true,
-        "jsx": "react"
+        "jsx": "react",
+        "types": ["vite/client", "vitest/globals", "node"]
     },
-    "exclude": ["node_modules"],
-    "include": [
-        "./src/**/*.ts",
-        "./src/**/*.d.ts"
-    ]
+    "include": ["src", "vite.config.ts"]
 }

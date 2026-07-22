@@ -1,51 +1,63 @@
+// @vitest-environment jsdom
 import React from 'react';
 import { fireEvent, render, wait } from '@testing-library/react';
+import { vi } from 'vitest';
 
-const mockDispatch = jest.fn();
-const mockGetWeb3 = jest.fn();
-const mockGetRefBlocks = jest.fn();
-const mockStoreClear = jest.fn();
+const { mockDispatch, mockGetWeb3, mockGetRefBlocks, mockStoreClear } = vi.hoisted(() => ({
+    mockDispatch: vi.fn(),
+    mockGetWeb3: vi.fn(),
+    mockGetRefBlocks: vi.fn(),
+    mockStoreClear: vi.fn()
+}));
 
-jest.mock('react-redux', () => ({
+vi.mock('react-redux', () => ({
     useDispatch: () => mockDispatch
 }));
 
-jest.mock('react-i18next', () => ({
+vi.mock('react-i18next', () => ({
     useTranslation: () => ({ i18n: { language: 'ko' } })
 }));
 
-jest.mock('localforage', () => ({
-    createInstance: () => ({ clear: mockStoreClear })
+vi.mock('localforage', () => ({
+    default: {
+        createInstance: () => ({ clear: mockStoreClear })
+    }
 }));
 
-jest.mock('../utils/router', () => ({
+vi.mock('../utils/router', () => ({
     getRouterBaseName: () => 'ethereum'
 }));
 
-jest.mock('../config', () => ({
+vi.mock('../config', () => ({
     chains: {
         ethereum: { getWeb3: () => mockGetWeb3() },
         polygon: { getWeb3: () => mockGetWeb3() }
     }
 }));
 
-jest.mock('pos-analytics-graph', () => ({
+vi.mock('pos-analytics-graph', () => ({
     getRefBlocks: (...args: any[]) => mockGetRefBlocks(...args),
-    configureStreamCache: jest.fn(),
-    configurePosAnalyticsSubgraph: jest.fn()
+    configureStreamCache: vi.fn(),
+    configurePosAnalyticsSubgraph: vi.fn()
 }));
 
-jest.mock('../app', () => () => <div data-testid="ready-app">ready</div>);
+vi.mock('../app', () => ({
+    default: () => <div data-testid="ready-app">ready</div>
+}));
 
 import AppWrapper from './index';
 
 describe('AppWrapper initialization', () => {
     beforeEach(() => {
-        jest.clearAllMocks();
+        vi.clearAllMocks();
         mockStoreClear.mockResolvedValue(undefined);
     });
 
     it('shows a localized retry action after failure and recovers without exposing the raw error', async () => {
+        const web3 = { eth: {} };
+        const blockRef = { 1: { number: 100, time: 200 } };
+        mockGetWeb3.mockResolvedValue(web3);
+        mockGetRefBlocks.mockResolvedValue(blockRef);
         mockGetWeb3.mockRejectedValueOnce(new Error('private provider URL must not be rendered'));
         const view = render(<AppWrapper />);
 
@@ -54,14 +66,10 @@ describe('AppWrapper initialization', () => {
         expect(view.getByText('연결 상태를 확인한 후 잠시 뒤 다시 시도해 주세요.')).toBeTruthy();
         expect(view.queryByText(/private provider URL/)).toBeNull();
 
-        const web3 = { eth: {} };
-        const blockRef = { 1: { number: 100, time: 200 } };
-        mockGetWeb3.mockResolvedValueOnce(web3);
-        mockGetRefBlocks.mockResolvedValueOnce(blockRef);
         fireEvent.click(view.getByText('다시 시도'));
 
+        await wait(() => expect(mockGetWeb3).toHaveBeenCalledTimes(2));
         await wait(() => expect(view.getByTestId('ready-app')).toBeTruthy());
-        expect(mockGetWeb3).toHaveBeenCalledTimes(2);
         expect(mockGetRefBlocks).toHaveBeenCalledTimes(1);
         expect(mockGetRefBlocks).toHaveBeenCalledWith([web3]);
         expect(mockDispatch).toHaveBeenCalledTimes(1);

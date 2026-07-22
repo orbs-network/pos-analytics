@@ -21,6 +21,7 @@ import {
     streamCacheSet,
     streamCacheTimeKey
 } from './stream-cache';
+import { progressPageFetched, trackLoadUnit } from './load-progress';
 import { stakeAbi } from './abis/stake';
 import { delegationAbi } from './abis/delegation';
 import { rewardsAbi } from './abis/rewards';
@@ -213,6 +214,7 @@ async function readStreamRange(endpoint: string, spec: EventSpec, addressField: 
         if (lastId) where.push(`id_gt: "${lastId}"`);
         const query = `{ ${spec.plural}(first: ${PAGE_SIZE}, orderBy: id, orderDirection: asc, where: {${where.join(', ')}}) { id ${spec.fields.join(' ')} blockNumber blockTimestamp transactionHash logIndex txIndex } }`;
         const data = await postQuery(endpoint, query);
+        progressPageFetched();
         const rows = data[spec.plural];
         for (const row of rows) out.push(row);
         if (rows.length < PAGE_SIZE) break;
@@ -243,6 +245,7 @@ async function readStreamTimeRange(endpoint: string, spec: EventSpec, addressFie
         if (lastId) where.push(`id_gt: "${lastId}"`);
         const query = `{ ${spec.plural}(first: ${PAGE_SIZE}, orderBy: id, orderDirection: asc, where: {${where.join(', ')}}) { id ${spec.fields.join(' ')} blockNumber blockTimestamp transactionHash logIndex txIndex } }`;
         const data = await postQuery(endpoint, query);
+        progressPageFetched();
         const rows = data[spec.plural];
         for (const row of rows) out.push(row);
         if (rows.length < PAGE_SIZE) break;
@@ -273,6 +276,11 @@ function isTimeCacheEntry(entry: any): entry is TimeStreamCacheEntry {
 // Entity ids are de-duplicated whenever windows overlap.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function readSubgraphStreamByTime(chainId: number, spec: EventSpec, q: TimeStreamQuery): Promise<any[]> {
+    return trackLoadUnit(() => readSubgraphStreamByTimeCached(chainId, spec, q));
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function readSubgraphStreamByTimeCached(chainId: number, spec: EventSpec, q: TimeStreamQuery): Promise<any[]> {
     const fromTime = Math.floor(q.fromTime);
     const toTime = Math.floor(q.toTime);
     const toBlock = Math.floor(q.toBlock);
@@ -366,6 +374,11 @@ export async function readSubgraphStreamByTime(chainId: number, spec: EventSpec,
 // a plain full read.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function readSubgraphStream(chainId: number, spec: EventSpec, q: StreamQuery): Promise<any[]> {
+    return trackLoadUnit(() => readSubgraphStreamCached(chainId, spec, q));
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function readSubgraphStreamCached(chainId: number, spec: EventSpec, q: StreamQuery): Promise<any[]> {
     if (!isStreamCacheEnabled()) {
         return readSubgraphStreamLive(chainId, spec, q);
     }

@@ -1,9 +1,11 @@
+// @vitest-environment jsdom
 import React from 'react';
 import { fireEvent, render, wait } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
+import { vi } from 'vitest';
 import { AddressCopyButton, getAddressCopyMessages } from './address-copy-button';
 
-jest.mock('react-i18next', () => ({
+vi.mock('react-i18next', () => ({
     useTranslation: () => ({ i18n: { language: 'en-US' } })
 }));
 
@@ -40,10 +42,10 @@ describe('AddressCopyButton', () => {
     });
 
     it('uses the exact address and clears its two-second completion timer on unmount', async () => {
-        jest.useFakeTimers();
+        vi.useFakeTimers();
         const address = '0xAbCdEf1234567890';
-        const writeText = jest.fn().mockResolvedValue(undefined);
-        const clearTimeoutSpy = jest.spyOn(window, 'clearTimeout');
+        const writeText = vi.fn().mockResolvedValue(undefined);
+        const clearTimeoutSpy = vi.spyOn(window, 'clearTimeout');
         Object.defineProperty(navigator, 'clipboard', {
             configurable: true,
             value: { writeText }
@@ -62,21 +64,25 @@ describe('AddressCopyButton', () => {
         expect(writeText).toHaveBeenCalledTimes(1);
         expect(writeText).toHaveBeenCalledWith(address);
 
-        act(() => jest.advanceTimersByTime(1999));
+        act(() => {
+            vi.advanceTimersByTime(1999);
+        });
         expect(getByRole('status')).toBeTruthy();
-        act(() => jest.advanceTimersByTime(1));
+        act(() => {
+            vi.advanceTimersByTime(1);
+        });
         expect(queryByRole('status')).toBeNull();
 
         unmount();
         expect(clearTimeoutSpy).toHaveBeenCalled();
         clearTimeoutSpy.mockRestore();
-        jest.useRealTimers();
+        vi.useRealTimers();
     });
 
     it('falls back to execCommand when the Clipboard API rejects', async () => {
         const address = '0xFallbackAddress';
-        const writeText = jest.fn().mockRejectedValue(new Error('denied'));
-        const execCommand = jest.fn().mockImplementation(() => {
+        const writeText = vi.fn().mockRejectedValue(new Error('denied'));
+        const execCommand = vi.fn().mockImplementation(() => {
             const textArea = document.querySelector('textarea');
             expect(textArea && textArea.value).toBe(address);
             return true;

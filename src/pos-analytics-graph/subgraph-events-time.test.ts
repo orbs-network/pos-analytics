@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { configureStreamCache, streamCacheKey, streamCacheSet } from './stream-cache';
 import { readSubgraphStreamByTime, specForTopic } from './subgraph-events';
 import { Topics } from './eth-helpers';
@@ -20,7 +21,7 @@ describe('timestamp stream cache', () => {
         const originalFetch = global.fetch;
         const initialRows = [row('a', 100, 10), row('b', 300, 30), row('c', 500, 50)];
         const leftRows = [row('d', 50, 5), row('a', 100, 10)];
-        const fetchMock = jest.fn(async (_endpoint: string, init: RequestInit) => {
+        const fetchMock = vi.fn(async (_endpoint: string, init: RequestInit) => {
             const query = JSON.parse(String(init.body)).query as string;
             return {
                 ok: true,
@@ -60,7 +61,7 @@ describe('timestamp stream cache', () => {
         prefix.stakeOwner = address;
         overlap.stakeOwner = address;
         fresh.stakeOwner = address;
-        const fetchMock = jest.fn(async (_endpoint: string, init: RequestInit) => {
+        const fetchMock = vi.fn(async (_endpoint: string, init: RequestInit) => {
             const query = JSON.parse(String(init.body)).query as string;
             expect(query).toContain('blockNumber_gte: 2001');
             return {

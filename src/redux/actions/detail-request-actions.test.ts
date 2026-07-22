@@ -1,3 +1,4 @@
+import { Mock, vi } from 'vitest';
 import { api } from '../../services/api';
 import { delegatorReducer } from '../reducers/delegator';
 import { guardiansReducer } from '../reducers/guardians';
@@ -6,26 +7,26 @@ import { getGuardianAction } from './guardians-actions';
 import { getAvgBlockTime, getRefBlock } from './utils';
 import { ChartUnit } from '../../global/enums';
 
-jest.mock('../../services/api', () => ({
+vi.mock('../../services/api', () => ({
     api: {
-        getDelegatorApi: jest.fn(),
-        getDelegatorCurrentApi: jest.fn(),
-        getDelegatorStakeHistoryApi: jest.fn(),
-        getGuardianApi: jest.fn()
+        getDelegatorApi: vi.fn(),
+        getDelegatorCurrentApi: vi.fn(),
+        getDelegatorStakeHistoryApi: vi.fn(),
+        getGuardianApi: vi.fn()
     }
 }));
 
-jest.mock('./utils', () => ({
-    getRefBlock: jest.fn(),
-    getAvgBlockTime: jest.fn()
+vi.mock('./utils', () => ({
+    getRefBlock: vi.fn(),
+    getAvgBlockTime: vi.fn()
 }));
 
-const mockedGetDelegator = api.getDelegatorApi as jest.Mock;
-const mockedGetDelegatorCurrent = api.getDelegatorCurrentApi as jest.Mock;
-const mockedGetDelegatorHistory = api.getDelegatorStakeHistoryApi as jest.Mock;
-const mockedGetGuardian = api.getGuardianApi as jest.Mock;
-const mockedGetRefBlock = getRefBlock as jest.Mock;
-const mockedGetAvgBlockTime = getAvgBlockTime as jest.Mock;
+const mockedGetDelegator = api.getDelegatorApi as Mock;
+const mockedGetDelegatorCurrent = api.getDelegatorCurrentApi as Mock;
+const mockedGetDelegatorHistory = api.getDelegatorStakeHistoryApi as Mock;
+const mockedGetGuardian = api.getGuardianApi as Mock;
+const mockedGetRefBlock = getRefBlock as Mock;
+const mockedGetAvgBlockTime = getAvgBlockTime as Mock;
 
 const deferred = <T>() => {
     let resolve!: (value: T) => void;
@@ -64,7 +65,7 @@ const createHarness = () => {
 
 describe('detail request actions', () => {
     beforeEach(() => {
-        jest.clearAllMocks();
+        vi.clearAllMocks();
         mockedGetRefBlock.mockResolvedValue({ number: 90, time: 900 });
         mockedGetAvgBlockTime.mockResolvedValue(10);
     });

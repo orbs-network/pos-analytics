@@ -7,7 +7,7 @@ export interface IChain {
     rpc: string;
     node: string[];
     chainId: number;
-    getWeb3: () => void;
+    getWeb3: () => Promise<any>;
     name: string;
     logo: string;
     explorerUrl: string;

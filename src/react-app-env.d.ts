@@ -1,1 +1,4 @@
-/// <reference types="react-scripts" />
+/// <reference types="vite/client" />
+
+declare module 'i18next-locize-backend';
+declare module 'numeral';
