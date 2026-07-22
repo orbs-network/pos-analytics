@@ -61,6 +61,12 @@
   }
 }
 
+@media (min-width: 1200px) {
+  .app--desktop .guardian-stake-chart {
+    min-height: 290px;
+  }
+}
+
 @media (min-width: 768px) and (max-width: 1199px) {
   .app--tablet .guardian-stake-chart {
     height: 320px;

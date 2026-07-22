@@ -114,6 +114,26 @@ body {
   }
 }
 
+@media (min-width: 1200px) {
+  .app--desktop {
+    .guardians,
+    .delegators {
+      height: 100%;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+
+    .guardians .screen-section-container,
+    .delegators .screen-section-container {
+      min-height: 480px;
+    }
+
+    .guardians .screen-section-container {
+      height: calc(100vh - 291px);
+    }
+  }
+}
+
 .text-overflow {
   white-space: nowrap;
   overflow: hidden;
