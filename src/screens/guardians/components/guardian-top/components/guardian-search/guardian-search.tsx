@@ -15,7 +15,7 @@ import {
   getGuardianByAddress,
 } from 'utils/guardians';
 import './guardian-search.scss';
-import { isMobile } from 'react-device-detect';
+import { useIsMobileViewport } from 'hooks/useViewport';
 
 interface StateProps {
   address?: string;
@@ -23,6 +23,7 @@ interface StateProps {
 }
 
 export const GuardianSearch = ({ address, section }: StateProps) => {
+  const isMobile = useIsMobileViewport();
   const { guardians, selectedGuardian } = useSelector(
     (state: AppState) => state.guardians
   );

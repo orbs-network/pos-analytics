@@ -1,16 +1,17 @@
 import React, { useEffect } from 'react';
-import { isMobile } from 'react-device-detect';
 import { useDispatch, useSelector } from 'react-redux';
 import { getGuardiansAction} from './redux/actions/actions';
 import { RootRouter } from './routes';
 import './scss/app.scss';
 import { AppState } from './redux/types/types';
+import { useViewportMode } from './hooks/useViewport';
 import { LoadProgressBar } from './components/load-progress-bar/load-progress-bar';
 
 
 const App = () => {
     const dispatch = useDispatch();
     const { chain } = useSelector((state: AppState) => state.main);
+    const viewportMode = useViewportMode();
 
     useEffect(() => {
         dispatch(getGuardiansAction(chain));
@@ -19,8 +20,8 @@ const App = () => {
    
 
     return (
-        <div className={`app ${isMobile ? '' : 'flex-between'}`}>
-            <LoadProgressBar />
+        <div className={`app app--${viewportMode}`} data-viewport-mode={viewportMode}>
+            <LoadProgressBar viewportMode={viewportMode} />
             <RootRouter chain={chain} />
         </div>
     );

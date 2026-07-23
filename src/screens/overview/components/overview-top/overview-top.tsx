@@ -10,7 +10,7 @@ import { LoaderType } from 'global/enums';
 import { OVERVIEW_STATUS_LINK } from 'global/variables';
 import StellarImg from 'assets/images/stellar.svg';
 import './overview-top.scss';
-import { isMobile } from 'react-device-detect';
+import { useIsMobileViewport } from 'hooks/useViewport';
 
 interface StateProps {
   data?: number;
@@ -31,9 +31,10 @@ const OverviewTopSection = ({
   link,
   noData,
 }: StateProps) => {
+  const isMobile = useIsMobileViewport();
   return (
     <section className="overview-top-section flex-column">
-      <div className={`${isMobile ? '' : 'flex-between'}`}>
+      <div className="overview-top-section-summary">
         <span className="flex-start-center img-text">
           <img src={imgSrc} alt="" />
           <span className="flex-column">
@@ -57,7 +58,7 @@ const OverviewTopSection = ({
       </div>
       <button type="button" className="flex-center btn-action">
         {link ? (
-          <a className="flex-center" href={link} target="_blank">
+          <a className="flex-center" href={link} target="_blank" rel="noopener noreferrer">
             {btnText}
           </a>
         ) : (
@@ -75,7 +76,7 @@ const OverviewTopComponent = () => {
 
   const { t } = useTranslation();
   return (
-    <div className="overview-top flex-start-center">
+    <div className="overview-top">
       <OverviewTopSection
         textTop={t('overview.total')}
         textBottom={t('overview.stake')}

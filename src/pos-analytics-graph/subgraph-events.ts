@@ -13,7 +13,14 @@
 
 import Web3 from 'web3';
 import { retry } from 'ts-retry-promise';
-import { getStreamCacheReorgMargin, isStreamCacheEnabled, streamCacheGet, streamCacheKey, streamCacheSet } from './stream-cache';
+import {
+    getStreamCacheReorgMargin,
+    isStreamCacheEnabled,
+    streamCacheGet,
+    streamCacheKey,
+    streamCacheSet,
+    streamCacheTimeKey
+} from './stream-cache';
 import { progressPageFetched, trackLoadUnit } from './load-progress';
 import { stakeAbi } from './abis/stake';
 import { delegationAbi } from './abis/delegation';
@@ -157,6 +164,25 @@ export interface StreamQuery {
     addressFieldOverride?: string; // e.g. query Delegated by 'to' instead of 'from'
 }
 
+export interface TimeStreamQuery {
+    fromTime: number;
+    toTime: number;
+    toBlock: number;
+    address?: string;
+    addressFieldOverride?: string;
+    // Keys used by the legacy block reader. If one already covers toBlock, its
+    // rows can satisfy this request without another subgraph read.
+    reuseFromBlocks?: number[];
+}
+
+interface TimeStreamCacheEntry {
+    syncedToBlock: number;
+    syncedFromTime: number;
+    syncedToTime: number;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    rows: any[];
+}
+
 const PAGE_SIZE = 1000;
 const GLOBAL_STREAM_PARTITIONS = 8;   // big unfiltered streams (e.g. Polygon allocated: 150k+ rows)
 const FILTERED_STREAM_PARTITIONS = 4;
@@ -195,6 +221,151 @@ async function readStreamRange(endpoint: string, spec: EventSpec, addressField: 
         lastId = rows[rows.length - 1].id;
     }
     return out;
+}
+
+// Cursor-paginates a timestamp-indexed stream window. A block ceiling ties the
+// immutable event rows to the exact current-state snapshot used by the caller;
+// no RPC timestamp-to-block lookup or browser-side block binary search is needed.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function readStreamTimeRange(endpoint: string, spec: EventSpec, addressField: string | undefined, address: string | undefined, fromTime: number, toTime: number, toBlock: number, fromBlock?: number): Promise<any[]> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const out: any[] = [];
+    let lastId = '';
+    for (;;) {
+        const where: string[] = [
+            `blockTimestamp_gte: ${fromTime}`,
+            `blockTimestamp_lte: ${toTime}`,
+            `blockNumber_lte: ${toBlock}`
+        ];
+        if (fromBlock !== undefined) where.push(`blockNumber_gte: ${fromBlock}`);
+        if (address !== undefined) {
+            if (!addressField) throw new Error(`event ${spec.name} has no indexed address field to filter on`);
+            where.push(`${addressField}: "${address.toLowerCase()}"`);
+        }
+        if (lastId) where.push(`id_gt: "${lastId}"`);
+        const query = `{ ${spec.plural}(first: ${PAGE_SIZE}, orderBy: id, orderDirection: asc, where: {${where.join(', ')}}) { id ${spec.fields.join(' ')} blockNumber blockTimestamp transactionHash logIndex txIndex } }`;
+        const data = await postQuery(endpoint, query);
+        progressPageFetched();
+        const rows = data[spec.plural];
+        for (const row of rows) out.push(row);
+        if (rows.length < PAGE_SIZE) break;
+        lastId = rows[rows.length - 1].id;
+    }
+    return out;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function uniqueRows(rows: any[]): any[] {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const byId = new Map<string, any>();
+    for (const row of rows) byId.set(String(row.id), row);
+    return Array.from(byId.values());
+}
+
+function isTimeCacheEntry(entry: any): entry is TimeStreamCacheEntry {
+    return !!entry
+        && typeof entry.syncedToBlock === 'number'
+        && typeof entry.syncedFromTime === 'number'
+        && typeof entry.syncedToTime === 'number'
+        && Array.isArray(entry.rows);
+}
+
+// Reads a bounded event stream directly by indexed blockTimestamp. The cache key
+// is stable across range switches: narrower windows filter the cached superset and
+// wider windows fetch only the missing left segment (plus a small refreshed tail).
+// Entity ids are de-duplicated whenever windows overlap.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function readSubgraphStreamByTime(chainId: number, spec: EventSpec, q: TimeStreamQuery): Promise<any[]> {
+    return trackLoadUnit(() => readSubgraphStreamByTimeCached(chainId, spec, q));
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function readSubgraphStreamByTimeCached(chainId: number, spec: EventSpec, q: TimeStreamQuery): Promise<any[]> {
+    const fromTime = Math.floor(q.fromTime);
+    const toTime = Math.floor(q.toTime);
+    const toBlock = Math.floor(q.toBlock);
+    if (!Number.isFinite(fromTime) || !Number.isFinite(toTime) || !Number.isFinite(toBlock)) {
+        throw new Error('subgraph time range must contain finite integer values');
+    }
+    if (fromTime > toTime) throw new Error('subgraph time range fromTime must not exceed toTime');
+    if (toBlock < 0) throw new Error('subgraph time range toBlock must not be negative');
+
+    const endpoint = getSubgraphEndpoint(chainId);
+    const addressField = q.addressFieldOverride || spec.addressField;
+    const readLive = (from: number, to: number, fromBlock?: number) =>
+        readStreamTimeRange(endpoint, spec, addressField, q.address, from, to, toBlock, fromBlock);
+
+    if (!isStreamCacheEnabled()) return readLive(fromTime, toTime);
+
+    // A legacy full-history read may already have populated the block cache. Reuse
+    // it only when it covers this snapshot completely; otherwise falling back to
+    // the bounded timestamp reader avoids accidentally triggering a lifetime read.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let partialLegacy: any;
+    for (const reuseFromBlock of q.reuseFromBlocks || []) {
+        const legacy = await streamCacheGet(streamCacheKey(chainId, spec.plural, addressField, q.address, reuseFromBlock));
+        if (legacy && legacy.syncedToBlock >= toBlock) {
+            return uniqueRows(legacy.rows.filter((row: any) => {
+                const time = Number(row.blockTimestamp);
+                const block = Number(row.blockNumber);
+                return time >= fromTime && time <= toTime && block <= toBlock;
+            }));
+        }
+        if (legacy && (!partialLegacy || legacy.syncedToBlock > partialLegacy.syncedToBlock)) partialLegacy = legacy;
+    }
+
+    const key = streamCacheTimeKey(chainId, spec.plural, addressField, q.address);
+    const cached = await streamCacheGet(key);
+    if (!isTimeCacheEntry(cached)) {
+        // If a legacy lifetime stream is slightly behind the current snapshot,
+        // retain its immutable prefix and fetch only a reorg-overlapped tail.
+        let rows;
+        if (partialLegacy) {
+            const fetchFromBlock = Math.max(0, partialLegacy.syncedToBlock - getStreamCacheReorgMargin() + 1);
+            rows = partialLegacy.rows.filter((row: any) => {
+                const time = Number(row.blockTimestamp);
+                const block = Number(row.blockNumber);
+                return time >= fromTime && time <= toTime && block < fetchFromBlock;
+            });
+            rows = uniqueRows(rows.concat(await readLive(fromTime, toTime, fetchFromBlock)));
+        } else {
+            rows = uniqueRows(await readLive(fromTime, toTime));
+        }
+        await streamCacheSet(key, { syncedFromTime: fromTime, syncedToTime: toTime, syncedToBlock: toBlock, rows } as TimeStreamCacheEntry);
+        return rows;
+    }
+
+    let rows = cached.rows.slice();
+    let syncedFromTime = cached.syncedFromTime;
+    let syncedToTime = cached.syncedToTime;
+    let syncedToBlock = cached.syncedToBlock;
+
+    if (fromTime < syncedFromTime) {
+        // The one-second overlap avoids a gap for multiple events sharing a block
+        // timestamp; uniqueRows removes the overlap by immutable entity id.
+        rows = rows.concat(await readLive(fromTime, syncedFromTime));
+        syncedFromTime = fromTime;
+    }
+
+    if (toTime > syncedToTime || toBlock > syncedToBlock) {
+        // Refresh the cached chain tail for reorg safety. Fifteen seconds per
+        // configured block is conservative for Ethereum and much wider than
+        // necessary on Polygon, while still keeping the query tightly bounded.
+        const tailSeconds = Math.max(1, getStreamCacheReorgMargin()) * 15;
+        const refreshFromTime = Math.max(syncedFromTime, syncedToTime - tailSeconds);
+        rows = rows.filter((row: any) => Number(row.blockTimestamp) < refreshFromTime);
+        rows = rows.concat(await readLive(refreshFromTime, Math.max(toTime, syncedToTime)));
+        syncedToTime = Math.max(toTime, syncedToTime);
+        syncedToBlock = Math.max(toBlock, syncedToBlock);
+    }
+
+    rows = uniqueRows(rows);
+    await streamCacheSet(key, { syncedFromTime, syncedToTime, syncedToBlock, rows } as TimeStreamCacheEntry);
+    return rows.filter((row: any) => {
+        const time = Number(row.blockTimestamp);
+        const block = Number(row.blockNumber);
+        return time >= fromTime && time <= toTime && block <= toBlock;
+    });
 }
 
 // Reads one event stream, incrementally cached: already-synced rows come from the

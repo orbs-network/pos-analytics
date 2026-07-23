@@ -6,9 +6,10 @@
 body {
   background: #fafafa;
   font-family: 'Montserrat';
+  min-width: 320px;
   overflow: hidden;
-  padding-top: 15px;
-  padding-left: 15px;
+  overflow-wrap: break-word;
+  word-break: keep-all;
 }
 
 .flex-start {
@@ -41,6 +42,7 @@ body {
 }
 
 :root {
+  --mobile-header-height: 77px;
   --transition: 0.2s all;
 }
 
@@ -51,7 +53,8 @@ body {
 }
 
 .screen {
-  width: calc(100% - 233px);
+  min-width: 0;
+  width: 100%;
   padding-left: 30px;
   padding-right: 30px;
   &-section {
@@ -68,6 +71,67 @@ body {
 
 .app {
   align-items: flex-start;
+  width: 100%;
+
+  &--desktop,
+  &--tablet {
+    display: grid;
+    grid-template-columns: 233px minmax(0, 1fr);
+    height: 100vh;
+  }
+
+  &--desktop {
+    padding: 15px;
+  }
+
+  &--tablet {
+    padding: 12px;
+
+    .screen {
+      height: 100%;
+      overflow-y: auto;
+      padding-left: 20px;
+      padding-right: 8px;
+    }
+
+    .screen-section-container {
+      padding: 24px;
+    }
+  }
+
+  &--mobile {
+    display: block;
+    height: 100vh;
+    overflow: hidden;
+
+    .screen {
+      height: calc(100vh - var(--mobile-header-height));
+      overflow-x: hidden;
+      overflow-y: auto;
+      padding: 0;
+      width: 100%;
+    }
+  }
+}
+
+@media (min-width: 1200px) {
+  .app--desktop {
+    .guardians,
+    .delegators {
+      height: 100%;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+
+    .guardians .screen-section-container,
+    .delegators .screen-section-container {
+      min-height: 480px;
+    }
+
+    .guardians .screen-section-container {
+      height: calc(100vh - 291px);
+    }
+  }
 }
 
 .text-overflow {
@@ -206,18 +270,7 @@ input::placeholder {
   }
 }
 
-@media (max-width: 576px) {
-  body {
-    padding: 0;
-    overflow: initial;
-    .screen {
-      width: 100%;
-      padding: 0;
-    }
-  }
-}
-
-@media (max-width: 800px) {
+.app--mobile {
   .search {
     p {
       text-align: center;

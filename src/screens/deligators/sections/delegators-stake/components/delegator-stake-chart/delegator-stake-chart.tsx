@@ -4,42 +4,59 @@ import { useDispatch, useSelector } from 'react-redux';
 import { TimeRangeSelector } from 'components/date-format-picker/time-range-selector';
 import { LoadingComponent } from 'components/loading-component/loading-component';
 import { ChartUnit, LoaderType } from 'global/enums';
-import { setDelegatorChartData } from 'redux/actions/actions';
+import { loadDelegatorStakeHistoryAction } from 'redux/actions/actions';
 import { AppState } from 'redux/types/types';
-import { generateDelegatorChartData } from 'utils/delegators';
 import { Chart } from './chart';
+import { NoData } from 'components/no-data/no-data';
 import './delegator-stake-chart.scss';
 
 
 
 export const DelegatorStakeChart = () => {
     const dispatch = useDispatch();
-    const { selectedDelegator, delegatorIsLoading, delegatorChartData } = useSelector(
+    const {
+        selectedDelegator,
+        delegatorIsLoading,
+        delegatorChartData,
+        delegatorHistoryIsLoading,
+        delegatorHistoryError
+    } = useSelector(
         (state: AppState) => state.delegator
     );
     const { t } = useTranslation();
+    const selectedAddress = selectedDelegator && selectedDelegator.address;
+    const selectedBlock = selectedDelegator && selectedDelegator.block_number;
     useEffect(() => {
-        if (delegatorChartData) return;
-        selectChartData(ChartUnit.WEEK);
-    }, [selectedDelegator && selectedDelegator.address]);
+        if (!selectedAddress) return;
+        dispatch(loadDelegatorStakeHistoryAction(ChartUnit.WEEK));
+    }, [dispatch, selectedAddress, selectedBlock]);
 
     const selectChartData = (unit: ChartUnit) => {
-        const data = generateDelegatorChartData(unit, selectedDelegator);
-        dispatch(setDelegatorChartData(data));
+        dispatch(loadDelegatorStakeHistoryAction(unit));
     };
     const noData = !delegatorIsLoading && !selectedDelegator
     return (
         noData ? null : <div className="delegator-stake-chart">
-            <LoadingComponent loaderType={LoaderType.BIG} isLoading={delegatorIsLoading && !delegatorChartData}>
-                {delegatorChartData ? (
+            <LoadingComponent
+                loaderType={LoaderType.BIG}
+                isLoading={delegatorIsLoading || delegatorHistoryIsLoading}
+            >
+                {selectedDelegator ? (
                     <>
                         <header className="flex-between">
                             <h4>{t('delegators.stakeChangeOverTime')}</h4>
-                            <TimeRangeSelector selected={delegatorChartData.unit} selectCallBack={selectChartData} />
+                            <TimeRangeSelector
+                                selected={delegatorChartData ? delegatorChartData.unit : ChartUnit.WEEK}
+                                selectCallBack={selectChartData}
+                            />
                         </header>
-                        <div className="line-chart">
-                            <Chart chartData={delegatorChartData} />
-                        </div>
+                        {delegatorChartData ? (
+                            <div className="line-chart">
+                                <Chart chartData={delegatorChartData} />
+                            </div>
+                        ) : delegatorHistoryError ? (
+                            <NoData />
+                        ) : null}
                     </>
                 ) : null}
             </LoadingComponent>

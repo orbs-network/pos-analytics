@@ -6,12 +6,11 @@ import { NoData } from 'components/no-data/no-data';
 import './guardian-delegators.scss';
 import { GuardianDelegatorElement } from './components/guardian-delegator/guardian-delegator';
 import { useTranslation } from 'react-i18next';
-import { LoadingComponent } from 'components/loading-component/loading-component';
 import { ListMaterial } from 'components/list/list-material';
-import { LoaderType } from 'global/enums';
-import { isMobile } from 'react-device-detect';
+import { useIsMobileViewport } from 'hooks/useViewport';
 
 export const GuardianDelegators = () => {
+  const isMobile = useIsMobileViewport();
   const { selectedGuardian, guardianIsLoading } = useSelector(
     (state: AppState) => state.guardians
   );
@@ -28,27 +27,24 @@ export const GuardianDelegators = () => {
     <NoData />
   ) : (
     <div className="guardian-delegators-list">
-      <LoadingComponent
+      <ListMaterial
+        titles={titles}
+        titleClassName="list-titles"
+        listClassName="guardian-delegators-table"
+        listHeaderBg="#F7F7F7"
         isLoading={guardianIsLoading}
-        listElementAmount={5}
-        loaderType={LoaderType.LIST}
+        loadingRows={5}
       >
-        <ListMaterial
-          titles={titles}
-          titleClassName="list-titles"
-          listHeaderBg="#F7F7F7"
-        >
-          {selectedGuardian &&
-            selectedGuardian.delegators.map((delegator: GuardianDelegator) => {
-              return (
-                <GuardianDelegatorElement
-                  delegator={delegator}
-                  key={delegator.address}
-                />
-              );
-            })}
-        </ListMaterial>
-      </LoadingComponent>
+        {selectedGuardian &&
+          selectedGuardian.delegators.map((delegator: GuardianDelegator) => {
+            return (
+              <GuardianDelegatorElement
+                delegator={delegator}
+                key={delegator.address}
+              />
+            );
+          })}
+      </ListMaterial>
     </div>
   );
 };

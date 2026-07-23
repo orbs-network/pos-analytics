@@ -54,8 +54,10 @@ export default defineConfig(({ mode }) => {
             sourcemap: false
         },
         test: {
+            css: false,
+            globals: true,
             environment: 'node',
-            include: ['src/**/*.test.ts']
+            include: ['src/**/*.test.ts', 'src/**/*.test.tsx']
         }
     };
 });

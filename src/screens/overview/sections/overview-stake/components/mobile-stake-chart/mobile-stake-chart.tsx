@@ -19,8 +19,11 @@ export const MobileStakeChart = () => {
     const [rawData, setRawData] = useState<PosOverviewData[] | null>(null);
     const [selected, setSelected] = useState<null | PosOverviewData>(null);
     useEffect(() => {
-        createChartDataset(moment().toDate());
-    }, []);
+        const newRawData = getDoughnutStakeChartData(moment().toDate(), overviewData);
+        if (!newRawData) return;
+        setRawData(newRawData);
+        setSelected(null);
+    }, [overviewData]);
 
     const createChartDataset = (date: Date) => {
         const newRawData = getDoughnutStakeChartData(date, overviewData);

@@ -8,4 +8,5 @@ export interface GuardiansState {
     guardianIsLoading: boolean;
     guardianChartData?: ChartData;
     guardiansColors?: { [id: string]: string };
+    activeGuardianRequestId?: string;
 }

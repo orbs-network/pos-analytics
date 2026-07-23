@@ -1,15 +1,23 @@
 .guardian-search {
+  max-width: 100%;
+  min-width: 0;
+  width: min(520px, 100%);
+
   .search-input-box {
-    width: 520px;
+    max-width: 520px;
+    min-width: 0;
+    width: 100%;
     border: 1px solid #707070;
     input {
       border-radius: 5px;
+      min-width: 0;
+      text-overflow: ellipsis;
     }
   }
 }
 
-@media (max-width: 567px) {
-  .guardian-search {
+@media (max-width: 767px) {
+  .app--mobile .guardian-search {
     width: 100%;
     .search-input-title {
       text-align: center;

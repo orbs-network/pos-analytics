@@ -1,10 +1,23 @@
 import React from 'react';
 import './app-loader.scss';
 
-export const AppLoader = () => {
+interface AppLoaderProps {
+    title?: string;
+    description?: string;
+    retryLabel?: string;
+    onRetry?: () => void;
+}
+
+export const AppLoader = ({ title = 'Loading...', description, retryLabel, onRetry }: AppLoaderProps) => {
     return (
-        <div className="app-loader">
-            <h5>Loading...</h5>
+        <div className="app-loader" role={onRetry ? 'alert' : undefined}>
+            <h5>{title}</h5>
+            {description && <p>{description}</p>}
+            {onRetry && retryLabel && (
+                <button type="button" onClick={onRetry}>
+                    {retryLabel}
+                </button>
+            )}
         </div>
     );
 };

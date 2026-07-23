@@ -5,15 +5,30 @@
   min-height: 420px;
   justify-content: flex-start;
   &-flex {
+    display: grid !important;
+    gap: 40px;
+    grid-template-columns: minmax(0, 1fr) 200px;
     height: calc(100% - 100px);
     width: 100%;
     padding-top: 30px;
   }
 }
 
-@media (max-width: 576px) {
-  .guardian-stake-flex {
+@media (min-width: 768px) and (max-width: 1199px) {
+  .app--tablet .guardian-stake-flex {
+    grid-template-columns: minmax(0, 1fr);
+    height: auto;
+  }
+}
+
+@media (max-width: 767px) {
+  .app--mobile .guardian-stake-flex {
+    gap: 0;
+    grid-template-columns: minmax(0, 1fr);
+    height: auto;
     padding-top: 0;
+    padding-left: 15px;
+    padding-right: 15px;
     margin-top: 18px;
     flex-direction: column;
   }

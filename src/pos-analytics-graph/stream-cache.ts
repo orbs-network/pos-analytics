@@ -48,6 +48,14 @@ export function streamCacheKey(chainId: number, plural: string, addressField: st
     return `posag:v${SCHEMA_VERSION}:${chainId}:${plural}:${addressField || ''}:${(address || '').toLowerCase()}:${fromBlock}`;
 }
 
+// Timestamp-bounded histories deliberately use a key without the requested start
+// time. This lets a wider request extend an existing cached window, while a
+// narrower request (for example switching from Weeks to Days) is only a filtered
+// view of the same rows instead of a second overlapping cache entry.
+export function streamCacheTimeKey(chainId: number, plural: string, addressField: string | undefined, address: string | undefined): string {
+    return `posag-time:v${SCHEMA_VERSION}:${chainId}:${plural}:${addressField || ''}:${(address || '').toLowerCase()}`;
+}
+
 export async function streamCacheGet(key: string): Promise<StreamCacheEntry | undefined> {
     if (!enabled) return undefined;
     const inMemory = memory.get(key);

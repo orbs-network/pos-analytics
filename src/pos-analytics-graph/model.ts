@@ -163,6 +163,33 @@ export interface DelegatorInfo {
     reward_slices: DelegatorReward[];
 }
 
+export interface DelegatorStakeHistoryRange {
+    fromTime: number;
+    toTime: number;
+}
+
+// DelegatorInfo is structurally compatible with this snapshot. Callers that
+// already loaded current-only data can pass it to the bounded history API and
+// avoid a second RPC current-state read.
+export interface DelegatorStakeHistoryCurrent {
+    block_number: number;
+    block_time: number;
+    total_stake: number;
+    cooldown_stake: number;
+}
+
+export interface DelegatorStakeHistoryOptions {
+    current?: DelegatorStakeHistoryCurrent;
+    is_polygon?: boolean;
+}
+
+export interface DelegatorStakeHistory {
+    from_time: number;
+    to_time: number;
+    stake_slices: DelegatorStake[];
+    actions: DelegatorAction[];
+}
+
 export interface DelegatorStake {
     block_number: number;
     block_time: number;

@@ -4,8 +4,10 @@
     left: 0;
     right: 0;
     height: 18px;
-    background: rgba(20, 30, 50, 0.55);
-    z-index: 2000;
+    background: #66707e;
+    isolation: isolate;
+    pointer-events: none;
+    z-index: 2147483647;
 
     &__fill {
         height: 100%;
@@ -24,4 +26,8 @@
         color: #fff;
         pointer-events: none;
     }
+}
+
+.load-progress-bar--mobile {
+    top: var(--mobile-header-height);
 }

@@ -1,9 +1,10 @@
-import { describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import moment from 'moment';
-import { forEachBucketSlice } from './overview';
-import { getOverviewChartData } from './stake-chart';
 import { ChartUnit } from '../../global/enums';
+import { OVERVIEW_CHART_LIMIT } from '../../global/variables';
 import { PosOverviewSlice } from 'pos-analytics-graph';
+import { forEachBucketSlice, getMinDateByUnitOverview } from './overview';
+import { getOverviewChartData } from './stake-chart';
 
 const slice = (isoDay: string, stake: number): PosOverviewSlice =>
     ({
@@ -23,20 +24,59 @@ const dates = [
     moment('2026-06-30', 'YYYY-MM-DD').toDate()
 ];
 
+describe('getMinDateByUnitOverview', () => {
+    const now = new Date(2026, 6, 20, 20, 37, 42, 123);
+
+    beforeEach(() => {
+        vi.spyOn(Date, 'now').mockReturnValue(now.valueOf());
+    });
+
+    afterEach(() => {
+        vi.restoreAllMocks();
+    });
+
+    it('starts the weekly range at midnight without shifting it forward by one day', () => {
+        const expected = moment(now)
+            .subtract(OVERVIEW_CHART_LIMIT, 'weeks')
+            .startOf('day')
+            .toDate();
+
+        expect(getMinDateByUnitOverview(ChartUnit.WEEK)).toEqual(expected);
+    });
+
+    it('starts the daily range at midnight', () => {
+        const expected = moment(now)
+            .subtract(OVERVIEW_CHART_LIMIT, 'days')
+            .startOf('day')
+            .toDate();
+
+        expect(getMinDateByUnitOverview(ChartUnit.DAY)).toEqual(expected);
+    });
+
+    it('normalizes the default range to midnight', () => {
+        const expected = moment(now)
+            .subtract(OVERVIEW_CHART_LIMIT, 'weeks')
+            .startOf('day')
+            .toDate();
+
+        expect(getMinDateByUnitOverview(ChartUnit.MONTH)).toEqual(expected);
+    });
+});
+
 describe('forEachBucketSlice (carry-forward bucket filling)', () => {
     it('fills each bucket with the latest slice at or before it, carrying state forward', () => {
         const slices = [slice('2026-07-05', 100), slice('2026-07-13', 150)];
         const datasets: any = {
-            '0xa': { data: dates.map((d) => ({ group: '', x: moment(d).format('DD/MM/YYYY'), y: null })) }
+            '0xa': { data: dates.map((date) => ({ group: '', x: moment(date).format('DD/MM/YYYY'), y: null })) }
         };
         const seen: { [x: string]: number } = {};
-        forEachBucketSlice(slices, datasets, (s, x) => {
-            seen[x] = s.total_effective_stake;
+        forEachBucketSlice(slices, datasets, (overviewSlice, x) => {
+            seen[x] = overviewSlice.total_effective_stake;
         });
-        expect(seen['07/07/2026']).toBe(100); // latest slice before 7 Jul is 5 Jul
-        expect(seen['14/07/2026']).toBe(150); // 13 Jul slice
-        expect(seen['21/07/2026']).toBe(150); // no event that week - carried forward
-        expect(seen['30/06/2026']).toBeUndefined(); // predates all data - untouched
+        expect(seen['07/07/2026']).toBe(100);
+        expect(seen['14/07/2026']).toBe(150);
+        expect(seen['21/07/2026']).toBe(150);
+        expect(seen['30/06/2026']).toBeUndefined();
     });
 
     it('uses events from the bucket day itself (inclusive end of day)', () => {
@@ -45,7 +85,7 @@ describe('forEachBucketSlice (carry-forward bucket filling)', () => {
             '0xa': { data: [{ group: '', x: '14/07/2026', y: null }] }
         };
         const seen: number[] = [];
-        forEachBucketSlice(slices, datasets, (s) => seen.push(s.total_effective_stake));
+        forEachBucketSlice(slices, datasets, (overviewSlice) => seen.push(overviewSlice.total_effective_stake));
         expect(seen).toEqual([42]);
     });
 });
@@ -56,7 +96,7 @@ describe('getOverviewChartData (stake chart)', () => {
         const result = getOverviewChartData(dates, ChartUnit.WEEK, { slices } as any);
         expect(result).toBeTruthy();
         const ys = Object.fromEntries(
-            (result as any).guardianDatasets['0xa'].data.map((p: any) => [p.x, p.y])
+            (result as any).guardianDatasets['0xa'].data.map((point: any) => [point.x, point.y])
         );
         expect(ys['07/07/2026']).toBe(100);
         expect(ys['14/07/2026']).toBe(150);

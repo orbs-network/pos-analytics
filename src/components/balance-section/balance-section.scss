@@ -1,6 +1,7 @@
 @import '../../scss/colors/colors.scss';
 .balance-section {
   height: 100%;
+  min-width: 0;
   position: relative;
   padding-left: 40px;
   padding-right: 40px;
@@ -57,8 +58,23 @@
   }
 }
 
-@media (max-width: 576px) {
-  .balance-section {
+@media (min-width: 768px) and (max-width: 1199px) {
+  .app--tablet .balance-section {
+    min-height: 88px;
+    padding: 16px 20px;
+
+    &:nth-child(1) {
+      padding-left: 20px;
+    }
+
+    &::after {
+      content: none;
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .app--mobile .balance-section {
     padding: 15px;
     margin-right: 3px;
     margin-bottom: 4px;
@@ -69,6 +85,7 @@
     height: 90px;
     .one-line {
       font-size: 15px;
+      white-space: normal;
     }
     .balance-section-bold {
       font-size: 20px;

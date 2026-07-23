@@ -1,7 +1,7 @@
 import React from 'react';
-import { isMobile } from 'react-device-detect';
 import { useTranslation } from 'react-i18next';
 import { ChartUnit } from '../../global/enums';
+import { useIsMobileViewport } from 'hooks/useViewport';
 import './time-range-selector.scss';
 
 interface Option {
@@ -25,6 +25,7 @@ export const TimeRangeSelector = ({
   unitsToHide,
 }: StateProps) => {
   const { t } = useTranslation();
+  const isMobile = useIsMobileViewport();
   const options = [
     { name: t('main.months'), unit: ChartUnit.MONTH },
     { name: t('main.weeks'), unit: ChartUnit.WEEK },

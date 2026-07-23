@@ -16,8 +16,8 @@
   }
 }
 
-@media (max-width: 576px) {
-  .delegators-actions {
+@media (max-width: 767px) {
+  .app--mobile .delegators-actions {
     .MuiTableContainer-root {
       overflow-x: initial;
     }

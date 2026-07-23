@@ -9,7 +9,7 @@ import { routes } from 'routes/routes';
 import { checkIfLoadDeligator } from 'utils/delegators';
 import { useClickOutside } from 'react-click-outside-hook';
 import LoupeImg from 'assets/images/loupe.svg';
-import { isMobile } from 'react-device-detect';
+import { DelegatorsSections } from 'global/enums';
 
 import './delegator-search.scss';
 
@@ -45,7 +45,8 @@ export const DelegatorSearch = () => {
     const findDelegator = (address: string) => {
         const LoadDelegator = checkIfLoadDeligator(address, selectedDelegator);
         if (LoadDelegator) {
-            dispatch(findDelegatorAction(address, web3, blockRef!!));
+            const currentOnly = params.section === DelegatorsSections.STAKE.toLowerCase();
+            dispatch(findDelegatorAction(address, web3, blockRef!!, currentOnly));
         }
     };
 
@@ -74,7 +75,7 @@ export const DelegatorSearch = () => {
     };
 
     return (
-        <div className={`delegator-search search-input flex-column ${isMobile ? '' : 'flex-column'}`}>
+        <div className="delegator-search search-input flex-column">
             <p className="search-input-title">{t('main.address')}</p>
             <section className="search-input-box" ref={ref}>
                 <button

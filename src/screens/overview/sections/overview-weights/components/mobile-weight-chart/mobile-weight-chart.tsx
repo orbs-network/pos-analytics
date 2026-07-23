@@ -17,8 +17,11 @@ export const MobileWeightChart = () => {
     const [rawData, setRawData] = useState<PosOverviewSlice | null>(null);
     const [selected, setSelected] = useState<null | PosOverviewData>(null);
     useEffect(() => {
-        createChartDataset(moment().toDate());
-    }, []);
+        const newRawData = getDoughnutWeightChartData(moment().toDate(), overviewData);
+        if (!newRawData) return;
+        setRawData(newRawData);
+        setSelected(null);
+    }, [overviewData]);
 
     const createChartDataset = (date: Date) => {
         const newRawData = getDoughnutWeightChartData(date, overviewData);
@@ -50,25 +53,23 @@ export const MobileWeightChart = () => {
         onClick: (e: any) => selectGuardian(e)
     };
     const getGuardianPercent = () => {
-        if(!rawData || !selected) return '';
-            const result = (selected?.weight / rawData?.total_weight) * 100
-            return `${result.toFixed(2)} %`
-    }
+        if (!rawData || !selected) return '';
+        const result = (selected?.weight / rawData?.total_weight) * 100;
+        return `${result.toFixed(2)} %`;
+    };
     const chartData = rawData && generateDoghnutDataset(rawData.data, guardiansColors);
     return (
         <div className="mobile-overview-chart">
-           
-                <div className="mobile-overview-chart-title flex-center">
-                    <h5 className="mobile-overview-chart-title-name">Overall stats</h5>
-                    <DaysSelector selectDate={createChartDataset} />
-                </div>
-                <div className="mobile-overview-chart-chart">
+            <div className="mobile-overview-chart-title flex-center">
+                <h5 className="mobile-overview-chart-title-name">Overall stats</h5>
+                <DaysSelector selectDate={createChartDataset} />
+            </div>
+            <div className="mobile-overview-chart-chart">
                 <LoadingComponent isLoading={!chartData} loaderType={LoaderType.BIG}>
                     <Doughnut data={chartData} ref={ref} options={options} />
-                    <SelectedGuardian selected={selected} value = {getGuardianPercent()}/>
-                    </LoadingComponent>
-                </div>
-            
+                    <SelectedGuardian selected={selected} value={getGuardianPercent()} />
+                </LoadingComponent>
+            </div>
         </div>
     );
 };
