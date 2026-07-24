@@ -4,6 +4,9 @@
   box-shadow: 0px 5px 10px #0812261a;
   padding: 30px 20px 20px 20px;
   border-radius: 10px;
+  overflow: visible;
+  position: relative;
+  z-index: 20;
 
   .component-wrapper {
     flex-wrap: wrap;
@@ -42,7 +45,7 @@
 
 @media (max-width: 767px) {
   .app--mobile .guardian-top {
-    overflow: hidden;
+    overflow: visible;
     height: auto;
     padding: 20px;
     box-shadow: none;
