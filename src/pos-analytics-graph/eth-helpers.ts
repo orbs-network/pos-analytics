@@ -348,6 +348,17 @@ async function readGuardianState(address:string, web3:any) {
     const delegateAddress = getLatestPosContractAddress(web3, Contracts.Delegate);
     const feeBootstrapAddress = getLatestPosContractAddress(web3, Contracts.FeeBootstrapReward);
     
+    const delegatorRewardsCall = {
+        target: rewardAddress,
+        call: ['getDelegatorStakingRewardsData(address)(uint256,uint256,address,uint256,uint256)', address],
+        returns: [
+            [dRewardBalance, (v: BigNumber.Value) => new BigNumber(v)],
+            [dRewardClaim, (v: BigNumber.Value) => new BigNumber(v)],
+            [dGuardian, (v: string) => v.toLowerCase()],
+            [dRPT, (v: BigNumber.Value) => new BigNumber(v)],
+            [dDeltaRPT, (v: BigNumber.Value) => new BigNumber(v)]
+        ]
+    };
     const calls: any[] = [
         {
            target: erc20Address, 
@@ -367,17 +378,7 @@ async function readGuardianState(address:string, web3:any) {
                 [cooldownTime, (v: BigNumber.Value) => new BigNumber(v)]
             ]
         },        
-        {
-            target: rewardAddress, 
-            call: ['getDelegatorStakingRewardsData(address)(uint256,uint256,address,uint256,uint256)', address],
-            returns: [
-                [dRewardBalance, (v: BigNumber.Value) => new BigNumber(v)],
-                [dRewardClaim, (v: BigNumber.Value) => new BigNumber(v)],
-                [dGuardian, (v: string) => v.toLowerCase()],
-                [dRPT, (v: BigNumber.Value) => new BigNumber(v)],
-                [dDeltaRPT, (v: BigNumber.Value) => new BigNumber(v)]
-               ]
-        },
+        delegatorRewardsCall,
         {
             target: rewardAddress, 
             call: ['getGuardianStakingRewardsData(address)(uint256,uint256,uint256,uint256,uint256,uint256)', address],
@@ -443,7 +444,33 @@ async function readGuardianState(address:string, web3:any) {
         }
     ];
 
-    const r = await trackLoadUnit<any>(() => aggregate(calls, config));
+    const r = await trackLoadUnit<any>(async () => {
+        try {
+            return await aggregate(calls, config);
+        } catch (error) {
+            if (!String((error as Error)?.message || error).toLowerCase().includes('execution reverted')) throw error;
+            try {
+                await aggregate([delegatorRewardsCall], config);
+            } catch (delegatorRewardsError) {
+                const optionalReadReverted = String(
+                    (delegatorRewardsError as Error)?.message || delegatorRewardsError
+                ).toLowerCase().includes('execution reverted');
+                if (!optionalReadReverted) throw error;
+                const requiredCalls = calls.filter(call => call !== delegatorRewardsCall);
+                const requiredResult = await aggregate(requiredCalls, config);
+                const zero = new BigNumber(0);
+                Object.assign(requiredResult.results.transformed, {
+                    [dRewardBalance]: zero,
+                    [dRewardClaim]: zero,
+                    [dGuardian]: address.toLowerCase(),
+                    [dRPT]: zero,
+                    [dDeltaRPT]: zero
+                });
+                return requiredResult;
+            }
+            throw error;
+        }
+    });
     return { block: multicallToBlockInfo(r), data: r.results.transformed};
 }
 
