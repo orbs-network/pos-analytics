@@ -9,9 +9,17 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 const CRA_VARS = [
     'REACT_APP_MAINNET_RPC',
     'REACT_APP_POLYGON_RPC',
+    'REACT_APP_MAINNET_RPC_ALT',
+    'REACT_APP_POLYGON_RPC_ALT',
     'REACT_APP_SUBGRAPH_ETH',
     'REACT_APP_SUBGRAPH_POLYGON',
-    'REACT_APP_EVENT_CACHE'
+    'REACT_APP_SUBGRAPH_ETH_ALT',
+    'REACT_APP_SUBGRAPH_POLYGON_ALT',
+    'REACT_APP_EVENT_CACHE',
+    'REACT_APP_DELEGATIONS_SUBGRAPH_ETH',
+    'REACT_APP_DELEGATIONS_SUBGRAPH_POLYGON',
+    'REACT_APP_COINGECKO_API_KEY',
+    'REACT_APP_COINGECKO_API_KEY_ALT'
 ];
 
 export default defineConfig(({ mode }) => {
@@ -21,7 +29,9 @@ export default defineConfig(({ mode }) => {
         'process.env.PUBLIC_URL': JSON.stringify(''),
         'process.env.NODE_ENV': JSON.stringify(mode === 'production' ? 'production' : 'development')
     };
-    for (const key of CRA_VARS) {
+    // Keep test env reads dynamic so vi.stubEnv works without a local .env file.
+    // App builds still inline these values (or undefined for optional settings).
+    for (const key of mode === 'test' ? [] : CRA_VARS) {
         define[`process.env.${key}`] = env[key] !== undefined ? JSON.stringify(env[key]) : 'undefined';
     }
     return {
@@ -49,6 +59,9 @@ export default defineConfig(({ mode }) => {
             }
         },
         server: { port: 3001 },
+        preview: {
+            allowedHosts: ['analytics.orbs.kryp.xyz']
+        },
         build: {
             outDir: 'build', // keep CRA's output dir so the gh-pages deploy script is unchanged
             sourcemap: false
